@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react';
 import api from '../api/axios';
 
-const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
+const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverride }, ref) => {
     const [settings, setSettings] = useState({
         business_name: 'Minar Optics',
         address: 'Dhaka, Bangladesh',
@@ -21,6 +21,10 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
     useEffect(() => {
         const fetchSettings = async () => {
             try {
+                if (settingsOverride) {
+                    setSettings(settingsOverride);
+                    return;
+                }
                 const res = await api.get('/invoice-settings');
                 if (res.data) {
                     setSettings(res.data);
@@ -30,7 +34,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
             }
         };
         fetchSettings();
-    }, []);
+    }, [settingsOverride]);
 
     // Parse prescription_data if it's a JSON string
     const parsedItems = items?.map(item => {
@@ -69,6 +73,8 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
     const accent = settings.accent_color || '#1f2937';
     const paperWidth = Number(settings.paper_width_mm) || 80;
     const paperMargin = Number(settings.paper_margin_mm) || 4;
+    const contentWidth = `${paperWidth - (paperMargin * 2)}mm`;
+    const gridThickness = Number(settings.grid_thickness_px || 2);
     const PhoneIcon = (props) => (
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72 12.42 12.42 0 0 0 .7 2.8 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.28-1.16a2 2 0 0 1 2.11-.45 12.42 12.42 0 0 0 2.8.7A2 2 0 0 1 22 16.92z"/></svg>
     );
@@ -80,12 +86,12 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
     );
 
     return (
-        <div ref={ref} className="bg-white text-black" style={{ width: `${paperWidth}mm`, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm` }}>
+        <div ref={ref} className="bg-white text-black" style={{ width: contentWidth, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm` }}>
             {/* Header */}
-            <div className={`text-center ${settings.compact_mode ? 'mb-2' : 'mb-3'}`}>
+            <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'}`} style={{ textAlign: settings.logo_position || 'center' }}>
                 {settings.show_logo && settings.logo_url && (
                     <div className="mb-1">
-                        <img src={settings.logo_url} alt="Logo" style={{ height: '24px', display: 'inline-block' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                        <img src={settings.logo_url} alt="Logo" style={{ height: `${settings.logo_size_px || 24}px`, display: 'inline-block' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                     </div>
                 )}
                 <h1 className="font-black uppercase tracking-wide mb-1" style={{ fontSize: `${settings.header_font_size || 12}px`, color: accent }}>{settings.business_name}</h1>
@@ -131,15 +137,15 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
 
                         return (
                             <div>
-                                <table className="w-full text-center border-collapse border border-black" style={{ fontSize: '10px' }}>
+                                <table className="w-full text-center border-collapse border border-black" style={{ fontSize: '10px', borderWidth: gridThickness }}>
                                     <thead>
-                                        <tr className="border-b border-black">
-                                            <th className="border-r border-black py-1 px-1"></th>
+                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
+                                            <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness }}></th>
                                             <th className="border-r border-black py-1 px-1 font-black" colSpan="3">Right</th>
                                             <th className="py-1 px-1 font-black" colSpan="3">Left</th>
                                         </tr>
-                                        <tr className="border-b border-black">
-                                            <th className="border-r border-black py-1 px-1"></th>
+                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
+                                            <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness }}></th>
                                             <th className="border-r border-black py-1 px-1 font-black">SPH</th>
                                             <th className="border-r border-black py-1 px-1 font-black">CYL</th>
                                             <th className="border-r border-black py-1 px-1 font-black">AXIS</th>
@@ -149,8 +155,8 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-b border-black">
-                                            <td className="border-r border-black py-1 px-2 font-black text-left">Dist</td>
+                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
+                                            <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness }}>Dist</td>
                                             <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'sph')}</td>
                                             <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'cyl')}</td>
                                             <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'axis')}</td>
@@ -158,8 +164,8 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
                                             <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'distance', 'cyl')}</td>
                                             <td className="py-1 px-1 font-bold">{getVal('left', 'distance', 'axis')}</td>
                                         </tr>
-                                        <tr className="border-b border-black">
-                                            <td className="border-r border-black py-1 px-2 font-black text-left">Near</td>
+                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
+                                            <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness }}>Near</td>
                                             <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'sph')}</td>
                                             <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'cyl')}</td>
                                             <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'axis')}</td>
@@ -169,10 +175,10 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table className="w-full border-collapse border-l border-r border-b border-black mb-2" style={{ fontSize: '10px' }}>
+                                <table className="w-full border-collapse border-l border-r border-b border-black mb-2" style={{ fontSize: '10px', borderWidth: gridThickness }}>
                                     <tbody>
                                         <tr>
-                                            <td className="border-r border-black py-1 px-2 font-bold text-left" style={{ width: '50%' }}>
+                                            <td className="border-r border-black py-1 px-2 font-bold text-left" style={{ width: '50%', borderRightWidth: gridThickness }}>
                                                 Lens: {rx.lensType || ''}
                                             </td>
                                             <td className="py-1 px-2 font-bold text-left">
@@ -191,9 +197,9 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
             <div className="text-center font-black mb-2 text-xs">Bill</div>
 
             {/* Bill Table */}
-            <table className="w-full text-left mb-2 border-collapse border border-black" style={{ fontSize: `${settings.compact_mode ? 9 : 10}px` }}>
+            <table className="w-full text-left mb-2 border-collapse border border-black" style={{ fontSize: `${settings.compact_mode ? 9 : 10}px`, borderWidth: gridThickness }}>
                 <thead>
-                    <tr className="border-b border-black">
+                    <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
                         <th className="py-1 px-2 border-r border-black text-center font-black">Sl</th>
                         <th className="py-1 px-2 border-r border-black font-black">Item</th>
                         <th className="py-1 px-2 border-r border-black text-center font-black">Qty</th>

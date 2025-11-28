@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { Save } from 'lucide-react';
+import InvoicePrint from '../components/InvoicePrint';
 
 export default function InvoiceSettings() {
     const [settings, setSettings] = useState({
@@ -27,6 +28,7 @@ export default function InvoiceSettings() {
         paper_margin_mm: 4,
         compact_mode: true,
     });
+    const [uploadingLogo, setUploadingLogo] = useState(false);
 
     useEffect(() => {
         fetchSettings();
@@ -48,6 +50,22 @@ export default function InvoiceSettings() {
             alert('Settings updated successfully');
         } catch (err) {
             alert('Error updating settings');
+        }
+    };
+
+    const handleLogoUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        try {
+            setUploadingLogo(true);
+            const fd = new FormData();
+            fd.append('logo', file);
+            const res = await api.post('/invoice-settings/logo', fd);
+            setSettings(prev => ({ ...prev, logo_url: res.data.logo_url }));
+        } catch (err) {
+            alert('Error uploading logo');
+        } finally {
+            setUploadingLogo(false);
         }
     };
 
@@ -82,8 +100,22 @@ export default function InvoiceSettings() {
                             <input className="w-full border p-2 rounded" value={settings.map_link} onChange={e => setSettings({ ...settings, map_link: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Logo URL</label>
-                            <input className="w-full border p-2 rounded" value={settings.logo_url} onChange={e => setSettings({ ...settings, logo_url: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1">Logo</label>
+                            <input type="file" accept="image/*" onChange={handleLogoUpload} className="w-full border p-2 rounded" />
+                            {uploadingLogo && <p className="text-xs text-gray-500 mt-1">Uploading...</p>}
+                            <input className="w-full border p-2 rounded mt-2" placeholder="Or paste URL" value={settings.logo_url} onChange={e => setSettings({ ...settings, logo_url: e.target.value })} />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold mb-1">Logo Position</label>
+                            <select className="w-full border p-2 rounded" value={settings.logo_position || 'center'} onChange={e => setSettings({ ...settings, logo_position: e.target.value })}>
+                                <option value="left">Left</option>
+                                <option value="center">Center</option>
+                                <option value="right">Right</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold mb-1">Logo Size (px)</label>
+                            <input type="number" className="w-full border p-2 rounded" min="12" max="64" value={settings.logo_size_px || 24} onChange={e => setSettings({ ...settings, logo_size_px: Number(e.target.value) })} />
                         </div>
                         <div>
                             <label className="block text-sm font-bold mb-1">Accent Color</label>
@@ -160,6 +192,19 @@ export default function InvoiceSettings() {
                         </button>
                     </div>
                 </form>
+            </div>
+
+            <div className="bg-white p-4 rounded shadow mt-6">
+                <h3 className="text-lg font-bold mb-2">Live Preview</h3>
+                <div className="overflow-auto">
+                    <InvoicePrint
+                        invoice={{ invoice_number: '01', total_amount: 100, discount: 0, paid_amount: 100, note: 'Sample note' }}
+                        items={[{ name: 'Frame A', quantity: 1, price: 100 }]}
+                        customer={{ name: 'Walk-in Customer', phone: '0000000000' }}
+                        user={{ name: 'Admin User' }}
+                        settingsOverride={settings}
+                    />
+                </div>
             </div>
         </div>
     );
