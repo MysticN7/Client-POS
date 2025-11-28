@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
+import API_URL from '../config/api';
 import { Plus, Edit, Trash2, Search, Filter } from 'lucide-react';
 
 const Inventory = () => {
@@ -105,7 +106,7 @@ const Inventory = () => {
                 stockQuantity: product.stockQuantity,
                 description: product.description || ''
             });
-            setImagePreview(product.imageUrl ? `http://127.0.0.1:5000${product.imageUrl}` : null);
+            setImagePreview(product.imageUrl ? (product.imageUrl.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`) : null);
         } else {
             setCurrentProduct(null);
             setFormData({
@@ -201,9 +202,13 @@ const Inventory = () => {
                                         <td className="px-6 py-4">
                                             {product.imageUrl ? (
                                                 <img
-                                                    src={`http://127.0.0.1:5000${product.imageUrl}`}
+                                                    src={product.imageUrl.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`}
                                                     alt={product.name}
                                                     className="w-16 h-16 object-cover rounded-lg border border-gray-200"
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                        e.target.src = NO_IMAGE_PLACEHOLDER;
+                                                    }}
                                                 />
                                             ) : (
                                                 <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
@@ -373,3 +378,4 @@ const Inventory = () => {
 };
 
 export default Inventory;
+    const NO_IMAGE_PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='10'>No Image</text></svg>";

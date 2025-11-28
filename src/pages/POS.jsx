@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
+import API_URL from '../config/api';
 import { Search, ShoppingCart, Trash2, UserPlus, Printer, PauseCircle, PlayCircle } from 'lucide-react';
 import InvoiceModal from '../components/InvoiceModal';
 import { useAuth } from '../context/AuthContext';
@@ -278,13 +279,13 @@ export default function POS() {
                         <div key={product.id} onClick={() => addToCart(product)} className="bg-white p-3 sm:p-4 rounded shadow cursor-pointer hover:shadow-md transition active:scale-95">
                             {product.imageUrl ? (
                                 <img
-                                    src={`http://127.0.0.1:5000${product.imageUrl}`}
+                                    src={product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`}
                                     alt={product.name}
                                     className="w-full h-32 object-cover rounded-lg mb-3 border border-gray-200"
                                     onError={(e) => {
                                         e.target.onerror = null;
-                                        e.target.src = 'https://via.placeholder.com/150?text=No+Image';
-                                        console.error('Error loading image:', `http://127.0.0.1:5000${product.imageUrl}`);
+                                        e.target.src = NO_IMAGE_PLACEHOLDER;
+                                        console.error('Error loading image:', product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`);
                                     }}
                                 />
                             ) : (
@@ -562,3 +563,4 @@ export default function POS() {
         </div>
     );
 }
+    const NO_IMAGE_PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='14'>No Image</text></svg>";
