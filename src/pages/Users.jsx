@@ -140,8 +140,8 @@ export default function Users() {
                                     <input className="w-full border p-2 rounded" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">Email</label>
-                                    <input className="w-full border p-2 rounded" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required />
+                                    <label className="block text-sm font-medium mb-1">Email (optional)</label>
+                                    <input className="w-full border p-2 rounded" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium mb-1">Password {editingUser && '(Leave blank to keep)'}</label>

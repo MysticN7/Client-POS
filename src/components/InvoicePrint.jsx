@@ -66,25 +66,51 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
     const netTotal = Math.max(0, invoice.total_amount - invoice.discount);
     const amountInWords = numberToWords(Math.floor(netTotal)) || 'Zero';
 
+    const accent = settings.accent_color || '#1f2937';
+    const paperWidth = Number(settings.paper_width_mm) || 80;
+    const paperMargin = Number(settings.paper_margin_mm) || 4;
+    const PhoneIcon = (props) => (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72 12.42 12.42 0 0 0 .7 2.8 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.28-1.16a2 2 0 0 1 2.11-.45 12.42 12.42 0 0 0 2.8.7A2 2 0 0 1 22 16.92z"/></svg>
+    );
+    const MapPinIcon = (props) => (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    );
+    const MailIcon = (props) => (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+    );
+
     return (
-        <div ref={ref} className="bg-white text-black" style={{ width: '80mm', margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: '8mm' }}>
+        <div ref={ref} className="bg-white text-black" style={{ width: `${paperWidth}mm`, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm` }}>
             {/* Header */}
-            <div className="text-center mb-3">
-                <h1 className="font-black uppercase tracking-wide mb-1" style={{ fontSize: `${settings.header_font_size || 12}px`}}>{settings.business_name} <span className="text-base">👁️</span></h1>
-                <p className="text-xs font-semibold">{settings.address} 👓</p>
-                <p className="text-xs font-bold">{settings.phone}</p>
-                {settings.email && <p className="text-xs">{settings.email}</p>}
-                {settings.website && <p className="text-xs">{settings.website}</p>}
-                {settings.map_link && <p className="text-xs"><a href={settings.map_link} target="_blank" rel="noreferrer">Location</a></p>}
+            <div className={`text-center ${settings.compact_mode ? 'mb-2' : 'mb-3'}`}>
+                {settings.show_logo && settings.logo_url && (
+                    <div className="mb-1">
+                        <img src={settings.logo_url} alt="Logo" style={{ height: '24px', display: 'inline-block' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                    </div>
+                )}
+                <h1 className="font-black uppercase tracking-wide mb-1" style={{ fontSize: `${settings.header_font_size || 12}px`, color: accent }}>{settings.business_name}</h1>
+                <div className="text-xs font-semibold">
+                    {settings.show_icons && <MapPinIcon style={{ display: 'inline', marginRight: 4, color: accent }} />}{settings.address}
+                </div>
+                <div className="text-xs font-bold">
+                    {settings.show_icons && <PhoneIcon style={{ display: 'inline', marginRight: 4, color: accent }} />}{settings.phone}
+                </div>
+                {settings.email && (
+                    <div className="text-xs">
+                        {settings.show_icons && <MailIcon style={{ display: 'inline', marginRight: 4, color: accent }} />}{settings.email}
+                    </div>
+                )}
+                {settings.website && <div className="text-xs">{settings.website}</div>}
+                {settings.map_link && <div className="text-xs"><a href={settings.map_link} target="_blank" rel="noreferrer" style={{ color: accent }}>Location</a></div>}
             </div>
 
             {/* Invoice Banner */}
-            <div className="bg-gray-300 text-center font-black py-1 mb-2 text-xs">
+            <div className="text-center font-black py-1 mb-2 text-xs" style={{ backgroundColor: accent, color: 'white' }}>
                 INVOICE NO : {invoice.invoice_number}
             </div>
 
             {/* Customer Details */}
-            <div className="mb-3 text-xs">
+            <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'} text-xs`}>
                 <p className="mb-1"><strong>Date :</strong> {new Date(invoice.created_at || new Date()).toLocaleDateString('en-US')}</p>
                 <p className="mb-1"><strong>Customer :</strong> {customer?.name || 'Walk-In Customer'} ({customer?.phone || '00000000000'})</p>
                 <div className="flex justify-between mt-1">
@@ -94,7 +120,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
             </div>
 
             {/* Rx Table (Displaying first item's Rx if available) */}
-            {parsedItems.find(i => i.prescription_data) && (
+            {settings.show_rx_table && parsedItems.find(i => i.prescription_data) && (
                 <div className="mb-3">
                     {(() => {
                         const rxItem = parsedItems.find(i => i.prescription_data);
@@ -165,7 +191,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
             <div className="text-center font-black mb-2 text-xs">Bill</div>
 
             {/* Bill Table */}
-            <table className="w-full text-left mb-2 border-collapse border border-black" style={{ fontSize: '10px' }}>
+            <table className="w-full text-left mb-2 border-collapse border border-black" style={{ fontSize: `${settings.compact_mode ? 9 : 10}px` }}>
                 <thead>
                     <tr className="border-b border-black">
                         <th className="py-1 px-2 border-r border-black text-center font-black">Sl</th>

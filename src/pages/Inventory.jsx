@@ -52,7 +52,7 @@ const Inventory = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const formDataToSend = new FormData();
@@ -60,7 +60,6 @@ const Inventory = () => {
             formDataToSend.append('sku', formData.sku);
             formDataToSend.append('category', formData.category);
             formDataToSend.append('price', formData.price || 0);
-            formDataToSend.append('stockQuantity', formData.stockQuantity);
             formDataToSend.append('description', formData.description);
 
             if (imageFile) {
@@ -68,8 +67,14 @@ const Inventory = () => {
             }
 
             if (currentProduct) {
+                if (additionalStock && Number(additionalStock) > 0) {
+                    formDataToSend.append('additionalStock', Number(additionalStock));
+                } else {
+                    formDataToSend.append('stockQuantity', formData.stockQuantity);
+                }
                 await api.put(`/products/${currentProduct.id}`, formDataToSend);
             } else {
+                formDataToSend.append('stockQuantity', formData.stockQuantity || 0);
                 await api.post('/products', formDataToSend);
             }
 
@@ -276,11 +281,10 @@ const Inventory = () => {
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">SKU</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">SKU (optional)</label>
                                     <input
                                         type="text"
                                         name="sku"
-                                        required
                                         className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         value={formData.sku}
                                         onChange={handleInputChange}
@@ -314,18 +318,37 @@ const Inventory = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity{currentProduct ? ' (current)' : ''}</label>
                                     <input
                                         type="number"
                                         name="stockQuantity"
-                                        required
                                         min="0"
                                         className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         value={formData.stockQuantity}
+                                        disabled={!!currentProduct}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
+                            {currentProduct && (
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Add Stock</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            value={additionalStock}
+                                            onChange={(e) => setAdditionalStock(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="flex items-end">
+                                        <div className="text-sm text-gray-600">
+                                            {Number(formData.stockQuantity) || 0} + {Number(additionalStock) || 0} = <span className="font-bold text-green-700">{(Number(formData.stockQuantity) || 0) + (Number(additionalStock) || 0)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                                 <textarea

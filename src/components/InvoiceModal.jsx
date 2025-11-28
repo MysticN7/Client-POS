@@ -1,13 +1,32 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import InvoicePrint from './InvoicePrint';
 import { Check, Printer, X } from 'lucide-react';
+import api from '../api/axios';
 
 const InvoiceModal = ({ invoice, items, customer, user, onClose }) => {
     const componentRef = useRef(null);
+    const [printSettings, setPrintSettings] = useState({ paper_width_mm: 80, paper_margin_mm: 4 });
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const res = await api.get('/invoice-settings');
+                setPrintSettings({
+                    paper_width_mm: Number(res.data.paper_width_mm) || 80,
+                    paper_margin_mm: Number(res.data.paper_margin_mm) || 4,
+                });
+            } catch {}
+        };
+        fetchSettings();
+    }, []);
+
     const handlePrint = useReactToPrint({
         contentRef: componentRef,
         documentTitle: `Invoice-${invoice?.invoice_number || 'New'}`,
+        removeAfterPrint: true,
+        pageStyle: `@page { size: ${printSettings.paper_width_mm}mm auto; margin: ${printSettings.paper_margin_mm}mm; } 
+                    @media print { body { -webkit-print-color-adjust: exact; } }`
     });
 
     return (

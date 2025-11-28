@@ -13,8 +13,24 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
     const [loading, setLoading] = useState(false);
 
     const printRef = useRef();
+    const [printSettings, setPrintSettings] = useState({ paper_width_mm: 80, paper_margin_mm: 4 });
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const res = await api.get('/invoice-settings');
+                setPrintSettings({
+                    paper_width_mm: Number(res.data.paper_width_mm) || 80,
+                    paper_margin_mm: Number(res.data.paper_margin_mm) || 4,
+                });
+            } catch {}
+        };
+        fetchSettings();
+    }, []);
     const handlePrint = useReactToPrint({
         contentRef: printRef,
+        removeAfterPrint: true,
+        pageStyle: `@page { size: ${printSettings.paper_width_mm}mm auto; margin: ${printSettings.paper_margin_mm}mm; } 
+                    @media print { body { -webkit-print-color-adjust: exact; } }`
     });
 
     useEffect(() => {
