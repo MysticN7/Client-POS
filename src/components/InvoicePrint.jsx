@@ -7,6 +7,8 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
         address: 'Dhaka, Bangladesh',
         phone: '+880 1234 567890',
         email: 'info@minaroptics.com',
+        website: '',
+        map_link: '',
         footer_text: 'Thank you for your business!',
         show_served_by: true,
         show_date_time: true,
@@ -65,12 +67,15 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
     const amountInWords = numberToWords(Math.floor(netTotal)) || 'Zero';
 
     return (
-        <div ref={ref} className="bg-white text-black" style={{ width: '80mm', margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: '11px', padding: '8mm' }}>
+        <div ref={ref} className="bg-white text-black" style={{ width: '80mm', margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: '8mm' }}>
             {/* Header */}
             <div className="text-center mb-3">
-                <h1 className="font-black uppercase text-lg tracking-wide mb-1">{settings.business_name} <span className="text-base">👁️</span></h1>
+                <h1 className="font-black uppercase tracking-wide mb-1" style={{ fontSize: `${settings.header_font_size || 12}px`}}>{settings.business_name} <span className="text-base">👁️</span></h1>
                 <p className="text-xs font-semibold">{settings.address} 👓</p>
                 <p className="text-xs font-bold">{settings.phone}</p>
+                {settings.email && <p className="text-xs">{settings.email}</p>}
+                {settings.website && <p className="text-xs">{settings.website}</p>}
+                {settings.map_link && <p className="text-xs"><a href={settings.map_link} target="_blank" rel="noreferrer">Location</a></p>}
             </div>
 
             {/* Invoice Banner */}
@@ -217,10 +222,21 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user }, ref) => {
                 </div>
             )}
 
-            {/* Footer */}
             <div className="text-center mt-4 text-xs">
                 <p className="font-black mb-1">Come Again</p>
                 <p className="font-normal">{settings.footer_text} 👓</p>
+                {settings.show_signature && (
+                    <div className="mt-4">
+                        <div className="flex justify-between text-xs">
+                            <div style={{ width: '45%' }}>
+                                <div className="border-t border-black pt-1">Customer Signature</div>
+                            </div>
+                            <div style={{ width: '45%' }}>
+                                <div className="border-t border-black pt-1">Authorized Signature</div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

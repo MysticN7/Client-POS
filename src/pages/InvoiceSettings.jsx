@@ -9,6 +9,7 @@ export default function InvoiceSettings() {
         phone: '',
         email: '',
         website: '',
+        map_link: '',
         footer_text: '',
         show_served_by: true,
         show_date_time: true,
@@ -66,6 +67,10 @@ export default function InvoiceSettings() {
                         <div>
                             <label className="block text-sm font-bold mb-1">Website</label>
                             <input className="w-full border p-2 rounded" value={settings.website} onChange={e => setSettings({ ...settings, website: e.target.value })} />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold mb-1">Maps Link</label>
+                            <input className="w-full border p-2 rounded" value={settings.map_link} onChange={e => setSettings({ ...settings, map_link: e.target.value })} />
                         </div>
                         <div className="col-span-2">
                             <label className="block text-sm font-bold mb-1">Footer Text</label>
