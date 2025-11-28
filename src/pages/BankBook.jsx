@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Plus, Edit2, Trash2, TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
+import { Plus, Edit2, Trash2, TrendingUp, TrendingDown, Banknote } from 'lucide-react';
 
 export default function BankBook() {
     const [transactions, setTransactions] = useState([]);
@@ -152,9 +152,9 @@ export default function BankBook() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-xs sm:text-sm text-blue-600 font-medium">Current Balance</p>
-                                <p className="text-lg sm:text-2xl font-bold text-blue-700">${summary.currentBalance.toFixed(2)}</p>
+                                <p className="text-lg sm:text-2xl font-bold text-blue-700">৳{(summary.currentBalance || 0).toFixed(2)}</p>
                             </div>
-                            <DollarSign className="w-8 h-8 text-blue-600" />
+                            <Banknote className="w-8 h-8 text-blue-600" />
                         </div>
                     </div>
                     <div className={`p-4 rounded-lg border ${summary.netChange >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>

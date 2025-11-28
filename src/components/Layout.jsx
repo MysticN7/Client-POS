@@ -1,6 +1,6 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, Menu, X } from 'lucide-react';
+import { LogOut, Menu, X, Moon, Sun } from 'lucide-react';
 import { useState } from 'react';
 import { navigationItems } from '../config/navigation';
 
@@ -8,6 +8,16 @@ export default function Layout() {
     const { user, logout, hasPermission } = useAuth();
     const navigate = useNavigate();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+        return localStorage.getItem('pos-dark-mode') === 'true';
+    });
+
+    const toggleDark = () => {
+        const next = !darkMode;
+        setDarkMode(next);
+        localStorage.setItem('pos-dark-mode', String(next));
+        document.documentElement.classList.toggle('dark', next);
+    };
 
     const handleLogout = () => {
         logout();
@@ -19,9 +29,9 @@ export default function Layout() {
     };
 
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
             {/* Mobile Header */}
-            <div className="lg:hidden fixed top-0 left-0 right-0 bg-white shadow-md z-40 flex items-center justify-between p-4">
+            <div className="lg:hidden fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-40 flex items-center justify-between p-4">
                 <h1 className="text-lg font-bold text-blue-600">Minar Optics</h1>
                 <button
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -29,18 +39,21 @@ export default function Layout() {
                 >
                     {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
+                <button onClick={toggleDark} className="ml-2 p-2 rounded text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
             </div>
 
             {/* Sidebar - Desktop: Always visible, Mobile: Drawer overlay */}
             <div className={`
                 fixed lg:static inset-y-0 left-0 z-50
-                w-64 bg-white shadow-md
+                w-64 bg-white dark:bg-gray-800 shadow-md
                 transform transition-transform duration-300 ease-in-out
                 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
             `}>
                 <div className="p-4 border-b mt-16 lg:mt-0">
                     <h1 className="text-xl font-bold text-blue-600 hidden lg:block">Minar Optics</h1>
-                    <p className="text-sm text-gray-500">Welcome, {user?.name}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">Welcome, {user?.name}</p>
                 </div>
                 <nav className="p-4 space-y-2 overflow-y-auto h-[calc(100vh-120px)]">
                     {navigationItems.map((item) => (
@@ -48,7 +61,7 @@ export default function Layout() {
                             <Link
                                 key={item.id}
                                 to={item.path}
-                                className="flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded transition-colors"
+                                className="flex items-center p-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 rounded transition-colors"
                                 onClick={closeMobileMenu}
                             >
                                 <item.icon className="w-5 h-5 mr-3" />
@@ -58,7 +71,7 @@ export default function Layout() {
                     ))}
                     <button
                         onClick={() => { handleLogout(); closeMobileMenu(); }}
-                        className="w-full flex items-center p-3 text-red-600 hover:bg-red-50 rounded mt-8 transition-colors"
+                        className="w-full flex items-center p-3 text-red-600 hover:bg-red-50 dark:hover:bg-gray-700 rounded mt-8 transition-colors"
                     >
                         <LogOut className="w-5 h-5 mr-3" />
                         Logout

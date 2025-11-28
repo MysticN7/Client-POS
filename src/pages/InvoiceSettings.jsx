@@ -27,6 +27,7 @@ export default function InvoiceSettings() {
         paper_width_mm: 80,
         paper_margin_mm: 4,
         compact_mode: true,
+        farewell_text: 'Come Again',
     });
     const [uploadingLogo, setUploadingLogo] = useState(false);
 
@@ -128,6 +129,10 @@ export default function InvoiceSettings() {
                                 <option value="classic">Classic</option>
                                 <option value="minimal">Minimal</option>
                             </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold mb-1">Farewell Text</label>
+                            <input className="w-full border p-2 rounded" value={settings.farewell_text || ''} onChange={e => setSettings({ ...settings, farewell_text: e.target.value })} />
                         </div>
                         <div>
                             <label className="block text-sm font-bold mb-1">Paper Width (mm)</label>

@@ -7,7 +7,7 @@ import {
     ClipboardList,
     Settings,
     Users,
-    DollarSign,
+    Banknote,
     TrendingUp,
     Briefcase
 } from 'lucide-react';
@@ -73,7 +73,7 @@ export const navigationItems = [
         id: 'bank-book',
         title: 'Bank Book',
         path: '/bank-book',
-        icon: DollarSign,
+        icon: Banknote,
         permission: 'REPORTS',
         color: 'bg-green-500',
         showInQuickActions: true
@@ -82,7 +82,7 @@ export const navigationItems = [
         id: 'cash-book',
         title: 'Cash Book',
         path: '/cash-book',
-        icon: DollarSign,
+        icon: Banknote,
         permission: 'REPORTS',
         color: 'bg-emerald-500',
         showInQuickActions: true

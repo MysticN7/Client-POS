@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { RefreshCw, DollarSign, AlertCircle, TrendingUp, Briefcase, Lock } from 'lucide-react';
+import { RefreshCw, Banknote, AlertCircle, TrendingUp, Briefcase, Lock } from 'lucide-react';
 import { navigationItems } from '../config/navigation';
 
 export default function Dashboard() {
@@ -58,9 +58,9 @@ export default function Dashboard() {
                     <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg">
                         <div className="flex items-center justify-between mb-2">
                             <h3 className="text-sm font-medium opacity-90">Today's Sales</h3>
-                            <DollarSign className="w-8 h-8 opacity-80" />
+                            <Banknote className="w-8 h-8 opacity-80" />
                         </div>
-                        <p className="text-3xl font-bold">${stats.todaySales?.toFixed(2) || '0.00'}</p>
+                        <p className="text-3xl font-bold">৳{(stats.todaySales || 0).toFixed(2)}</p>
                         <p className="text-xs opacity-75 mt-1">{stats.todayTransactions || 0} transactions</p>
                     </div>
 
@@ -69,7 +69,7 @@ export default function Dashboard() {
                             <h3 className="text-sm font-medium opacity-90">Collected Today</h3>
                             <TrendingUp className="w-8 h-8 opacity-80" />
                         </div>
-                        <p className="text-3xl font-bold">${stats.todayCollected?.toFixed(2) || '0.00'}</p>
+                        <p className="text-3xl font-bold">৳{(stats.todayCollected || 0).toFixed(2)}</p>
                         <p className="text-xs opacity-75 mt-1">Cash flow</p>
                     </div>
 
@@ -78,7 +78,7 @@ export default function Dashboard() {
                             <h3 className="text-sm font-medium opacity-90">Pending Payments</h3>
                             <AlertCircle className="w-8 h-8 opacity-80" />
                         </div>
-                        <p className="text-3xl font-bold">${stats.pendingPayments?.toFixed(2) || '0.00'}</p>
+                        <p className="text-3xl font-bold">৳{(stats.pendingPayments || 0).toFixed(2)}</p>
                         <p className="text-xs opacity-75 mt-1">{stats.pendingPaymentsCount || 0} invoices</p>
                     </div>
 
@@ -94,7 +94,7 @@ export default function Dashboard() {
             )}
 
             {/* Quick Actions Grid */}
-            <h3 className="text-lg font-bold text-gray-800 mb-4">Quick Actions</h3>
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Quick Actions</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {allQuickActions.map((item) => {
                     const isAllowed = !item.permission || hasPermission(item.permission);
@@ -104,7 +104,7 @@ export default function Dashboard() {
                             key={item.id}
                             onClick={() => isAllowed ? (item.path ? navigate(item.path) : item.action?.()) : null}
                             disabled={!isAllowed}
-                            className={`${item.color} relative overflow-hidden text-white p-6 rounded-lg shadow-md transition-all duration-200 flex flex-col items-center justify-center gap-3 min-h-[120px] ${isAllowed ? 'hover:opacity-90' : 'cursor-not-allowed'}`}
+                            className={`${item.color} relative overflow-hidden text-white p-6 rounded-2xl shadow-lg ring-1 ring-white/20 transition-all duration-200 flex flex-col items-center justify-center gap-3 min-h-[120px] active:scale-[.98] touch-manipulation ${isAllowed ? 'hover:opacity-95' : 'cursor-not-allowed'}`}
                         >
                             <item.icon size={32} className={!isAllowed ? 'opacity-50' : ''} />
                             <span className={`text-lg font-semibold ${!isAllowed ? 'opacity-50' : ''}`}>{item.title}</span>

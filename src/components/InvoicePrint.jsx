@@ -255,7 +255,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             )}
 
             <div className="text-center mt-4 text-xs">
-                <p className="font-black mb-1">Come Again</p>
+                <p className="font-black mb-1">{settings.farewell_text || 'Come Again'}</p>
                 <p className="font-normal">{settings.footer_text} 👓</p>
                 {settings.show_signature && (
                     <div className="mt-4">

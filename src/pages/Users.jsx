@@ -2,16 +2,17 @@ import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { Trash2, Edit, Check } from 'lucide-react';
 
-const PERMISSIONS_LIST = ['DASHBOARD', 'POS', 'INVENTORY', 'EXPENSES', 'REPORTS', 'JOBCARDS', 'SETTINGS', 'USERS'];
-
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
     const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'SALESPERSON', permissions: [] });
 
+    const [permissionsCatalog, setPermissionsCatalog] = useState({ list: [], groups: {} });
+
     useEffect(() => {
         fetchUsers();
+        fetchPermissions();
     }, []);
 
     const fetchUsers = async () => {
@@ -20,6 +21,15 @@ export default function Users() {
             setUsers(res.data);
         } catch (err) {
             console.error(err);
+        }
+    };
+
+    const fetchPermissions = async () => {
+        try {
+            const res = await api.get('/users/permissions');
+            setPermissionsCatalog(res.data);
+        } catch (err) {
+            console.error('Failed to load permissions list');
         }
     };
 
@@ -160,14 +170,31 @@ export default function Users() {
                             {formData.role !== 'ADMIN' && (
                                 <div>
                                     <label className="block text-sm font-medium mb-2">Permissions</label>
-                                    <div className="grid grid-cols-4 gap-2">
-                                        {PERMISSIONS_LIST.map(perm => (
-                                            <div key={perm}
-                                                onClick={() => togglePermission(perm)}
-                                                className={`cursor-pointer border p-2 rounded flex items-center justify-between ${formData.permissions.includes(perm) ? 'bg-blue-50 border-blue-500' : 'hover:bg-gray-50'}`}
-                                            >
-                                                <span className="text-sm">{perm}</span>
-                                                {formData.permissions.includes(perm) && <Check size={16} className="text-blue-600" />}
+                                    <div className="space-y-4">
+                                        <div className="flex gap-2">
+                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: permissionsCatalog.list }))} className="px-3 py-1 text-xs border rounded">Select All</button>
+                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: [] }))} className="px-3 py-1 text-xs border rounded">Clear</button>
+                                        </div>
+                                        {Object.entries(permissionsCatalog.groups || {}).map(([groupName, perms]) => (
+                                            <div key={groupName}>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <h4 className="text-sm font-bold">{groupName}</h4>
+                                                    <div className="flex gap-2">
+                                                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: Array.from(new Set([...(prev.permissions || []), ...perms])) }))} className="px-2 py-1 text-xs border rounded">All</button>
+                                                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: (prev.permissions || []).filter(p => !perms.includes(p)) }))} className="px-2 py-1 text-xs border rounded">None</button>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                                                    {perms.map(perm => (
+                                                        <div key={perm}
+                                                            onClick={() => togglePermission(perm)}
+                                                            className={`cursor-pointer border p-2 rounded flex items-center justify-between ${formData.permissions.includes(perm) ? 'bg-blue-50 border-blue-500' : 'hover:bg-gray-50'}`}
+                                                        >
+                                                            <span className="text-xs">{perm}</span>
+                                                            {formData.permissions.includes(perm) && <Check size={16} className="text-blue-600" />}
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

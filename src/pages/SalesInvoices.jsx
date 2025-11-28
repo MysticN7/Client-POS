@@ -181,9 +181,9 @@ export default function SalesInvoices() {
                                         <div className="text-xs text-gray-500">Bill: {invoice.invoice_number}</div>
                                     </td>
                                     <td className="border border-gray-200 px-4 py-2 text-center text-sm">0</td>
-                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">{parseFloat(invoice.final_amount).toFixed(2)}</td>
-                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">{parseFloat(invoice.paid_amount).toFixed(2)}</td>
-                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">{(parseFloat(invoice.final_amount) - parseFloat(invoice.paid_amount)).toFixed(2)}</td>
+                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{(parseFloat(invoice.final_amount) || 0).toFixed(2)}</td>
+                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{(parseFloat(invoice.paid_amount) || 0).toFixed(2)}</td>
+                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{((parseFloat(invoice.final_amount) || 0) - (parseFloat(invoice.paid_amount) || 0)).toFixed(2)}</td>
                                     <td className="border border-gray-200 px-4 py-2 text-center">
                                         <button
                                             onClick={() => handleViewDetails(invoice.id)}
