@@ -1,6 +1,28 @@
 import { forwardRef, useEffect, useState } from 'react';
 import api from '../api/axios';
 
+const DEFAULT_TEXT_STYLES = {
+    business_name: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 14, align: 'center', font_weight: 'black' },
+    address: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '600' },
+    phone: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '700' },
+    email: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    website: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    invoice_banner: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
+    customer_section: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+    bill_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
+    table_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '900' },
+    table_body: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'left', font_weight: '400' },
+    totals_labels: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
+    totals_values: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
+    in_words: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'left', font_weight: '700' },
+    note_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
+    note_text: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+    farewell_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
+    footer_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    signature_customer_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    signature_authorized_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+};
+
 const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverride }, ref) => {
     const [settings, setSettings] = useState({
         business_name: 'Minar Optics',
@@ -16,27 +38,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
         body_font_size: 10,
         show_note: true,
         show_signature: false,
-        text_styles: {
-            business_name: { font_family: 'Arial, sans-serif', font_size: 12, align: 'center', font_weight: '900' },
-            address: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '600' },
-            phone: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '700' },
-            email: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-            website: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-            invoice_banner: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
-            customer_section: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
-            bill_header: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
-            table_header: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '900' },
-            table_body: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
-            totals_labels: { font_family: 'Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
-            totals_values: { font_family: 'Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
-            in_words: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
-            note_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
-            note_text: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
-            farewell_text_style: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
-            footer_text_style: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-            signature_customer_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-            signature_authorized_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-        }
+        text_styles: DEFAULT_TEXT_STYLES
     });
 
     useEffect(() => {

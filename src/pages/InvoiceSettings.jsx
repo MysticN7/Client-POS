@@ -3,6 +3,28 @@ import api from '../api/axios';
 import { Save } from 'lucide-react';
 import InvoicePrint from '../components/InvoicePrint';
 
+const DEFAULT_TEXT_STYLES = {
+    business_name: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 14, align: 'center', font_weight: 'black' },
+    address: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '600' },
+    phone: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '700' },
+    email: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    website: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    invoice_banner: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
+    customer_section: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+    bill_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
+    table_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '900' },
+    table_body: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'left', font_weight: '400' },
+    totals_labels: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
+    totals_values: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
+    in_words: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'left', font_weight: '700' },
+    note_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
+    note_text: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+    farewell_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
+    footer_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    signature_customer_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    signature_authorized_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+};
+
 export default function InvoiceSettings() {
     const [settings, setSettings] = useState({
         business_name: '',
@@ -28,27 +50,7 @@ export default function InvoiceSettings() {
         paper_margin_mm: 4,
         compact_mode: true,
         farewell_text: 'Come Again',
-        text_styles: {
-            business_name: { font_family: 'Arial, sans-serif', font_size: 12, align: 'center', font_weight: '900' },
-            address: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '600' },
-            phone: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '700' },
-            email: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-            website: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-            invoice_banner: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
-            customer_section: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
-            bill_header: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
-            table_header: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '900' },
-            table_body: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
-            totals_labels: { font_family: 'Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
-            totals_values: { font_family: 'Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
-            in_words: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
-            note_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
-            note_text: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
-            farewell_text_style: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
-            footer_text_style: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-            signature_customer_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-            signature_authorized_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
-        },
+        text_styles: DEFAULT_TEXT_STYLES,
     });
     const [uploadingLogo, setUploadingLogo] = useState(false);
 
@@ -178,7 +180,10 @@ export default function InvoiceSettings() {
                     </div>
 
                     <div className="pt-4 border-t dark:border-gray-700">
-                        <h3 className="text-lg font-bold mb-3 dark:text-gray-100">Text Styles</h3>
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-lg font-bold dark:text-gray-100">Text Styles</h3>
+                            <button type="button" className="px-3 py-1 rounded bg-gray-600 text-white text-sm" onClick={() => setSettings(prev => ({ ...prev, text_styles: DEFAULT_TEXT_STYLES }))}>Reset Styles</button>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {[
                                 { key: 'business_name', label: 'Business Name' },
