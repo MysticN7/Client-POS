@@ -17,8 +17,6 @@ body {
   }
   html, body {
     height: auto;
-    width: 80mm !important;
-    max-width: 80mm !important;
     margin: 0 !important;
     padding: 0 !important;
     background: white !important;
@@ -28,19 +26,13 @@ body {
     print-color-adjust: exact;
   }
   #root {
-    width: 100% !important;
     padding: 0 !important;
     max-width: none !important;
-    margin: 0 !important;
   }
   .print-receipt {
     width: 80mm !important;
-    padding: 0 !important;
     margin: 0 !important;
     box-shadow: none !important;
     border: none !important;
-  }
-  header, footer {
-    display: none !important;
   }
 }
