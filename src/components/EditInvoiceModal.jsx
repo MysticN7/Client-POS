@@ -22,7 +22,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                     paper_width_mm: Number(res.data.paper_width_mm) || 80,
                     paper_margin_mm: Number(res.data.paper_margin_mm) || 4,
                 });
-            } catch {}
+            } catch { }
         };
         fetchSettings();
     }, []);
@@ -227,18 +227,18 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                 {/* Right Eye */}
                                                 <div className="mb-3">
                                                     <div className="flex items-center gap-2 mb-2">
-                                                        <span className="w-16 font-bold text-right text-sm">Right</span>
-                                                        <div className="flex-1 grid grid-cols-3 gap-2 text-center text-xs font-bold text-gray-500 dark:text-gray-300">
+                                                        <span className="w-12 sm:w-16 font-bold text-right text-xs sm:text-sm">Right</span>
+                                                        <div className="flex-1 grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300">
                                                             <span>SPH</span><span>CYL</span><span>AXIS</span>
                                                         </div>
                                                     </div>
                                                     {/* Dist */}
                                                     <div className="flex items-center gap-2 mb-2">
-                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
+                                                        <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <input
                                                                 key={field}
-                                                                className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.right?.distance?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'right', 'distance', field, e.target.value)}
@@ -247,11 +247,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     </div>
                                                     {/* Near */}
                                                     <div className="flex items-center gap-2">
-                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
+                                                        <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <input
                                                                 key={field}
-                                                                className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.right?.near?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'right', 'near', field, e.target.value)}
@@ -263,18 +263,18 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                 {/* Left Eye */}
                                                 <div className="mb-3">
                                                     <div className="flex items-center gap-2 mb-2">
-                                                        <span className="w-16 font-bold text-right text-sm">Left</span>
-                                                        <div className="flex-1 grid grid-cols-3 gap-2 text-center text-xs font-bold text-gray-500 dark:text-gray-300">
+                                                        <span className="w-12 sm:w-16 font-bold text-right text-xs sm:text-sm">Left</span>
+                                                        <div className="flex-1 grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300">
                                                             <span>SPH</span><span>CYL</span><span>AXIS</span>
                                                         </div>
                                                     </div>
                                                     {/* Dist */}
                                                     <div className="flex items-center gap-2 mb-2">
-                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
+                                                        <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <input
                                                                 key={field}
-                                                                className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.left?.distance?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'left', 'distance', field, e.target.value)}
@@ -283,11 +283,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     </div>
                                                     {/* Near */}
                                                     <div className="flex items-center gap-2">
-                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
+                                                        <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <input
                                                                 key={field}
-                                                                className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.left?.near?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'left', 'near', field, e.target.value)}

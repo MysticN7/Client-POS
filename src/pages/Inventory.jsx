@@ -52,7 +52,7 @@ const Inventory = () => {
         }
     };
 
-const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const formDataToSend = new FormData();
@@ -104,11 +104,11 @@ const handleSubmit = async (e) => {
         if (product) {
             setCurrentProduct(product);
             setFormData({
-                name: product.name,
-                sku: product.sku,
-                category: product.category,
-                price: product.price,
-                stockQuantity: product.stockQuantity,
+                name: product.name || '',
+                sku: product.sku || '',
+                category: product.category || 'FRAMES',
+                price: product.price || '',
+                stockQuantity: product.stockQuantity || '',
                 description: product.description || ''
             });
             setImagePreview(product.imageUrl ? (product.imageUrl.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`) : null);
@@ -231,7 +231,7 @@ const handleSubmit = async (e) => {
                                                 {product.category}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-600 dark:text-gray-300">${product.price}</td>
+                                        <td className="px-6 py-4 text-gray-600 dark:text-gray-300">৳{product.price}</td>
                                         <td className="px-6 py-4">
                                             <span className={`font-medium ${product.stockQuantity < 10 ? 'text-red-600' : 'text-green-600'}`}>
                                                 {product.stockQuantity}
@@ -401,4 +401,4 @@ const handleSubmit = async (e) => {
 };
 
 export default Inventory;
-    const NO_IMAGE_PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='10'>No Image</text></svg>";
+const NO_IMAGE_PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='10'>No Image</text></svg>";

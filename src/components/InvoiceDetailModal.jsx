@@ -1,9 +1,18 @@
-import { X } from 'lucide-react';
+import { X, Printer } from 'lucide-react';
+import { useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
+import InvoicePrint from './InvoicePrint';
 
 export default function InvoiceDetailModal({ invoice, onClose }) {
     if (!invoice) return null;
 
     const dueAmount = parseFloat(invoice.final_amount) - parseFloat(invoice.paid_amount);
+
+    const printRef = useRef();
+    const handlePrint = useReactToPrint({
+        contentRef: printRef,
+        removeAfterPrint: true
+    });
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4">
@@ -11,9 +20,17 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
                 {/* Header */}
                 <div className="flex justify-between items-center p-4 sm:p-6 border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">Invoice Details</h2>
-                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 p-2 touch-manipulation">
-                        <X className="w-5 h-5 sm:w-6 sm:h-6" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handlePrint}
+                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm text-sm"
+                        >
+                            <Printer size={18} /> Print
+                        </button>
+                        <button onClick={onClose} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 p-2 touch-manipulation">
+                            <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Content */}
@@ -137,8 +154,8 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
                                                 )}
                                             </td>
                                             <td className="px-2 sm:px-4 py-3 text-center text-sm">{item.quantity}</td>
-                                            <td className="px-2 sm:px-4 py-3 text-right text-sm">${parseFloat(item.unit_price).toFixed(2)}</td>
-                                            <td className="px-2 sm:px-4 py-3 text-right font-medium text-sm">${parseFloat(item.subtotal).toFixed(2)}</td>
+                                            <td className="px-2 sm:px-4 py-3 text-right text-sm">৳{parseFloat(item.unit_price).toFixed(2)}</td>
+                                            <td className="px-2 sm:px-4 py-3 text-right font-medium text-sm">৳{parseFloat(item.subtotal).toFixed(2)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -151,23 +168,23 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
                         <div className="space-y-2">
                             <div className="flex justify-between text-sm sm:text-base">
                                 <span className="text-gray-600 dark:text-gray-300">Subtotal:</span>
-                                <span className="font-medium">${parseFloat(invoice.total_amount).toFixed(2)}</span>
+                                <span className="font-medium">৳{parseFloat(invoice.total_amount).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-sm sm:text-base">
                                 <span className="text-gray-600 dark:text-gray-300">Discount:</span>
-                                <span className="font-medium text-red-600">-${parseFloat(invoice.discount).toFixed(2)}</span>
+                                <span className="font-medium text-red-600">-৳{parseFloat(invoice.discount).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-base sm:text-lg font-bold border-t dark:border-gray-700 pt-2">
                                 <span>Final Amount:</span>
-                                <span>${parseFloat(invoice.final_amount).toFixed(2)}</span>
+                                <span>৳{parseFloat(invoice.final_amount).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-green-600 text-sm sm:text-base">
                                 <span>Paid:</span>
-                                <span className="font-bold">${parseFloat(invoice.paid_amount).toFixed(2)}</span>
+                                <span className="font-bold">৳{parseFloat(invoice.paid_amount).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-red-600 text-base sm:text-lg font-bold border-t dark:border-gray-700 pt-2">
                                 <span>Due:</span>
-                                <span>${dueAmount.toFixed(2)}</span>
+                                <span>৳{dueAmount.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
@@ -181,7 +198,7 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
                                     <div key={index} className="bg-green-50 dark:bg-gray-800 p-3 rounded border-l-4 border-green-500">
                                         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0">
                                             <div>
-                                                <p className="font-medium text-green-800">${parseFloat(payment.amount).toFixed(2)}</p>
+                                                <p className="font-medium text-green-800">৳{parseFloat(payment.amount).toFixed(2)}</p>
                                                 <p className="text-xs text-gray-600">
                                                     {new Date(payment.payment_date).toLocaleString()} • {payment.payment_method}
                                                 </p>
@@ -215,6 +232,16 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
                         </div>
                     )}
                 </div>
+            </div>
+            {/* Hidden Print Component */}
+            <div style={{ display: 'none' }}>
+                <InvoicePrint
+                    ref={printRef}
+                    invoice={invoice}
+                    items={invoice.InvoiceItems}
+                    customer={invoice.Customer}
+                    user={invoice.User}
+                />
             </div>
         </div>
     );

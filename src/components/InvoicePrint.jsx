@@ -98,13 +98,13 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
     const paperMargin = Number(settings.paper_margin_mm) || 2;
     const gridThickness = Number(settings.grid_thickness_px || 2);
     const PhoneIcon = (props) => (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72 12.42 12.42 0 0 0 .7 2.8 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.28-1.16a2 2 0 0 1 2.11-.45 12.42 12.42 0 0 0 2.8.7A2 2 0 0 1 22 16.92z"/></svg>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.72 12.42 12.42 0 0 0 .7 2.8 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.28-1.16a2 2 0 0 1 2.11-.45 12.42 12.42 0 0 0 2.8.7A2 2 0 0 1 22 16.92z" /></svg>
     );
     const MapPinIcon = (props) => (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
     );
     const MailIcon = (props) => (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M4 4h16v16H4z" /><path d="M22 6l-10 7L2 6" /></svg>
     );
 
     const styleFor = (key) => {
@@ -259,19 +259,19 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                 <div style={{ width: '45%' }}>
                     <div className="flex justify-between py-1">
                         <span style={styleFor('totals_labels')}>Total</span>
-                        <span style={styleFor('totals_values')}>{Number(invoice.total_amount).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}>৳{Number(invoice.total_amount).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1">
                         <span style={styleFor('totals_labels')}>Discount</span>
-                        <span style={styleFor('totals_values')}>{Number(invoice.discount || 0).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}>৳{Number(invoice.discount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black">
                         <span style={styleFor('totals_labels')}>Paid Payment</span>
-                        <span style={styleFor('totals_values')}>{Number(invoice.paid_amount || 0).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}>৳{Number(invoice.paid_amount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black">
                         <span style={styleFor('totals_labels')}>Due</span>
-                        <span style={styleFor('totals_values')}>{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}>৳{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
                     </div>
                 </div>
             </div>
