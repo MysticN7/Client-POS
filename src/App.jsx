@@ -13,6 +13,7 @@ import BankBook from './pages/BankBook';
 import CashBook from './pages/CashBook';
 import ProfitLoss from './pages/ProfitLoss';
 import Customers from './pages/Customers';
+import AuditLogs from './pages/AuditLogs';
 import Layout from './components/Layout';
 
 import ProtectedRoute from './components/ProtectedRoute';
@@ -48,6 +49,7 @@ function App() {
             <Route path="cash-book" element={<ProtectedRoute permission="REPORTS"><CashBook /></ProtectedRoute>} />
             <Route path="profit-loss" element={<ProtectedRoute permission="REPORTS"><ProfitLoss /></ProtectedRoute>} />
             <Route path="users" element={<ProtectedRoute permission="USERS"><Users /></ProtectedRoute>} />
+            <Route path="audit-logs" element={<ProtectedRoute permission="USERS"><AuditLogs /></ProtectedRoute>} />
           </Route>
         </Routes>
       </BrowserRouter>

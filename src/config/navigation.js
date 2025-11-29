@@ -9,7 +9,8 @@ import {
     Users,
     Banknote,
     TrendingUp,
-    Briefcase
+    Briefcase,
+    Activity
 } from 'lucide-react';
 
 // Centralized navigation configuration
@@ -131,5 +132,14 @@ export const navigationItems = [
         permission: 'USERS',
         color: 'bg-pink-500',
         showInQuickActions: true
+    },
+    {
+        id: 'audit-logs',
+        title: 'Audit Logs',
+        path: '/audit-logs',
+        icon: Activity,
+        permission: 'USERS', // Only admins/users with user management permission
+        color: 'bg-slate-500',
+        showInQuickActions: false
     }
 ];
