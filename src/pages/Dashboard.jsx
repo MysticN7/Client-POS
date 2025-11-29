@@ -10,7 +10,7 @@ export default function Dashboard() {
     const { hasPermission } = useAuth();
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [showSales, setShowSales] = useState(true);
+    const [showSales, setShowSales] = useState(false);
 
     useEffect(() => {
         fetchDashboardData();
