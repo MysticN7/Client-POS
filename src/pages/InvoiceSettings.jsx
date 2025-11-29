@@ -166,6 +166,15 @@ export default function InvoiceSettings() {
                             <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" min="0" max="10" value={settings.paper_margin_mm} onChange={e => setSettings({ ...settings, paper_margin_mm: Number(e.target.value) })} />
                         </div>
                         <div className="col-span-2">
+                            <div className="flex flex-wrap gap-2 items-center">
+                                <span className="text-sm font-bold dark:text-gray-200">Quick Presets:</span>
+                                <button type="button" className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 dark:text-gray-100 text-sm" onClick={() => setSettings(prev => ({ ...prev, paper_width_mm: 210, paper_margin_mm: 10 }))}>A4 (210mm)</button>
+                                <button type="button" className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 dark:text-gray-100 text-sm" onClick={() => setSettings(prev => ({ ...prev, paper_width_mm: 148, paper_margin_mm: 10 }))}>A5 (148mm)</button>
+                                <button type="button" className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 dark:text-gray-100 text-sm" onClick={() => setSettings(prev => ({ ...prev, paper_width_mm: 80, paper_margin_mm: 4 }))}>80mm Roll</button>
+                                <button type="button" className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 dark:text-gray-100 text-sm" onClick={() => setSettings(prev => ({ ...prev, paper_width_mm: 58, paper_margin_mm: 4 }))}>58mm Roll</button>
+                            </div>
+                        </div>
+                        <div className="col-span-2">
                             <label className="block text-sm font-bold mb-1 dark:text-gray-200">Footer Text</label>
                             <textarea className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" rows="2" value={settings.footer_text} onChange={e => setSettings({ ...settings, footer_text: e.target.value })} />
                         </div>
