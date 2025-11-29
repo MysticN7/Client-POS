@@ -28,11 +28,12 @@ body {
   #root {
     padding: 0 !important;
     max-width: none !important;
+    width: 100% !important;
   }
   .print-receipt {
-    width: 80mm !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     box-shadow: none !important;
     border: none !important;
+    box-sizing: border-box !important;
   }
 }
