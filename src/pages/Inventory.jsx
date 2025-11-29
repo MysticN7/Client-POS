@@ -20,6 +20,7 @@ const Inventory = () => {
     });
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const [additionalStock, setAdditionalStock] = useState('');
 
     useEffect(() => {
         fetchProducts();
@@ -125,6 +126,7 @@ const Inventory = () => {
             setImagePreview(null);
         }
         setImageFile(null);
+        setAdditionalStock('');
         setIsModalOpen(true);
     };
 
@@ -133,6 +135,7 @@ const Inventory = () => {
         setCurrentProduct(null);
         setImageFile(null);
         setImagePreview(null);
+        setAdditionalStock('');
     };
 
     const filteredProducts = products.filter(product => {
