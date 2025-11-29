@@ -121,7 +121,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
     };
 
     return (
-        <div ref={ref} className="bg-white text-black" style={{ width: contentWidth, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm` }}>
+        <div ref={ref} className="print-receipt bg-white text-black" style={{ width: contentWidth, margin: 0, fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm` }}>
             {/* Header */}
             <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'}`} style={{ textAlign: settings.logo_position || 'center' }}>
                 {settings.show_logo && settings.logo_url && (
