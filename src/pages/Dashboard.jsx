@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { RefreshCw, Banknote, AlertCircle, TrendingUp, Briefcase, Lock, Sparkles, Activity } from 'lucide-react';
+import { RefreshCw, Banknote, AlertCircle, TrendingUp, Briefcase, Lock, Sparkles, Activity, Eye, EyeOff } from 'lucide-react';
 import { navigationItems } from '../config/navigation';
 
 export default function Dashboard() {
@@ -10,6 +10,7 @@ export default function Dashboard() {
     const { hasPermission } = useAuth();
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showSales, setShowSales] = useState(true);
 
     useEffect(() => {
         fetchDashboardData();
@@ -49,32 +50,37 @@ export default function Dashboard() {
             value: stats?.todaySales || 0,
             subtitle: `${stats?.todayTransactions || 0} transactions`,
             icon: Banknote,
-            gradient: 'from-blue-500 to-blue-600',
-            iconBg: 'bg-blue-400/20'
+            gradient: 'from-blue-500 via-blue-600 to-indigo-600',
+            iconBg: 'bg-blue-100 dark:bg-blue-900/40',
+            iconColor: 'text-blue-600 dark:text-blue-400',
+            hasToggle: true
         },
         {
             title: 'Collected Today',
             value: stats?.todayCollected || 0,
             subtitle: 'Cash flow',
             icon: TrendingUp,
-            gradient: 'from-green-500 to-green-600',
-            iconBg: 'bg-green-400/20'
+            gradient: 'from-emerald-500 via-green-600 to-teal-600',
+            iconBg: 'bg-green-100 dark:bg-green-900/40',
+            iconColor: 'text-green-600 dark:text-green-400'
         },
         {
             title: 'Pending Payments',
             value: stats?.pendingPayments || 0,
             subtitle: `${stats?.pendingPaymentsCount || 0} invoices`,
             icon: AlertCircle,
-            gradient: 'from-red-500 to-red-600',
-            iconBg: 'bg-red-400/20'
+            gradient: 'from-red-500 via-rose-600 to-pink-600',
+            iconBg: 'bg-red-100 dark:bg-red-900/40',
+            iconColor: 'text-red-600 dark:text-red-400'
         },
         {
             title: 'Pending Job Cards',
             value: stats?.pendingJobCards || 0,
             subtitle: 'Active orders',
             icon: Briefcase,
-            gradient: 'from-purple-500 to-purple-600',
-            iconBg: 'bg-purple-400/20',
+            gradient: 'from-purple-500 via-purple-600 to-violet-600',
+            iconBg: 'bg-purple-100 dark:bg-purple-900/40',
+            iconColor: 'text-purple-600 dark:text-purple-400',
             isCount: true
         }
     ];
@@ -121,31 +127,56 @@ export default function Dashboard() {
                     {statCards.map((card, index) => (
                         <div
                             key={index}
-                            className="group relative bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 p-5 sm:p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden"
+                            className={`group relative bg-gradient-to-br ${card.gradient} p-5 sm:p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden`}
                         >
-                            {/* Animated Background */}
-                            <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                            {/* Glossy Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent group-hover:from-white/20 transition-all duration-300"></div>
 
-                            {/* Icon */}
-                            <div className={`${card.iconBg} w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                                <card.icon className={`w-6 h-6 sm:w-7 sm:h-7 bg-gradient-to-br ${card.gradient} bg-clip-text text-transparent`} style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text' }} />
+                            {/* Header with Icon and Toggle */}
+                            <div className="relative z-10 flex items-start justify-between mb-3 sm:mb-4">
+                                <div className={`${card.iconBg} w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                                    <card.icon className={`w-6 h-6 sm:w-7 sm:h-7 ${card.iconColor}`} />
+                                </div>
+
+                                {/* Eye Toggle for Today's Sales */}
+                                {card.hasToggle && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowSales(!showSales);
+                                        }}
+                                        className="p-2 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur-sm transition-all duration-200 group/eye"
+                                    >
+                                        {showSales ? (
+                                            <Eye className="w-5 h-5 text-white group-hover/eye:scale-110 transition-transform" />
+                                        ) : (
+                                            <EyeOff className="w-5 h-5 text-white group-hover/eye:scale-110 transition-transform" />
+                                        )}
+                                    </button>
+                                )}
                             </div>
 
                             {/* Content */}
                             <div className="relative z-10">
-                                <h3 className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">
+                                <h3 className="text-xs sm:text-sm font-medium text-white/90 mb-1 sm:mb-2">
                                     {card.title}
                                 </h3>
-                                <p className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-br bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300">
-                                    {card.isCount ? card.value : `৳${card.value.toFixed(2)}`}
+                                <p className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white transition-all duration-300 ${card.hasToggle && !showSales ? 'blur-sm select-none' : ''}`}>
+                                    {card.hasToggle && !showSales
+                                        ? '৳ • • • •'
+                                        : card.isCount
+                                            ? card.value
+                                            : `৳${card.value.toFixed(2)}`
+                                    }
                                 </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-500 mt-1 sm:mt-2">
+                                <p className="text-xs text-white/80 mt-1 sm:mt-2">
                                     {card.subtitle}
                                 </p>
                             </div>
 
-                            {/* Decorative Element */}
-                            <div className={`absolute -right-8 -bottom-8 w-32 h-32 bg-gradient-to-br ${card.gradient} opacity-5 rounded-full group-hover:scale-150 transition-transform duration-500`}></div>
+                            {/* Decorative Elements */}
+                            <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
+                            <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full blur-xl"></div>
                         </div>
                     ))}
                 </div>
