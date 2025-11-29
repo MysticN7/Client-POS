@@ -67,23 +67,40 @@ export default function POS() {
     };
 
     const addToCart = (product) => {
-        const existing = cart.find(item => item.product_id === product.id);
-        if (existing) {
-            setCart(cart.map(item => item.product_id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
-        } else {
+        const isPrescription = product.category === 'FRAMES' || product.category === 'LENS';
+
+        if (isPrescription) {
             setCart([...cart, {
                 product_id: product.id,
+                cart_item_id: Date.now() + Math.random(),
                 name: product.name,
                 price: product.price,
                 quantity: 1,
-                is_prescription_required: product.category === 'FRAMES' || product.category === 'LENS',
-                prescription_data: (product.category === 'FRAMES' || product.category === 'LENS') ? {
+                is_prescription_required: true,
+                prescription_data: {
                     right: { distance: { sph: '', cyl: '', axis: '' }, near: { sph: '', cyl: '', axis: '' } },
                     left: { distance: { sph: '', cyl: '', axis: '' }, near: { sph: '', cyl: '', axis: '' } },
                     lensType: '',
                     remarks: ''
-                } : null
+                }
             }]);
+        } else {
+            const existingIndex = cart.findIndex(item => item.product_id === product.id && !item.is_prescription_required);
+            if (existingIndex >= 0) {
+                const newCart = [...cart];
+                newCart[existingIndex].quantity += 1;
+                setCart(newCart);
+            } else {
+                setCart([...cart, {
+                    product_id: product.id,
+                    cart_item_id: Date.now() + Math.random(),
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    is_prescription_required: false,
+                    prescription_data: null
+                }]);
+            }
         }
     };
 
@@ -468,68 +485,74 @@ export default function POS() {
                     ))}
                 </div>
 
-                <div className="p-3 sm:p-4 border-t bg-gray-50 dark:bg-gray-700 rounded-b-lg space-y-3"> 
-                    <div className="flex justify-between text-sm sm:text-base">
-                        <span>Subtotal</span>
-                        <span>৳{calculateTotal().toFixed(2)}</span>
+                <div className="p-3 border-t bg-gray-50 dark:bg-gray-700 rounded-b-lg space-y-2">
+                    <div className="flex justify-between gap-2">
+                        <div className="flex justify-between items-center w-1/2">
+                            <span className="text-sm">Subtotal</span>
+                            <span className="font-medium text-sm">৳{calculateTotal().toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between items-center w-1/2">
+                            <span className="text-sm">Discount</span>
+                            <input
+                                type="number"
+                                className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right text-sm"
+                                value={discount}
+                                onChange={e => setDiscount(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="flex justify-between items-center text-sm sm:text-base">
-                        <span>Discount</span>
-                        <input
-                            type="number"
-                            className="w-20 sm:w-24 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 sm:p-2 text-right text-sm"
-                            value={discount}
-                            onChange={e => setDiscount(e.target.value)}
-                        />
-                    </div>
+
                     <div className="flex justify-between items-center">
-                        <span className="font-bold text-sm sm:text-base">Net Total</span>
-                        <span className="font-bold text-lg sm:text-xl">৳{(calculateTotal() - discount).toFixed(2)}</span>
+                        <span className="font-bold text-sm">Net Total</span>
+                        <span className="font-bold text-lg">৳{(calculateTotal() - discount).toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between items-center text-sm sm:text-base">
-                        <span>Paid Amount</span>
-                        <input
-                            type="number"
-                            className="w-20 sm:w-28 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 sm:p-2 text-right font-bold text-green-600 text-sm"
-                            value={paidAmount}
-                            onChange={e => setPaidAmount(e.target.value)}
+
+                    <div className="flex justify-between gap-2">
+                        <div className="flex justify-between items-center w-1/2">
+                            <span className="text-sm">Paid</span>
+                            <input
+                                type="number"
+                                className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right font-bold text-green-600 text-sm"
+                                value={paidAmount}
+                                onChange={e => setPaidAmount(e.target.value)}
+                            />
+                        </div>
+                        <div className="flex justify-between items-center w-1/2">
+                            <span className="text-sm">Due</span>
+                            <span className="text-red-600 font-bold text-sm">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                        <select
+                            className="w-1/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-sm"
+                            value={paymentMethod}
+                            onChange={e => setPaymentMethod(e.target.value)}
+                        >
+                            <option value="Cash">Cash</option>
+                            <option value="Card">Card</option>
+                            <option value="MFS">MFS</option>
+                        </select>
+                        <textarea
+                            className="w-2/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-xs"
+                            placeholder="Note..."
+                            rows="1"
+                            value={note}
+                            onChange={e => setNote(e.target.value)}
                         />
                     </div>
-                    <div className="flex justify-between items-center text-sm sm:text-base">
-                        <span>Due</span>
-                        <span className="text-red-600 font-bold">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
-                    </div>
 
-                    <select
-                        className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 sm:p-3 rounded text-sm sm:text-base"
-                        value={paymentMethod}
-                        onChange={e => setPaymentMethod(e.target.value)}
-                    >
-                        <option value="Cash">Cash</option>
-                        <option value="Card">Card</option>
-                        <option value="MFS">Mobile Banking (Bkash/Nagad)</option>
-                    </select>
-
-                    <textarea
-                        className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 sm:p-3 rounded text-xs sm:text-sm"
-                        placeholder="Add a note..."
-                        rows="2"
-                        value={note}
-                        onChange={e => setNote(e.target.value)}
-                    />
-
-                    <div className="grid grid-cols-2 gap-2">
-                        <button onClick={handleHold} className="bg-yellow-500 text-white py-2 sm:py-3 rounded-lg font-bold hover:bg-yellow-600 flex justify-center items-center text-xs sm:text-sm touch-manipulation">
-                            <PauseCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" /> Hold
+                    <div className="grid grid-cols-4 gap-2">
+                        <button onClick={handleHold} className="col-span-1 bg-yellow-500 text-white py-2 rounded font-bold hover:bg-yellow-600 flex justify-center items-center text-xs" title="Hold Transaction">
+                            <PauseCircle className="w-4 h-4" />
                         </button>
-                        <button onClick={() => setShowHeldModal(true)} className="bg-purple-600 text-white py-2 sm:py-3 rounded-lg font-bold hover:bg-purple-700 flex justify-center items-center text-xs sm:text-sm touch-manipulation">
-                            <PlayCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" /> Recall ({heldTransactions.length})
+                        <button onClick={() => setShowHeldModal(true)} className="col-span-1 bg-purple-600 text-white py-2 rounded font-bold hover:bg-purple-700 flex justify-center items-center text-xs" title="Recall Transaction">
+                            <PlayCircle className="w-4 h-4" />
+                        </button>
+                        <button onClick={handleCheckout} className="col-span-2 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 flex justify-center items-center text-sm">
+                            Complete
                         </button>
                     </div>
-
-                    <button onClick={handleCheckout} className="w-full bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-bold hover:bg-blue-700 flex justify-center items-center text-sm sm:text-base touch-manipulation">
-                        <Printer className="w-4 h-4 sm:w-5 sm:h-5 mr-2" /> Complete & Print
-                    </button>
                 </div>
             </div>
 
