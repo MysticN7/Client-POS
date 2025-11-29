@@ -10,6 +10,11 @@ export default function ProfitLoss() {
         endDate: new Date().toISOString().split('T')[0]
     });
 
+    // Fetch initial data on mount
+    useEffect(() => {
+        fetchProfitLoss();
+    }, []);
+
     const fetchProfitLoss = async () => {
         if (!dateRange.startDate || !dateRange.endDate) {
             console.log('Missing date range');
