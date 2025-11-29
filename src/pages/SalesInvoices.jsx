@@ -169,8 +169,55 @@ export default function SalesInvoices() {
                             </tr>
                         ) : invoices.length === 0 ? (
                             <tr>
-                                <td className="border border-gray-200 px-4 py-2 text-right">{totalPaid.toFixed(2)}</td>
-                                <td className="border border-gray-200 px-4 py-2 text-right">{totalDue.toFixed(2)}</td>
+                                <td colSpan="9" className="text-center py-8 text-gray-500 dark:text-gray-300">No invoices found</td>
+                            </tr>
+                        ) : (
+                            invoices.map((invoice, index) => (
+                                <tr key={invoice.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td className="border border-gray-200 px-4 py-2 text-center text-sm">{index + 1}</td>
+                                    <td className="border border-gray-200 px-4 py-2 text-sm">
+                                        <div className="font-bold">{invoice.Customer?.name || 'Walk-in Customer'}</div>
+                                        <div className="text-xs text-gray-500 dark:text-gray-300">{new Date(invoice.createdAt).toLocaleDateString()} {new Date(invoice.createdAt).toLocaleTimeString()}</div>
+                                        <div className="text-xs text-gray-500">Bill: {invoice.invoice_number}</div>
+                                    </td>
+                                    <td className="border border-gray-200 px-4 py-2 text-center text-sm">0</td>
+                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{(parseFloat(invoice.final_amount) || 0).toFixed(2)}</td>
+                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{(parseFloat(invoice.paid_amount) || 0).toFixed(2)}</td>
+                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{((parseFloat(invoice.final_amount) || 0) - (parseFloat(invoice.paid_amount) || 0)).toFixed(2)}</td>
+                                    <td className="border border-gray-200 px-4 py-2 text-center">
+                                        <button
+                                            onClick={() => handleViewDetails(invoice.id)}
+                                            className="bg-orange-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-orange-600"
+                                        >
+                                            View
+                                        </button>
+                                    </td>
+                                    <td className="border border-gray-200 px-4 py-2 text-center">
+                                        <button
+                                            onClick={() => handleEditInvoice(invoice.id)}
+                                            className="bg-orange-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-orange-600"
+                                        >
+                                            Edit
+                                        </button>
+                                    </td>
+                                    <td className="border border-gray-200 px-4 py-2 text-center">
+                                        <button
+                                            onClick={() => handleDeleteInvoice(invoice.id)}
+                                            className="bg-red-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-700"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                        {/* Totals Row */}
+                        {!loading && invoices.length > 0 && (
+                            <tr className="bg-gray-100 dark:bg-gray-700 font-bold">
+                                <td colSpan="3" className="border border-gray-200 px-4 py-2 text-center">Total</td>
+                                <td className="border border-gray-200 px-4 py-2 text-right">৳{totalAmount.toFixed(2)}</td>
+                                <td className="border border-gray-200 px-4 py-2 text-right">৳{totalPaid.toFixed(2)}</td>
+                                <td className="border border-gray-200 px-4 py-2 text-right">৳{totalDue.toFixed(2)}</td>
                                 <td colSpan="3" className="border border-gray-200"></td>
                             </tr>
                         )}
