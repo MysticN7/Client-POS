@@ -233,11 +233,11 @@ export default function POS() {
                     ) : (
                         <div>
                             {selectedCustomer ? (
-                                <div className="flex justify-between items-center bg-blue-50 p-2 rounded border border-blue-200">
+                                <div className="flex justify-between items-center bg-blue-50 dark:bg-blue-900/20 p-2 rounded border border-blue-200 dark:border-gray-700">
                                     <div>
                                         <p className="font-bold text-sm sm:text-base">{selectedCustomer.name}</p>
                                         {selectedCustomer.phone && (
-                                            <p className="text-xs text-gray-600">{selectedCustomer.phone}</p>
+                                            <p className="text-xs text-gray-600 dark:text-gray-300">{selectedCustomer.phone}</p>
                                         )}
                                     </div>
                                     <button onClick={() => setSelectedCustomer(null)} className="text-red-500 text-xs sm:text-sm px-2 py-1">Change</button>
@@ -298,7 +298,7 @@ export default function POS() {
                             <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">SKU: {product.sku}</p>
                             <div className="flex justify-between items-center mt-2">
                                 <span className="text-blue-600 font-bold text-sm sm:text-base">৳{product.price}</span>
-                                <span className={`text-xs px-2 py-1 rounded ${product.stockQuantity > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                <span className={`text-xs px-2 py-1 rounded ${product.stockQuantity > 0 ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200'}`}> 
                                     Stock: {product.stockQuantity}
                                 </span>
                             </div>
@@ -336,18 +336,18 @@ export default function POS() {
                             </div>
 
                             {item.is_prescription_required && (
-                                <div className="text-xs sm:text-sm bg-gray-50 p-3 sm:p-4 rounded mb-2 border border-gray-200 shadow-sm">
+                                <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800 p-3 sm:p-4 rounded mb-2 border border-gray-200 dark:border-gray-700 shadow-sm">
                                     {/* Right Eye */}
                                     <div className="mb-4">
-                                        <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 border-b pb-1">Right Eye</h4>
+                                        <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
                                         {/* Distance */}
                                         <div className="flex items-center gap-2 mb-2">
                                             <div className="w-16 sm:w-20 text-right">
-                                                <span className="text-gray-500 font-medium block text-xs uppercase tracking-wider">Dist</span>
+                                                <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
                                             </div>
                                             {['sph', 'cyl', 'axis'].map(field => (
                                                 <div key={field} className="flex-1">
-                                                    <span className="text-gray-400 text-xs block text-center uppercase mb-1">{field}</span>
+                                                    <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
                                                     <input
                                                         className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                         placeholder="-"
@@ -360,7 +360,7 @@ export default function POS() {
                                         {/* Near */}
                                         <div className="flex items-center gap-2">
                                             <div className="w-16 sm:w-20 text-right">
-                                                <span className="text-gray-500 font-medium block text-xs uppercase tracking-wider">Near</span>
+                                                <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
                                             </div>
                                             {['sph', 'cyl', 'axis'].map(field => (
                                                 <div key={field} className="flex-1">
@@ -468,7 +468,7 @@ export default function POS() {
                     ))}
                 </div>
 
-                <div className="p-3 sm:p-4 border-t bg-gray-50 rounded-b-lg space-y-3">
+                <div className="p-3 sm:p-4 border-t bg-gray-50 dark:bg-gray-700 rounded-b-lg space-y-3"> 
                     <div className="flex justify-between text-sm sm:text-base">
                         <span>Subtotal</span>
                         <span>৳{calculateTotal().toFixed(2)}</span>
