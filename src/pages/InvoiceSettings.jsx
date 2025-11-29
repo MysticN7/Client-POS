@@ -72,7 +72,7 @@ export default function InvoiceSettings() {
 
     return (
         <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 dark:text-gray-100">Invoice Customization</h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Invoice Customization</h2>
             <div className="bg-white dark:bg-gray-800 dark:text-gray-100 p-6 rounded shadow">
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -200,7 +200,7 @@ export default function InvoiceSettings() {
             </div>
 
             <div className="bg-white dark:bg-gray-800 dark:text-gray-100 p-4 rounded shadow mt-6">
-                <h3 className="text-lg font-bold mb-2">Live Preview</h3>
+                <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-gray-100">Live Preview</h3>
                 <div className="overflow-auto">
                     <InvoicePrint
                         invoice={{ invoice_number: '01', total_amount: 100, discount: 0, paid_amount: 100, note: 'Sample note' }}

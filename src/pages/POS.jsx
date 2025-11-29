@@ -308,7 +308,7 @@ export default function POS() {
             </div>
 
             {/* Right Side: Cart & Payment */}
-            <div className="w-full lg:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex flex-col h-[80vh] sm:h-[78vh] lg:h-full order-1 lg:order-2">
+            <div className="w-full lg:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex flex-col h-[calc(100vh-4rem)] lg:h-full order-1 lg:order-2">
                 <div className="p-3 sm:p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-700 rounded-t-lg flex justify-between items-center">
                     <h2 className="text-lg sm:text-xl font-bold flex items-center"><ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" /> Current Sale</h2>
                     <button
@@ -337,9 +337,8 @@ export default function POS() {
 
                             {item.is_prescription_required && (
                                 <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800 p-3 sm:p-4 rounded mb-2 border border-gray-200 dark:border-gray-700 shadow-sm">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {/* Right Eye */}
-                                        <div>
+                                    {/* Right Eye */}
+                                    <div className="mb-4">
                                             <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
                                             {/* Distance */}
                                             <div className="flex items-center gap-2 mb-2">
@@ -374,10 +373,10 @@ export default function POS() {
                                                     </div>
                                                 ))}
                                             </div>
-                                        </div>
+                                    </div>
 
                                         {/* Left Eye */}
-                                        <div>
+                                        <div className="mb-4">
                                             <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Left Eye</h4>
                                             {/* Distance */}
                                             <div className="flex items-center gap-2 mb-2">
@@ -413,7 +412,6 @@ export default function POS() {
                                                 ))}
                                             </div>
                                         </div>
-                                    </div>
 
                                     {/* Extra Fields */}
                                     <div className="space-y-3 pt-3 border-t border-gray-200 dark:border-gray-700">
