@@ -51,14 +51,14 @@ export default function EditPaymentModal({ invoice, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
+            <div className="bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-lg w-full max-w-md">
                 {/* Header */}
-                <div className="flex justify-between items-center p-6 border-b bg-green-50">
+                <div className="flex justify-between items-center p-6 border-b bg-green-50 dark:bg-green-900/20 dark:border-gray-700">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-800">Collect Payment</h2>
-                        <p className="text-sm text-gray-600">Invoice: {invoice.invoice_number}</p>
+                        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Collect Payment</h2>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">Invoice: {invoice.invoice_number}</p>
                     </div>
-                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200">
                         <X className="w-6 h-6" />
                     </button>
                 </div>
@@ -66,21 +66,21 @@ export default function EditPaymentModal({ invoice, onClose, onSuccess }) {
                 {/* Content */}
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     {/* Current Status */}
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg space-y-2">
                         <div className="flex justify-between">
-                            <span className="text-gray-600">Final Amount:</span>
+                            <span className="text-gray-600 dark:text-gray-300">Final Amount:</span>
                             <span className="font-bold">${parseFloat(invoice.final_amount).toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-green-600">
                             <span>Already Paid:</span>
                             <span className="font-bold">${parseFloat(invoice.paid_amount).toFixed(2)}</span>
                         </div>
-                        <div className="flex justify-between text-red-600 text-lg font-bold border-t pt-2">
+                        <div className="flex justify-between text-red-600 text-lg font-bold border-t pt-2 dark:border-gray-700">
                             <span>Amount Due:</span>
                             <span>${dueAmount.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-gray-600">Current Status:</span>
+                            <span className="text-gray-600 dark:text-gray-300">Current Status:</span>
                             <span className={`px-2 py-1 rounded text-xs font-medium ${invoice.status === 'Paid' ? 'bg-green-100 text-green-800' :
                                     invoice.status === 'Partial' ? 'bg-yellow-100 text-yellow-800' :
                                         'bg-red-100 text-red-800'
@@ -120,7 +120,7 @@ export default function EditPaymentModal({ invoice, onClose, onSuccess }) {
 
                     {/* Payment Amount */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Payment Amount <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
@@ -131,7 +131,7 @@ export default function EditPaymentModal({ invoice, onClose, onSuccess }) {
                                 min="0"
                                 value={paymentAmount}
                                 onChange={(e) => setPaymentAmount(e.target.value)}
-                                className="w-full pl-10 p-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+                                className="w-full pl-10 p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-green-500"
                                 placeholder="0.00"
                                 required
                             />
@@ -140,13 +140,13 @@ export default function EditPaymentModal({ invoice, onClose, onSuccess }) {
 
                     {/* Payment Method */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Payment Method <span className="text-red-500">*</span>
                         </label>
                         <select
                             value={paymentMethod}
                             onChange={(e) => setPaymentMethod(e.target.value)}
-                            className="w-full p-3 border rounded-lg"
+                            className="w-full p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded-lg"
                             required
                         >
                             <option value="Cash">Cash</option>
@@ -158,13 +158,13 @@ export default function EditPaymentModal({ invoice, onClose, onSuccess }) {
 
                     {/* Notes */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Notes (Optional)
                         </label>
                         <textarea
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
-                            className="w-full p-3 border rounded-lg"
+                            className="w-full p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded-lg"
                             rows="3"
                             placeholder="Add any notes about this payment..."
                         />
@@ -172,7 +172,7 @@ export default function EditPaymentModal({ invoice, onClose, onSuccess }) {
 
                     {/* Status Preview */}
                     {paymentAmount && (
-                        <div className="bg-blue-50 p-3 rounded-lg text-sm">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-sm">
                             <strong>After this payment:</strong>
                             <div className="mt-1">
                                 <span>Paid: ${(parseFloat(invoice.paid_amount) + parseFloat(paymentAmount)).toFixed(2)}</span>
@@ -194,7 +194,7 @@ export default function EditPaymentModal({ invoice, onClose, onSuccess }) {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
+                            className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                             disabled={loading}
                         >
                             Cancel

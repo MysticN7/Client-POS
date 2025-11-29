@@ -47,25 +47,25 @@ export default function ProfitLoss() {
     return (
         <div className="p-2 sm:p-4">
             <div className="mb-4 sm:mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Profit & Loss Statement</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Profit & Loss Statement</h2>
 
                 {/* Date Range Selector */}
-                <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+                <div className="bg-white dark:bg-gray-800 dark:text-gray-100 p-3 sm:p-4 rounded-lg shadow">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
                             <input
                                 type="date"
-                                className="w-full border rounded p-2 text-sm"
+                                className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-sm"
                                 value={dateRange.startDate}
                                 onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
                             />
                         </div>
                         <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">End Date</label>
+                            <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Date</label>
                             <input
                                 type="date"
-                                className="w-full border rounded p-2 text-sm"
+                                className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-sm"
                                 value={dateRange.endDate}
                                 onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
                             />
@@ -125,7 +125,7 @@ export default function ProfitLoss() {
             </div>
 
             {/* Detailed Statement */}
-            <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 dark:text-gray-100 rounded-lg shadow overflow-hidden">
                 <div className="p-4 sm:p-6">
                     <h3 className="text-lg font-bold mb-4">Income Statement</h3>
 
@@ -163,14 +163,14 @@ export default function ProfitLoss() {
 
                     {/* Operating Expenses */}
                     <div className="mb-6">
-                        <div className="flex justify-between items-center py-2 border-b-2 border-gray-300">
-                            <span className="font-bold text-gray-700">Operating Expenses</span>
+                        <div className="flex justify-between items-center py-2 border-b-2 border-gray-300 dark:border-gray-700">
+                            <span className="font-bold text-gray-700 dark:text-gray-200">Operating Expenses</span>
                             <span className="font-bold text-red-600">-${(data?.totalExpenses || 0).toFixed(2)}</span>
                         </div>
                         <div className="pl-4 space-y-2 mt-2">
                             {data?.expensesByCategory && Object.entries(data.expensesByCategory).map(([category, amount]) => (
                                 <div key={category} className="flex justify-between text-sm">
-                                    <span className="text-gray-600">{category}</span>
+                                    <span className="text-gray-600 dark:text-gray-300">{category}</span>
                                     <span className="text-red-600">-${parseFloat(amount).toFixed(2)}</span>
                                 </div>
                             ))}

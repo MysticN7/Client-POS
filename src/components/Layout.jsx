@@ -21,7 +21,7 @@ export default function Layout() {
 
     useEffect(() => {
         document.documentElement.classList.toggle('dark', darkMode);
-    }, []);
+    }, [darkMode]);
 
     const handleLogout = () => {
         logout();

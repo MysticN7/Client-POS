@@ -72,43 +72,43 @@ export default function InvoiceSettings() {
 
     return (
         <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Invoice Customization</h2>
-            <div className="bg-white p-6 rounded shadow">
+            <h2 className="text-2xl font-bold mb-6 dark:text-gray-100">Invoice Customization</h2>
+            <div className="bg-white dark:bg-gray-800 dark:text-gray-100 p-6 rounded shadow">
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-bold mb-1">Business Name</label>
-                            <input className="w-full border p-2 rounded" value={settings.business_name} onChange={e => setSettings({ ...settings, business_name: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Business Name</label>
+                            <input className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.business_name} onChange={e => setSettings({ ...settings, business_name: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Phone</label>
-                            <input className="w-full border p-2 rounded" value={settings.phone} onChange={e => setSettings({ ...settings, phone: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Phone</label>
+                            <input className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.phone} onChange={e => setSettings({ ...settings, phone: e.target.value })} />
                         </div>
                         <div className="col-span-2">
-                            <label className="block text-sm font-bold mb-1">Address</label>
-                            <input className="w-full border p-2 rounded" value={settings.address} onChange={e => setSettings({ ...settings, address: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Address</label>
+                            <input className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.address} onChange={e => setSettings({ ...settings, address: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Email</label>
-                            <input className="w-full border p-2 rounded" value={settings.email} onChange={e => setSettings({ ...settings, email: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Email</label>
+                            <input className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.email} onChange={e => setSettings({ ...settings, email: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Website</label>
-                            <input className="w-full border p-2 rounded" value={settings.website} onChange={e => setSettings({ ...settings, website: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Website</label>
+                            <input className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.website} onChange={e => setSettings({ ...settings, website: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Maps Link</label>
-                            <input className="w-full border p-2 rounded" value={settings.map_link} onChange={e => setSettings({ ...settings, map_link: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Maps Link</label>
+                            <input className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.map_link} onChange={e => setSettings({ ...settings, map_link: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Logo</label>
-                            <input type="file" accept="image/*" onChange={handleLogoUpload} className="w-full border p-2 rounded" />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Logo</label>
+                            <input type="file" accept="image/*" onChange={handleLogoUpload} className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" />
                             {uploadingLogo && <p className="text-xs text-gray-500 mt-1">Uploading...</p>}
-                            <input className="w-full border p-2 rounded mt-2" placeholder="Or paste URL" value={settings.logo_url} onChange={e => setSettings({ ...settings, logo_url: e.target.value })} />
+                            <input className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded mt-2" placeholder="Or paste URL" value={settings.logo_url} onChange={e => setSettings({ ...settings, logo_url: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Logo Position</label>
-                            <select className="w-full border p-2 rounded" value={settings.logo_position || 'center'} onChange={e => setSettings({ ...settings, logo_position: e.target.value })}>
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Logo Position</label>
+                            <select className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.logo_position || 'center'} onChange={e => setSettings({ ...settings, logo_position: e.target.value })}>
                                 <option value="left">Left</option>
                                 <option value="center">Center</option>
                                 <option value="right">Right</option>
@@ -199,7 +199,7 @@ export default function InvoiceSettings() {
                 </form>
             </div>
 
-            <div className="bg-white p-4 rounded shadow mt-6">
+            <div className="bg-white dark:bg-gray-800 dark:text-gray-100 p-4 rounded shadow mt-6">
                 <h3 className="text-lg font-bold mb-2">Live Preview</h3>
                 <div className="overflow-auto">
                     <InvoicePrint
