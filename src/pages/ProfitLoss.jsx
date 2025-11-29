@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { TrendingUp, TrendingDown, DollarSign, PieChart } from 'lucide-react';
+import { TrendingUp, TrendingDown, Banknote, PieChart } from 'lucide-react';
 
 export default function ProfitLoss() {
     const [data, setData] = useState(null);
@@ -90,7 +90,7 @@ export default function ProfitLoss() {
                             <p className="text-xs sm:text-sm text-blue-600 font-medium">Total Revenue</p>
                             <p className="text-lg sm:text-2xl font-bold text-blue-700">৳{(data?.totalRevenue || 0).toFixed(2)}</p>
                         </div>
-                        <DollarSign className="w-8 h-8 text-blue-600" />
+                        <Banknote className="w-8 h-8 text-blue-600" />
                     </div>
                 </div>
                 <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">

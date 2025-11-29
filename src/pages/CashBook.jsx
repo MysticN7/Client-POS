@@ -128,7 +128,7 @@ export default function CashBook() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-xs sm:text-sm text-green-600 dark:text-green-300 font-medium">Total Cash In</p>
-                                <p className="text-lg sm:text-2xl font-bold text-green-700 dark:text-green-200">${summary.totalCashIn.toFixed(2)}</p>
+                                <p className="text-lg sm:text-2xl font-bold text-green-700 dark:text-green-200">৳{summary.totalCashIn.toFixed(2)}</p>
                             </div>
                             <TrendingUp className="w-8 h-8 text-green-600" />
                         </div>
@@ -137,7 +137,7 @@ export default function CashBook() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-xs sm:text-sm text-red-600 dark:text-red-300 font-medium">Total Cash Out</p>
-                                <p className="text-lg sm:text-2xl font-bold text-red-700 dark:text-red-200">${summary.totalCashOut.toFixed(2)}</p>
+                                <p className="text-lg sm:text-2xl font-bold text-red-700 dark:text-red-200">৳{summary.totalCashOut.toFixed(2)}</p>
                             </div>
                             <TrendingDown className="w-8 h-8 text-red-600" />
                         </div>
@@ -156,7 +156,7 @@ export default function CashBook() {
                             <div>
                                 <p className={`text-xs sm:text-sm font-medium ${summary.netChange >= 0 ? 'text-green-600 dark:text-green-300' : 'text-red-600 dark:text-red-300'}`}>Net Change</p>
                                 <p className={`text-lg sm:text-2xl font-bold ${summary.netChange >= 0 ? 'text-green-700 dark:text-green-200' : 'text-red-700 dark:text-red-200'}`}>
-                                    ${Math.abs(summary.netChange).toFixed(2)}
+                                    ৳{Math.abs(summary.netChange).toFixed(2)}
                                 </p>
                             </div>
                         </div>
@@ -250,10 +250,10 @@ export default function CashBook() {
                                         <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm">{transaction.category}</td>
                                         <td className={`px-3 sm:px-4 py-3 text-right text-xs sm:text-sm font-medium ${transaction.transaction_type === 'cash_in' ? 'text-green-600' : 'text-red-600'
                                             }`}>
-                                            {transaction.transaction_type === 'cash_in' ? '+' : '-'}${parseFloat(transaction.amount).toFixed(2)}
+                                            {transaction.transaction_type === 'cash_in' ? '+' : '-'}৳{parseFloat(transaction.amount).toFixed(2)}
                                         </td>
                                         <td className="px-3 sm:px-4 py-3 text-right text-xs sm:text-sm font-bold">
-                                            ${parseFloat(transaction.balance_after).toFixed(2)}
+                                            ৳{parseFloat(transaction.balance_after).toFixed(2)}
                                         </td>
                                         <td className="px-3 sm:px-4 py-3">
                                             <div className="flex justify-center gap-2">

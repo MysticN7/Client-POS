@@ -38,7 +38,8 @@ export default function Customers() {
         e.preventDefault();
         try {
             if (editingCustomer) {
-                await api.put(`/customers/${editingCustomer.id}`, formData);
+                const customerId = editingCustomer.id || editingCustomer._id;
+                await api.put(`/customers/${customerId}`, formData);
             } else {
                 await api.post('/customers', formData);
             }
@@ -56,7 +57,8 @@ export default function Customers() {
         if (!window.confirm('Are you sure you want to delete this customer?')) return;
 
         try {
-            await api.delete(`/customers/${id}`);
+            const customerId = id || (customers.find(c => c._id === id)?.id); // Handle potential ID mismatch
+            await api.delete(`/customers/${id}`); // API likely expects _id if that's what's passed
             fetchCustomers();
         } catch (error) {
             console.error('Error deleting customer:', error);
@@ -131,7 +133,7 @@ export default function Customers() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs sm:text-sm text-green-600 dark:text-green-300 font-medium">Total Purchases</p>
-                            <p className="text-lg sm:text-2xl font-bold text-green-700 dark:text-green-200">${totalPurchases.toFixed(2)}</p>
+                            <p className="text-lg sm:text-2xl font-bold text-green-700 dark:text-green-200">৳{totalPurchases.toFixed(2)}</p>
                         </div>
                         <DollarSign className="w-8 h-8 text-green-600" />
                     </div>
@@ -140,7 +142,7 @@ export default function Customers() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs sm:text-sm text-orange-600 dark:text-orange-300 font-medium">Avg Purchase</p>
-                            <p className="text-lg sm:text-2xl font-bold text-orange-700 dark:text-orange-200">${avgPurchaseValue.toFixed(2)}</p>
+                            <p className="text-lg sm:text-2xl font-bold text-orange-700 dark:text-orange-200">৳{avgPurchaseValue.toFixed(2)}</p>
                         </div>
                         <ShoppingBag className="w-8 h-8 text-orange-600" />
                     </div>
@@ -187,7 +189,7 @@ export default function Customers() {
                                 </tr>
                             ) : (
                                 customers.map((customer) => (
-                                    <tr key={customer.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <tr key={customer.id || customer._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium">{customer.name}</td>
                                         <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm">{customer.phone}</td>
                                         <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm">{customer.email || '-'}</td>
@@ -200,7 +202,7 @@ export default function Customers() {
                                             </span>
                                         </td>
                                         <td className="px-3 sm:px-4 py-3 text-right text-xs sm:text-sm font-medium">
-                                            ${parseFloat(customer.total_purchases || 0).toFixed(2)}
+                                            ৳{parseFloat(customer.total_purchases || 0).toFixed(2)}
                                         </td>
                                         <td className="px-3 sm:px-4 py-3 text-right text-xs sm:text-sm">
                                             {customer.total_visits || 0}
@@ -214,7 +216,7 @@ export default function Customers() {
                                                     <Edit2 className="w-4 h-4" />
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDelete(customer.id)}
+                                                    onClick={() => handleDelete(customer.id || customer._id)}
                                                     className="text-red-600 hover:text-red-800 p-1 touch-manipulation"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
