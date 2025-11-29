@@ -214,7 +214,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                             <div className="col-span-2">
                                                 <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Total</label>
                                                 <div className="w-full border dark:border-gray-700 p-2 rounded text-sm text-center bg-gray-100 dark:bg-gray-700 dark:text-gray-100">
-                                                    {(item.quantity * item.unit_price).toFixed(2)}
+                                                    ৳{(item.quantity * item.unit_price).toFixed(2)}
                                                 </div>
                                             </div>
                                         </div>
@@ -352,11 +352,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                     </div>
 
                                     <div className="bg-gray-50 dark:bg-gray-800 dark:text-gray-100 p-3 rounded text-sm space-y-1">
-                                        <div className="flex justify-between"><span>Subtotal:</span> <span className="font-bold">{totalAmount.toFixed(2)}</span></div>
-                                        <div className="flex justify-between text-red-600"><span>Discount:</span> <span className="font-bold">-{parseFloat(discount || 0).toFixed(2)}</span></div>
-                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1"><span>Net Total:</span> <span className="font-bold">{finalAmount.toFixed(2)}</span></div>
-                                        <div className="flex justify-between text-green-600"><span>Paid (Prev + New):</span> <span className="font-bold">{(parseFloat(invoice.paid_amount || 0) + (parseFloat(paymentAmount) || 0)).toFixed(2)}</span></div>
-                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1 text-lg"><span>Due:</span> <span className="font-bold">{dueAmount.toFixed(2)}</span></div>
+                                        <div className="flex justify-between"><span>Subtotal:</span> <span className="font-bold">৳{totalAmount.toFixed(2)}</span></div>
+                                        <div className="flex justify-between text-red-600"><span>Discount:</span> <span className="font-bold">-৳{parseFloat(discount || 0).toFixed(2)}</span></div>
+                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1"><span>Net Total:</span> <span className="font-bold">৳{finalAmount.toFixed(2)}</span></div>
+                                        <div className="flex justify-between text-green-600"><span>Paid (Prev + New):</span> <span className="font-bold">৳{(parseFloat(invoice.paid_amount || 0) + (parseFloat(paymentAmount) || 0)).toFixed(2)}</span></div>
+                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1 text-lg"><span>Due:</span> <span className="font-bold">৳{dueAmount.toFixed(2)}</span></div>
                                     </div>
 
                                     <div>

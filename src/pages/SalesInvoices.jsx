@@ -89,15 +89,15 @@ export default function SalesInvoices() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
                     <div className="bg-blue-100 p-4 rounded-lg text-center">
                         <h3 className="text-blue-800 font-bold">Total Sales</h3>
-                        <p className="text-2xl font-bold text-blue-900">{summary.totalSales.toFixed(2)}</p>
+                        <p className="text-2xl font-bold text-blue-900">৳{summary.totalSales.toFixed(2)}</p>
                     </div>
                     <div className="bg-green-100 p-4 rounded-lg text-center">
                         <h3 className="text-green-800 font-bold">Collected</h3>
-                        <p className="text-2xl font-bold text-green-900">{summary.totalCollected.toFixed(2)}</p>
+                        <p className="text-2xl font-bold text-green-900">৳{summary.totalCollected.toFixed(2)}</p>
                     </div>
                     <div className="bg-red-100 p-4 rounded-lg text-center">
                         <h3 className="text-red-800 font-bold">Due</h3>
-                        <p className="text-2xl font-bold text-red-900">{summary.totalDue.toFixed(2)}</p>
+                        <p className="text-2xl font-bold text-red-900">৳{summary.totalDue.toFixed(2)}</p>
                     </div>
                     <div className="bg-gray-100 p-4 rounded-lg text-center">
                         <h3 className="text-gray-800 font-bold">Invoices</h3>
@@ -107,36 +107,36 @@ export default function SalesInvoices() {
             )}
 
             {/* Search and Filter Section */}
-                <div className="flex flex-col space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
+            <div className="flex flex-col space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
                     <label className="font-bold text-gray-700 dark:text-gray-300">Search :</label>
-                        <div className="relative flex-1">
-                            <input
-                                type="text"
-                                className="w-full border border-gray-300 dark:border-gray-700 rounded px-3 py-1 focus:outline-none focus:border-blue-500 dark:bg-gray-800 dark:text-gray-100"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Customer Name or Phone"
-                            />
-                        </div>
+                    <div className="relative flex-1">
+                        <input
+                            type="text"
+                            className="w-full border border-gray-300 dark:border-gray-700 rounded px-3 py-1 focus:outline-none focus:border-blue-500 dark:bg-gray-800 dark:text-gray-100"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Customer Name or Phone"
+                        />
                     </div>
+                </div>
 
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
                     <label className="font-bold text-gray-700 dark:text-gray-300">Date :</label>
-                        <input
-                            type="date"
-                            className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                        />
-                        <span className="font-bold text-gray-700">To</span>
-                        <input
-                            type="date"
-                            className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                    </div>
+                    <input
+                        type="date"
+                        className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                    />
+                    <span className="font-bold text-gray-700">To</span>
+                    <input
+                        type="date"
+                        className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                    />
+                </div>
 
                 <button
                     onClick={fetchInvoices}
@@ -169,53 +169,6 @@ export default function SalesInvoices() {
                             </tr>
                         ) : invoices.length === 0 ? (
                             <tr>
-                                <td colSpan="9" className="text-center py-8 text-gray-500 dark:text-gray-300">No invoices found</td>
-                            </tr>
-                        ) : (
-                            invoices.map((invoice, index) => (
-                                <tr key={invoice.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td className="border border-gray-200 px-4 py-2 text-center text-sm">{index + 1}</td>
-                                    <td className="border border-gray-200 px-4 py-2 text-sm">
-                                        <div className="font-bold">{invoice.Customer?.name || 'Walk-in Customer'}</div>
-                                        <div className="text-xs text-gray-500 dark:text-gray-300">{new Date(invoice.createdAt).toLocaleDateString()} {new Date(invoice.createdAt).toLocaleTimeString()}</div>
-                                        <div className="text-xs text-gray-500">Bill: {invoice.invoice_number}</div>
-                                    </td>
-                                    <td className="border border-gray-200 px-4 py-2 text-center text-sm">0</td>
-                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{(parseFloat(invoice.final_amount) || 0).toFixed(2)}</td>
-                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{(parseFloat(invoice.paid_amount) || 0).toFixed(2)}</td>
-                                    <td className="border border-gray-200 px-4 py-2 text-right text-sm">৳{((parseFloat(invoice.final_amount) || 0) - (parseFloat(invoice.paid_amount) || 0)).toFixed(2)}</td>
-                                    <td className="border border-gray-200 px-4 py-2 text-center">
-                                        <button
-                                            onClick={() => handleViewDetails(invoice.id)}
-                                            className="bg-orange-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-orange-600"
-                                        >
-                                            View
-                                        </button>
-                                    </td>
-                                    <td className="border border-gray-200 px-4 py-2 text-center">
-                                        <button
-                                            onClick={() => handleEditInvoice(invoice.id)}
-                                            className="bg-orange-500 text-white px-3 py-1 rounded text-xs font-bold hover:bg-orange-600"
-                                        >
-                                            Edit
-                                        </button>
-                                    </td>
-                                    <td className="border border-gray-200 px-4 py-2 text-center">
-                                        <button
-                                            onClick={() => handleDeleteInvoice(invoice.id)}
-                                            className="bg-red-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-700"
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                        {/* Totals Row */}
-                        {!loading && invoices.length > 0 && (
-                            <tr className="bg-gray-100 dark:bg-gray-700 font-bold">
-                                <td colSpan="3" className="border border-gray-200 px-4 py-2 text-center">Total</td>
-                                <td className="border border-gray-200 px-4 py-2 text-right">{totalAmount.toFixed(2)}</td>
                                 <td className="border border-gray-200 px-4 py-2 text-right">{totalPaid.toFixed(2)}</td>
                                 <td className="border border-gray-200 px-4 py-2 text-right">{totalDue.toFixed(2)}</td>
                                 <td colSpan="3" className="border border-gray-200"></td>
@@ -226,30 +179,34 @@ export default function SalesInvoices() {
             </div>
 
             {/* Modals */}
-            {showDetailModal && selectedInvoice && (
-                <InvoiceDetailModal
-                    invoice={selectedInvoice}
-                    onClose={() => {
-                        setShowDetailModal(false);
-                        setSelectedInvoice(null);
-                    }}
-                />
-            )}
+            {
+                showDetailModal && selectedInvoice && (
+                    <InvoiceDetailModal
+                        invoice={selectedInvoice}
+                        onClose={() => {
+                            setShowDetailModal(false);
+                            setSelectedInvoice(null);
+                        }}
+                    />
+                )
+            }
 
-            {showEditModal && selectedInvoice && (
-                <EditInvoiceModal
-                    invoice={selectedInvoice}
-                    onClose={() => {
-                        setShowEditModal(false);
-                        setSelectedInvoice(null);
-                    }}
-                    onSuccess={() => {
-                        setShowEditModal(false);
-                        setSelectedInvoice(null);
-                        fetchInvoices();
-                    }}
-                />
-            )}
-        </div>
+            {
+                showEditModal && selectedInvoice && (
+                    <EditInvoiceModal
+                        invoice={selectedInvoice}
+                        onClose={() => {
+                            setShowEditModal(false);
+                            setSelectedInvoice(null);
+                        }}
+                        onSuccess={() => {
+                            setShowEditModal(false);
+                            setSelectedInvoice(null);
+                            fetchInvoices();
+                        }}
+                    />
+                )
+            }
+        </div >
     );
 }

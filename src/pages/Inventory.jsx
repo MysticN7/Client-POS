@@ -241,9 +241,9 @@ const Inventory = () => {
                                             <div className="flex gap-3">
                                                 <button
                                                     onClick={() => openModal(product)}
-                                                    className="text-blue-600 hover:text-blue-800 transition"
+                                                    className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-blue-700 transition flex items-center gap-1"
                                                 >
-                                                    <Edit size={18} />
+                                                    <Edit size={14} /> Edit
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(product.id)}

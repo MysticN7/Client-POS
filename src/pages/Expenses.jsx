@@ -87,7 +87,7 @@ export default function Expenses() {
                                 <td className="p-4">{expense.date}</td>
                                 <td className="p-4">{expense.category}</td>
                                 <td className="p-4">{expense.description}</td>
-                                <td className="p-4 font-bold text-red-600">${expense.amount}</td>
+                                <td className="p-4 font-bold text-red-600">৳{expense.amount}</td>
                                 <td className="p-4">
                                     <button onClick={() => handleDelete(expense.id)} className="text-red-600 hover:text-red-800"><Trash2 className="w-4 h-4" /></button>
                                 </td>

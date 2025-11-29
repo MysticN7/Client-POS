@@ -71,7 +71,7 @@ export default function POS() {
 
         if (isPrescription) {
             setCart([...cart, {
-                product_id: product.id,
+                product_id: product.id || product._id,
                 cart_item_id: Date.now() + Math.random(),
                 name: product.name,
                 price: product.price,
@@ -85,14 +85,14 @@ export default function POS() {
                 }
             }]);
         } else {
-            const existingIndex = cart.findIndex(item => item.product_id === product.id && !item.is_prescription_required);
+            const existingIndex = cart.findIndex(item => item.product_id === (product.id || product._id) && !item.is_prescription_required);
             if (existingIndex >= 0) {
                 const newCart = [...cart];
                 newCart[existingIndex].quantity += 1;
                 setCart(newCart);
             } else {
                 setCart([...cart, {
-                    product_id: product.id,
+                    product_id: product.id || product._id,
                     cart_item_id: Date.now() + Math.random(),
                     name: product.name,
                     price: product.price,
@@ -315,7 +315,7 @@ export default function POS() {
                             <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">SKU: {product.sku}</p>
                             <div className="flex justify-between items-center mt-2">
                                 <span className="text-blue-600 font-bold text-sm sm:text-base">৳{product.price}</span>
-                                <span className={`text-xs px-2 py-1 rounded ${product.stockQuantity > 0 ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200'}`}> 
+                                <span className={`text-xs px-2 py-1 rounded ${product.stockQuantity > 0 ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200'}`}>
                                     Stock: {product.stockQuantity}
                                 </span>
                             </div>
@@ -356,79 +356,79 @@ export default function POS() {
                                 <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800 p-3 sm:p-4 rounded mb-2 border border-gray-200 dark:border-gray-700 shadow-sm">
                                     {/* Right Eye */}
                                     <div className="mb-4">
-                                            <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
-                                            {/* Distance */}
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
-                                                </div>
-                                                {['sph', 'cyl', 'axis'].map(field => (
-                                                    <div key={field} className="flex-1">
-                                                        <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                            placeholder="-"
-                                                            value={item.prescription_data.right.distance[field]}
-                                                            onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
-                                                        />
-                                                    </div>
-                                                ))}
+                                        <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
+                                        {/* Distance */}
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="w-16 sm:w-20 text-right">
+                                                <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
                                             </div>
-                                            {/* Near */}
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
+                                            {['sph', 'cyl', 'axis'].map(field => (
+                                                <div key={field} className="flex-1">
+                                                    <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
+                                                    <input
+                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                        placeholder="-"
+                                                        value={item.prescription_data.right.distance[field]}
+                                                        onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
+                                                    />
                                                 </div>
-                                                {['sph', 'cyl', 'axis'].map(field => (
-                                                    <div key={field} className="flex-1">
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                            placeholder="-"
-                                                            value={item.prescription_data.right.near[field]}
-                                                            onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
-                                                        />
-                                                    </div>
-                                                ))}
+                                            ))}
+                                        </div>
+                                        {/* Near */}
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-16 sm:w-20 text-right">
+                                                <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
                                             </div>
+                                            {['sph', 'cyl', 'axis'].map(field => (
+                                                <div key={field} className="flex-1">
+                                                    <input
+                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                        placeholder="-"
+                                                        value={item.prescription_data.right.near[field]}
+                                                        onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
 
-                                        {/* Left Eye */}
-                                        <div className="mb-4">
-                                            <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Left Eye</h4>
-                                            {/* Distance */}
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
-                                                </div>
-                                                {['sph', 'cyl', 'axis'].map(field => (
-                                                    <div key={field} className="flex-1">
-                                                        <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                            placeholder="-"
-                                                            value={item.prescription_data.left.distance[field]}
-                                                            onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
-                                                        />
-                                                    </div>
-                                                ))}
+                                    {/* Left Eye */}
+                                    <div className="mb-4">
+                                        <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Left Eye</h4>
+                                        {/* Distance */}
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="w-16 sm:w-20 text-right">
+                                                <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
                                             </div>
-                                            {/* Near */}
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
+                                            {['sph', 'cyl', 'axis'].map(field => (
+                                                <div key={field} className="flex-1">
+                                                    <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
+                                                    <input
+                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                        placeholder="-"
+                                                        value={item.prescription_data.left.distance[field]}
+                                                        onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
+                                                    />
                                                 </div>
-                                                {['sph', 'cyl', 'axis'].map(field => (
-                                                    <div key={field} className="flex-1">
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                            placeholder="-"
-                                                            value={item.prescription_data.left.near[field]}
-                                                            onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
+                                            ))}
                                         </div>
+                                        {/* Near */}
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-16 sm:w-20 text-right">
+                                                <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
+                                            </div>
+                                            {['sph', 'cyl', 'axis'].map(field => (
+                                                <div key={field} className="flex-1">
+                                                    <input
+                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                        placeholder="-"
+                                                        value={item.prescription_data.left.near[field]}
+                                                        onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
 
                                     {/* Extra Fields */}
                                     <div className="space-y-3 pt-3 border-t border-gray-200 dark:border-gray-700">
@@ -436,23 +436,23 @@ export default function POS() {
                                             <div className="w-16 sm:w-20 text-right">
                                                 <span className="text-gray-600 text-xs font-medium block">Lens Type</span>
                                             </div>
-                                                <input
-                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                                    placeholder="e.g. Bifocal, Progressive"
-                                                    value={item.prescription_data.lensType}
-                                                    onChange={(e) => updatePrescription(index, 'extra', null, 'lensType', e.target.value)}
-                                                />
+                                            <input
+                                                className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                placeholder="e.g. Bifocal, Progressive"
+                                                value={item.prescription_data.lensType}
+                                                onChange={(e) => updatePrescription(index, 'extra', null, 'lensType', e.target.value)}
+                                            />
                                         </div>
                                         <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
                                             <div className="w-16 sm:w-20 text-right">
                                                 <span className="text-gray-600 text-xs font-medium block">Remarks</span>
                                             </div>
-                                                <input
-                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                                    placeholder="Optional notes"
-                                                    value={item.prescription_data.remarks}
-                                                    onChange={(e) => updatePrescription(index, 'extra', null, 'remarks', e.target.value)}
-                                                />
+                                            <input
+                                                className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                placeholder="Optional notes"
+                                                value={item.prescription_data.remarks}
+                                                onChange={(e) => updatePrescription(index, 'extra', null, 'remarks', e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -587,4 +587,4 @@ export default function POS() {
         </div>
     );
 }
-    const NO_IMAGE_PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='14'>No Image</text></svg>";
+const NO_IMAGE_PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='14'>No Image</text></svg>";

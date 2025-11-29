@@ -88,7 +88,7 @@ export default function ProfitLoss() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs sm:text-sm text-blue-600 font-medium">Total Revenue</p>
-                            <p className="text-lg sm:text-2xl font-bold text-blue-700">${(data?.totalRevenue || 0).toFixed(2)}</p>
+                            <p className="text-lg sm:text-2xl font-bold text-blue-700">৳{(data?.totalRevenue || 0).toFixed(2)}</p>
                         </div>
                         <DollarSign className="w-8 h-8 text-blue-600" />
                     </div>
@@ -97,7 +97,7 @@ export default function ProfitLoss() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs sm:text-sm text-orange-600 font-medium">Total Expenses</p>
-                            <p className="text-lg sm:text-2xl font-bold text-orange-700">${(data?.totalExpenses || 0).toFixed(2)}</p>
+                            <p className="text-lg sm:text-2xl font-bold text-orange-700">৳{(data?.totalExpenses || 0).toFixed(2)}</p>
                         </div>
                         <TrendingDown className="w-8 h-8 text-orange-600" />
                     </div>
@@ -107,7 +107,7 @@ export default function ProfitLoss() {
                         <div>
                             <p className={`text-xs sm:text-sm font-medium ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>Net Profit</p>
                             <p className={`text-lg sm:text-2xl font-bold ${netProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                                ${Math.abs(netProfit).toFixed(2)}
+                                ৳{Math.abs(netProfit).toFixed(2)}
                             </p>
                         </div>
                         {netProfit >= 0 ? <TrendingUp className="w-8 h-8 text-green-600" /> : <TrendingDown className="w-8 h-8 text-red-600" />}
@@ -133,12 +133,12 @@ export default function ProfitLoss() {
                     <div className="mb-6">
                         <div className="flex justify-between items-center py-2 border-b-2 border-gray-300">
                             <span className="font-bold text-gray-700">Revenue</span>
-                            <span className="font-bold text-gray-700">${(data?.totalRevenue || 0).toFixed(2)}</span>
+                            <span className="font-bold text-gray-700">৳{(data?.totalRevenue || 0).toFixed(2)}</span>
                         </div>
                         <div className="pl-4 space-y-2 mt-2">
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-600">Sales Revenue</span>
-                                <span>${(data?.totalRevenue || 0).toFixed(2)}</span>
+                                <span>৳{(data?.totalRevenue || 0).toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
@@ -147,7 +147,7 @@ export default function ProfitLoss() {
                     <div className="mb-6">
                         <div className="flex justify-between items-center py-2 border-b border-gray-200">
                             <span className="font-semibold text-gray-700">Cost of Goods Sold (COGS)</span>
-                            <span className="font-semibold text-red-600">-${(data?.cogs || 0).toFixed(2)}</span>
+                            <span className="font-semibold text-red-600">-৳{(data?.cogs || 0).toFixed(2)}</span>
                         </div>
                     </div>
 
@@ -156,7 +156,7 @@ export default function ProfitLoss() {
                         <div className="flex justify-between items-center py-2 bg-gray-50 px-2 rounded">
                             <span className="font-bold text-gray-800">Gross Profit</span>
                             <span className={`font-bold ${grossProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                ${grossProfit.toFixed(2)}
+                                ৳{grossProfit.toFixed(2)}
                             </span>
                         </div>
                     </div>
@@ -165,13 +165,13 @@ export default function ProfitLoss() {
                     <div className="mb-6">
                         <div className="flex justify-between items-center py-2 border-b-2 border-gray-300 dark:border-gray-700">
                             <span className="font-bold text-gray-700 dark:text-gray-200">Operating Expenses</span>
-                            <span className="font-bold text-red-600">-${(data?.totalExpenses || 0).toFixed(2)}</span>
+                            <span className="font-bold text-red-600">-৳{(data?.totalExpenses || 0).toFixed(2)}</span>
                         </div>
                         <div className="pl-4 space-y-2 mt-2">
                             {data?.expensesByCategory && Object.entries(data.expensesByCategory).map(([category, amount]) => (
                                 <div key={category} className="flex justify-between text-sm">
                                     <span className="text-gray-600 dark:text-gray-300">{category}</span>
-                                    <span className="text-red-600">-${parseFloat(amount).toFixed(2)}</span>
+                                    <span className="text-red-600">-৳{parseFloat(amount).toFixed(2)}</span>
                                 </div>
                             ))}
                         </div>
@@ -182,7 +182,7 @@ export default function ProfitLoss() {
                         <div className="flex justify-between items-center py-2 bg-gradient-to-r from-blue-50 to-green-50 px-4 rounded-lg">
                             <span className="font-bold text-lg text-gray-800">Net Profit</span>
                             <span className={`font-bold text-xl ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                ${netProfit.toFixed(2)}
+                                ৳{netProfit.toFixed(2)}
                             </span>
                         </div>
                     </div>
