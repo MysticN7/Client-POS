@@ -115,48 +115,48 @@ export default function InvoiceSettings() {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Logo Size (px)</label>
-                            <input type="number" className="w-full border p-2 rounded" min="12" max="64" value={settings.logo_size_px || 24} onChange={e => setSettings({ ...settings, logo_size_px: Number(e.target.value) })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Logo Size (px)</label>
+                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" min="12" max="64" value={settings.logo_size_px || 24} onChange={e => setSettings({ ...settings, logo_size_px: Number(e.target.value) })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Accent Color</label>
-                            <input type="color" className="w-full border p-2 rounded h-10" value={settings.accent_color} onChange={e => setSettings({ ...settings, accent_color: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Accent Color</label>
+                            <input type="color" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded h-10" value={settings.accent_color} onChange={e => setSettings({ ...settings, accent_color: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Theme</label>
-                            <select className="w-full border p-2 rounded" value={settings.theme} onChange={e => setSettings({ ...settings, theme: e.target.value })}>
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Theme</label>
+                            <select className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.theme} onChange={e => setSettings({ ...settings, theme: e.target.value })}>
                                 <option value="modern">Modern</option>
                                 <option value="classic">Classic</option>
                                 <option value="minimal">Minimal</option>
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Farewell Text</label>
-                            <input className="w-full border p-2 rounded" value={settings.farewell_text || ''} onChange={e => setSettings({ ...settings, farewell_text: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Farewell Text</label>
+                            <input className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.farewell_text || ''} onChange={e => setSettings({ ...settings, farewell_text: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Paper Width (mm)</label>
-                            <input type="number" className="w-full border p-2 rounded" min="50" max="90" value={settings.paper_width_mm} onChange={e => setSettings({ ...settings, paper_width_mm: Number(e.target.value) })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Paper Width (mm)</label>
+                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" min="50" max="90" value={settings.paper_width_mm} onChange={e => setSettings({ ...settings, paper_width_mm: Number(e.target.value) })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Paper Margin (mm)</label>
-                            <input type="number" className="w-full border p-2 rounded" min="0" max="10" value={settings.paper_margin_mm} onChange={e => setSettings({ ...settings, paper_margin_mm: Number(e.target.value) })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Paper Margin (mm)</label>
+                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" min="0" max="10" value={settings.paper_margin_mm} onChange={e => setSettings({ ...settings, paper_margin_mm: Number(e.target.value) })} />
                         </div>
                         <div className="col-span-2">
-                            <label className="block text-sm font-bold mb-1">Footer Text</label>
-                            <textarea className="w-full border p-2 rounded" rows="2" value={settings.footer_text} onChange={e => setSettings({ ...settings, footer_text: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Footer Text</label>
+                            <textarea className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" rows="2" value={settings.footer_text} onChange={e => setSettings({ ...settings, footer_text: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Header Font Size (px)</label>
-                            <input type="number" className="w-full border p-2 rounded" value={settings.header_font_size} onChange={e => setSettings({ ...settings, header_font_size: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Header Font Size (px)</label>
+                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.header_font_size} onChange={e => setSettings({ ...settings, header_font_size: e.target.value })} />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold mb-1">Body Font Size (px)</label>
-                            <input type="number" className="w-full border p-2 rounded" value={settings.body_font_size} onChange={e => setSettings({ ...settings, body_font_size: e.target.value })} />
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Body Font Size (px)</label>
+                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.body_font_size} onChange={e => setSettings({ ...settings, body_font_size: e.target.value })} />
                         </div>
                     </div>
 
-                    <div className="flex space-x-6 pt-4 border-t flex-wrap">
+                    <div className="flex space-x-6 pt-4 border-t dark:border-gray-700 flex-wrap">
                         <label className="flex items-center space-x-2 cursor-pointer">
                             <input type="checkbox" checked={settings.show_served_by} onChange={e => setSettings({ ...settings, show_served_by: e.target.checked })} />
                             <span>Show Served By</span>
