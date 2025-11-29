@@ -308,7 +308,7 @@ export default function POS() {
             </div>
 
             {/* Right Side: Cart & Payment */}
-            <div className="w-full lg:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex flex-col h-auto lg:h-full order-1 lg:order-2">
+            <div className="w-full lg:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex flex-col h-[80vh] sm:h-[78vh] lg:h-full order-1 lg:order-2">
                 <div className="p-3 sm:p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-700 rounded-t-lg flex justify-between items-center">
                     <h2 className="text-lg sm:text-xl font-bold flex items-center"><ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" /> Current Sale</h2>
                     <button
@@ -327,7 +327,7 @@ export default function POS() {
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-auto p-3 sm:p-4 space-y-4 max-h-96 lg:max-h-none">
+                <div className="flex-1 min-h-0 overflow-auto p-3 sm:p-4 space-y-4 lg:max-h-none">
                     {cart.map((item, index) => (
                         <div key={index} className="border-b pb-4">
                             <div className="flex justify-between mb-2">
@@ -337,84 +337,86 @@ export default function POS() {
 
                             {item.is_prescription_required && (
                                 <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800 p-3 sm:p-4 rounded mb-2 border border-gray-200 dark:border-gray-700 shadow-sm">
-                                    {/* Right Eye */}
-                                    <div className="mb-4">
-                                        <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
-                                        {/* Distance */}
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-16 sm:w-20 text-right">
-                                                <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
-                                            </div>
-                                            {['sph', 'cyl', 'axis'].map(field => (
-                                                <div key={field} className="flex-1">
-                                                    <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
-                                                    <input
-                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                        placeholder="-"
-                                                        value={item.prescription_data.right.distance[field]}
-                                                        onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
-                                                    />
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {/* Right Eye */}
+                                        <div>
+                                            <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
+                                            {/* Distance */}
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-16 sm:w-20 text-right">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
                                                 </div>
-                                            ))}
-                                        </div>
-                                        {/* Near */}
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-16 sm:w-20 text-right">
-                                                <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
+                                                {['sph', 'cyl', 'axis'].map(field => (
+                                                    <div key={field} className="flex-1">
+                                                        <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
+                                                        <input
+                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                            placeholder="-"
+                                                            value={item.prescription_data.right.distance[field]}
+                                                            onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
+                                                        />
+                                                    </div>
+                                                ))}
                                             </div>
-                                            {['sph', 'cyl', 'axis'].map(field => (
-                                                <div key={field} className="flex-1">
-                                                    <input
-                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                        placeholder="-"
-                                                        value={item.prescription_data.right.near[field]}
-                                                        onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
-                                                    />
+                                            {/* Near */}
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-16 sm:w-20 text-right">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
                                                 </div>
-                                            ))}
+                                                {['sph', 'cyl', 'axis'].map(field => (
+                                                    <div key={field} className="flex-1">
+                                                        <input
+                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                            placeholder="-"
+                                                            value={item.prescription_data.right.near[field]}
+                                                            onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {/* Left Eye */}
-                                    <div className="mb-4">
-                                        <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 border-b pb-1">Left Eye</h4>
-                                        {/* Distance */}
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-16 sm:w-20 text-right">
-                                                <span className="text-gray-500 font-medium block text-xs uppercase tracking-wider">Dist</span>
-                                            </div>
-                                            {['sph', 'cyl', 'axis'].map(field => (
-                                                <div key={field} className="flex-1">
-                                                    <span className="text-gray-400 text-xs block text-center uppercase mb-1">{field}</span>
-                                                    <input
-                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                        placeholder="-"
-                                                        value={item.prescription_data.left.distance[field]}
-                                                        onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
-                                                    />
+                                        {/* Left Eye */}
+                                        <div>
+                                            <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Left Eye</h4>
+                                            {/* Distance */}
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-16 sm:w-20 text-right">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
                                                 </div>
-                                            ))}
-                                        </div>
-                                        {/* Near */}
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-16 sm:w-20 text-right">
-                                                <span className="text-gray-500 font-medium block text-xs uppercase tracking-wider">Near</span>
+                                                {['sph', 'cyl', 'axis'].map(field => (
+                                                    <div key={field} className="flex-1">
+                                                        <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
+                                                        <input
+                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                            placeholder="-"
+                                                            value={item.prescription_data.left.distance[field]}
+                                                            onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
+                                                        />
+                                                    </div>
+                                                ))}
                                             </div>
-                                            {['sph', 'cyl', 'axis'].map(field => (
-                                                <div key={field} className="flex-1">
-                                                    <input
-                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                        placeholder="-"
-                                                        value={item.prescription_data.left.near[field]}
-                                                        onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
-                                                    />
+                                            {/* Near */}
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-16 sm:w-20 text-right">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
                                                 </div>
-                                            ))}
+                                                {['sph', 'cyl', 'axis'].map(field => (
+                                                    <div key={field} className="flex-1">
+                                                        <input
+                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                            placeholder="-"
+                                                            value={item.prescription_data.left.near[field]}
+                                                            onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
 
                                     {/* Extra Fields */}
-                                    <div className="space-y-3 pt-3 border-t border-gray-200">
+                                    <div className="space-y-3 pt-3 border-t border-gray-200 dark:border-gray-700">
                                         <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
                                             <div className="w-16 sm:w-20 text-right">
                                                 <span className="text-gray-600 text-xs font-medium block">Lens Type</span>

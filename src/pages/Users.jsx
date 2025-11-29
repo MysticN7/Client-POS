@@ -114,17 +114,17 @@ export default function Users() {
                                 <td className="p-4">{user.name}</td>
                                 <td className="p-4">{user.email}</td>
                                 <td className="p-4">
-                                    <span className={`px-2 py-1 rounded text-xs ${user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'}`}>
+                                    <span className={`px-2 py-1 rounded text-xs ${user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-800/50 dark:text-gray-200'}`}>
                                         {user.role}
                                     </span>
                                 </td>
                                 <td className="p-4">
                                     <div className="flex flex-wrap gap-1">
                                         {user.role === 'ADMIN' ? (
-                                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">ALL ACCESS</span>
+                                            <span className="text-xs bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-200 px-2 py-1 rounded">ALL ACCESS</span>
                                         ) : (
                                             (Array.isArray(user.permissions) ? user.permissions : JSON.parse(user.permissions || '[]')).map(p => (
-                                                <span key={p} className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">{p}</span>
+                                                <span key={p} className="text-xs bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-200 px-2 py-1 rounded">{p}</span>
                                             ))
                                         )}
                                     </div>
@@ -188,9 +188,9 @@ export default function Users() {
                                                     {perms.map(perm => (
                                                         <div key={perm}
                                                             onClick={() => togglePermission(perm)}
-                                                            className={`cursor-pointer border dark:border-gray-700 p-2 rounded flex items-center justify-between ${formData.permissions.includes(perm) ? 'bg-blue-50 border-blue-500' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+                                                            className={`cursor-pointer border dark:border-gray-700 p-2 rounded flex items-center justify-between ${formData.permissions.includes(perm) ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 dark:border-blue-400' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                                                         >
-                                                            <span className="text-xs">{perm}</span>
+                                                            <span className="text-xs dark:text-gray-100">{perm}</span>
                                                             {formData.permissions.includes(perm) && <Check size={16} className="text-blue-600" />}
                                                         </div>
                                                     ))}
