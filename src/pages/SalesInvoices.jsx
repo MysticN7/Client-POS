@@ -81,8 +81,8 @@ export default function SalesInvoices() {
     const totalDue = invoices.reduce((sum, inv) => sum + (parseFloat(inv.final_amount) - parseFloat(inv.paid_amount)), 0);
 
     return (
-        <div className="p-6 bg-white min-h-screen">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Daily Sales</h2>
+        <div className="p-6 bg-white dark:bg-gray-900 min-h-screen dark:text-gray-100">
+            <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">Daily Sales</h2>
 
             {/* Summary Cards */}
             {summary && (
@@ -107,36 +107,36 @@ export default function SalesInvoices() {
             )}
 
             {/* Search and Filter Section */}
-            <div className="flex flex-col space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
-                    <label className="font-bold text-gray-700">Search :</label>
-                    <div className="relative flex-1">
+                <div className="flex flex-col space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
+                    <label className="font-bold text-gray-700 dark:text-gray-300">Search :</label>
+                        <div className="relative flex-1">
+                            <input
+                                type="text"
+                                className="w-full border border-gray-300 dark:border-gray-700 rounded px-3 py-1 focus:outline-none focus:border-blue-500 dark:bg-gray-800 dark:text-gray-100"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Customer Name or Phone"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
+                    <label className="font-bold text-gray-700 dark:text-gray-300">Date :</label>
                         <input
-                            type="text"
-                            className="w-full border border-gray-300 rounded px-3 py-1 focus:outline-none focus:border-blue-500"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Customer Name or Phone"
+                            type="date"
+                            className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
+                        <span className="font-bold text-gray-700">To</span>
+                        <input
+                            type="date"
+                            className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
                         />
                     </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
-                    <label className="font-bold text-gray-700">Date :</label>
-                    <input
-                        type="date"
-                        className="border border-gray-300 rounded px-2 py-1"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                    />
-                    <span className="font-bold text-gray-700">To</span>
-                    <input
-                        type="date"
-                        className="border border-gray-300 rounded px-2 py-1"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                    />
-                </div>
 
                 <button
                     onClick={fetchInvoices}
@@ -148,9 +148,9 @@ export default function SalesInvoices() {
 
             {/* Table */}
             <div className="overflow-x-auto -mx-3 sm:mx-0">
-                <table className="w-full border-collapse border border-gray-200">
+                <table className="w-full border-collapse border border-gray-200 dark:border-gray-700">
                     <thead>
-                        <tr className="bg-gray-100">
+                        <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="border border-gray-200 px-4 py-2 text-center font-bold text-gray-700 text-sm">SL</th>
                             <th className="border border-gray-200 px-4 py-2 text-left font-bold text-gray-700 text-sm w-1/4">Customer</th>
                             <th className="border border-gray-200 px-4 py-2 text-center font-bold text-gray-700 text-sm">Vat</th>
@@ -165,19 +165,19 @@ export default function SalesInvoices() {
                     <tbody>
                         {loading ? (
                             <tr>
-                                <td colSpan="9" className="text-center py-8 text-gray-500">Loading...</td>
+                                <td colSpan="9" className="text-center py-8 text-gray-500 dark:text-gray-300">Loading...</td>
                             </tr>
                         ) : invoices.length === 0 ? (
                             <tr>
-                                <td colSpan="9" className="text-center py-8 text-gray-500">No invoices found</td>
+                                <td colSpan="9" className="text-center py-8 text-gray-500 dark:text-gray-300">No invoices found</td>
                             </tr>
                         ) : (
                             invoices.map((invoice, index) => (
-                                <tr key={invoice.id} className="hover:bg-gray-50">
+                                <tr key={invoice.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <td className="border border-gray-200 px-4 py-2 text-center text-sm">{index + 1}</td>
                                     <td className="border border-gray-200 px-4 py-2 text-sm">
                                         <div className="font-bold">{invoice.Customer?.name || 'Walk-in Customer'}</div>
-                                        <div className="text-xs text-gray-500">{new Date(invoice.createdAt).toLocaleDateString()} {new Date(invoice.createdAt).toLocaleTimeString()}</div>
+                                        <div className="text-xs text-gray-500 dark:text-gray-300">{new Date(invoice.createdAt).toLocaleDateString()} {new Date(invoice.createdAt).toLocaleTimeString()}</div>
                                         <div className="text-xs text-gray-500">Bill: {invoice.invoice_number}</div>
                                     </td>
                                     <td className="border border-gray-200 px-4 py-2 text-center text-sm">0</td>
@@ -213,7 +213,7 @@ export default function SalesInvoices() {
                         )}
                         {/* Totals Row */}
                         {!loading && invoices.length > 0 && (
-                            <tr className="bg-gray-100 font-bold">
+                            <tr className="bg-gray-100 dark:bg-gray-700 font-bold">
                                 <td colSpan="3" className="border border-gray-200 px-4 py-2 text-center">Total</td>
                                 <td className="border border-gray-200 px-4 py-2 text-right">{totalAmount.toFixed(2)}</td>
                                 <td className="border border-gray-200 px-4 py-2 text-right">{totalPaid.toFixed(2)}</td>

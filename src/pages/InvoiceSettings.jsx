@@ -205,7 +205,7 @@ export default function InvoiceSettings() {
                     <InvoicePrint
                         invoice={{ invoice_number: '01', total_amount: 100, discount: 0, paid_amount: 100, note: 'Sample note' }}
                         items={[{ name: 'Frame A', quantity: 1, price: 100 }]}
-                        customer={{ name: 'Walk-in Customer', phone: '0000000000' }}
+                        customer={{ name: 'Walk-in Customer' }}
                         user={{ name: 'Admin User' }}
                         settingsOverride={settings}
                     />

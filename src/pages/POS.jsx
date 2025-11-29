@@ -153,7 +153,6 @@ export default function POS() {
                 } else {
                     const createRes = await api.post('/customers', {
                         name: 'Walk-in Customer',
-                        phone: '0000000000',
                         address: 'N/A'
                     });
                     customerToUse = createRes.data;
@@ -202,7 +201,7 @@ export default function POS() {
     const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.sku.includes(searchTerm));
 
     return (
-        <div className="flex flex-col lg:flex-row h-full gap-4 lg:gap-6">
+        <div className="flex flex-col lg:flex-row h-full gap-4 lg:gap-6 dark:text-gray-100">
             {/* Invoice Modal */}
             {showInvoiceModal && (
                 <InvoiceModal
@@ -217,7 +216,7 @@ export default function POS() {
             {/* Left Side: Products */}
             <div className="flex-1 flex flex-col order-2 lg:order-1">
                 {/* Customer Selection */}
-                <div className="bg-white p-3 sm:p-4 rounded shadow mb-4">
+                <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-700 p-3 sm:p-4 rounded shadow mb-4">
                     <div className="flex justify-between items-center mb-2">
                         <h3 className="font-bold text-sm sm:text-base">Customer</h3>
                         <button onClick={() => setShowNewCustomerForm(!showNewCustomerForm)} className="text-blue-600 flex items-center text-xs sm:text-sm">
@@ -227,8 +226,8 @@ export default function POS() {
 
                     {showNewCustomerForm ? (
                         <form onSubmit={createCustomer} className="space-y-2">
-                            <input placeholder="Name" className="border p-2 sm:p-3 rounded w-full text-sm sm:text-base" value={newCustomer.name} onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })} required />
-                            <input placeholder="Phone" className="border p-2 sm:p-3 rounded w-full text-sm sm:text-base" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} required />
+                            <input placeholder="Name" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 sm:p-3 rounded w-full text-sm sm:text-base" value={newCustomer.name} onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })} required />
+                            <input placeholder="Phone (optional)" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 sm:p-3 rounded w-full text-sm sm:text-base" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} />
                             <button type="submit" className="bg-green-600 text-white px-4 py-2 sm:py-3 rounded w-full font-medium">Save Customer</button>
                         </form>
                     ) : (
@@ -237,23 +236,25 @@ export default function POS() {
                                 <div className="flex justify-between items-center bg-blue-50 p-2 rounded border border-blue-200">
                                     <div>
                                         <p className="font-bold text-sm sm:text-base">{selectedCustomer.name}</p>
-                                        <p className="text-xs text-gray-600">{selectedCustomer.phone}</p>
+                                        {selectedCustomer.phone && (
+                                            <p className="text-xs text-gray-600">{selectedCustomer.phone}</p>
+                                        )}
                                     </div>
                                     <button onClick={() => setSelectedCustomer(null)} className="text-red-500 text-xs sm:text-sm px-2 py-1">Change</button>
                                 </div>
                             ) : (
                                 <div className="relative">
                                     <input
-                                        className="w-full p-2 sm:p-3 border rounded text-sm sm:text-base"
+                                        className="w-full p-2 sm:p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded text-sm sm:text-base"
                                         placeholder="Search customer by name or phone..."
                                         value={customerSearch}
                                         onChange={e => setCustomerSearch(e.target.value)}
                                     />
                                     {customers.length > 0 && customerSearch && (
-                                        <div className="absolute z-10 w-full bg-white border shadow mt-1 max-h-40 overflow-auto">
+                                        <div className="absolute z-10 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 shadow mt-1 max-h-40 overflow-auto">
                                             {customers.map(c => (
-                                                <div key={c.id} onClick={() => { setSelectedCustomer(c); setCustomers([]); setCustomerSearch(''); }} className="p-2 sm:p-3 hover:bg-gray-100 cursor-pointer text-sm">
-                                                    {c.name} - {c.phone}
+                                                <div key={c.id} onClick={() => { setSelectedCustomer(c); setCustomers([]); setCustomerSearch(''); }} className="p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm">
+                                                    {c.name}{c.phone ? ` - ${c.phone}` : ''}
                                                 </div>
                                             ))}
                                         </div>
@@ -268,7 +269,7 @@ export default function POS() {
                 <div className="mb-4 relative">
                     <Search className="absolute left-3 top-2.5 sm:top-3 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
                     <input
-                        className="w-full pl-9 sm:pl-10 p-2 sm:p-3 border rounded-lg shadow-sm text-sm sm:text-base"
+                        className="w-full pl-9 sm:pl-10 p-2 sm:p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-sm text-sm sm:text-base"
                         placeholder="Search products..."
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
@@ -276,12 +277,12 @@ export default function POS() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 overflow-auto">
                     {filteredProducts.map(product => (
-                        <div key={product.id} onClick={() => addToCart(product)} className="bg-white p-3 sm:p-4 rounded shadow cursor-pointer hover:shadow-md transition active:scale-95">
+                        <div key={product.id} onClick={() => addToCart(product)} className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded shadow cursor-pointer hover:shadow-md transition active:scale-95">
                             {product.imageUrl ? (
                                 <img
                                     src={product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`}
                                     alt={product.name}
-                                    className="w-full h-32 object-cover rounded-lg mb-3 border border-gray-200"
+                                    className="w-full h-32 object-cover rounded-lg mb-3 border border-gray-200 dark:border-gray-700"
                                     onError={(e) => {
                                         e.target.onerror = null;
                                         e.target.src = NO_IMAGE_PLACEHOLDER;
@@ -289,14 +290,14 @@ export default function POS() {
                                     }}
                                 />
                             ) : (
-                                <div className="w-full h-32 bg-gray-100 rounded-lg mb-3 flex items-center justify-center border border-gray-200">
-                                    <span className="text-gray-400 text-sm">No Image</span>
+                                <div className="w-full h-32 bg-gray-100 dark:bg-gray-700 rounded-lg mb-3 flex items-center justify-center border border-gray-200 dark:border-gray-700">
+                                    <span className="text-gray-400 dark:text-gray-300 text-sm">No Image</span>
                                 </div>
                             )}
-                            <h3 className="font-bold text-gray-800 text-sm sm:text-base">{product.name}</h3>
-                            <p className="text-xs sm:text-sm text-gray-500">SKU: {product.sku}</p>
+                            <h3 className="font-bold text-gray-800 dark:text-gray-100 text-sm sm:text-base">{product.name}</h3>
+                            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">SKU: {product.sku}</p>
                             <div className="flex justify-between items-center mt-2">
-                                <span className="text-blue-600 font-bold text-sm sm:text-base">${product.price}</span>
+                                <span className="text-blue-600 font-bold text-sm sm:text-base">৳{product.price}</span>
                                 <span className={`text-xs px-2 py-1 rounded ${product.stockQuantity > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                                     Stock: {product.stockQuantity}
                                 </span>
@@ -307,8 +308,8 @@ export default function POS() {
             </div>
 
             {/* Right Side: Cart & Payment */}
-            <div className="w-full lg:w-96 bg-white rounded-lg shadow-lg flex flex-col h-auto lg:h-full order-1 lg:order-2">
-                <div className="p-3 sm:p-4 border-b bg-gray-50 rounded-t-lg flex justify-between items-center">
+            <div className="w-full lg:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex flex-col h-auto lg:h-full order-1 lg:order-2">
+                <div className="p-3 sm:p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-700 rounded-t-lg flex justify-between items-center">
                     <h2 className="text-lg sm:text-xl font-bold flex items-center"><ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" /> Current Sale</h2>
                     <button
                         onClick={() => {
@@ -331,7 +332,7 @@ export default function POS() {
                         <div key={index} className="border-b pb-4">
                             <div className="flex justify-between mb-2">
                                 <span className="font-medium text-sm sm:text-base">{item.name}</span>
-                                <span className="font-bold text-sm sm:text-base">${(item.price * item.quantity).toFixed(2)}</span>
+                                <span className="font-bold text-sm sm:text-base">৳{(item.price * item.quantity).toFixed(2)}</span>
                             </div>
 
                             {item.is_prescription_required && (
@@ -348,7 +349,7 @@ export default function POS() {
                                                 <div key={field} className="flex-1">
                                                     <span className="text-gray-400 text-xs block text-center uppercase mb-1">{field}</span>
                                                     <input
-                                                        className="w-full border border-gray-300 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                         placeholder="-"
                                                         value={item.prescription_data.right.distance[field]}
                                                         onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
@@ -364,7 +365,7 @@ export default function POS() {
                                             {['sph', 'cyl', 'axis'].map(field => (
                                                 <div key={field} className="flex-1">
                                                     <input
-                                                        className="w-full border border-gray-300 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                         placeholder="-"
                                                         value={item.prescription_data.right.near[field]}
                                                         onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
@@ -386,7 +387,7 @@ export default function POS() {
                                                 <div key={field} className="flex-1">
                                                     <span className="text-gray-400 text-xs block text-center uppercase mb-1">{field}</span>
                                                     <input
-                                                        className="w-full border border-gray-300 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                         placeholder="-"
                                                         value={item.prescription_data.left.distance[field]}
                                                         onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
@@ -402,7 +403,7 @@ export default function POS() {
                                             {['sph', 'cyl', 'axis'].map(field => (
                                                 <div key={field} className="flex-1">
                                                     <input
-                                                        className="w-full border border-gray-300 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                         placeholder="-"
                                                         value={item.prescription_data.left.near[field]}
                                                         onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
@@ -418,23 +419,23 @@ export default function POS() {
                                             <div className="w-16 sm:w-20 text-right">
                                                 <span className="text-gray-600 text-xs font-medium block">Lens Type</span>
                                             </div>
-                                            <input
-                                                className="w-full border border-gray-300 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                                placeholder="e.g. Bifocal, Progressive"
-                                                value={item.prescription_data.lensType}
-                                                onChange={(e) => updatePrescription(index, 'extra', null, 'lensType', e.target.value)}
-                                            />
+                                                <input
+                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                    placeholder="e.g. Bifocal, Progressive"
+                                                    value={item.prescription_data.lensType}
+                                                    onChange={(e) => updatePrescription(index, 'extra', null, 'lensType', e.target.value)}
+                                                />
                                         </div>
                                         <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
                                             <div className="w-16 sm:w-20 text-right">
                                                 <span className="text-gray-600 text-xs font-medium block">Remarks</span>
                                             </div>
-                                            <input
-                                                className="w-full border border-gray-300 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                                placeholder="Optional notes"
-                                                value={item.prescription_data.remarks}
-                                                onChange={(e) => updatePrescription(index, 'extra', null, 'remarks', e.target.value)}
-                                            />
+                                                <input
+                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                    placeholder="Optional notes"
+                                                    value={item.prescription_data.remarks}
+                                                    onChange={(e) => updatePrescription(index, 'extra', null, 'remarks', e.target.value)}
+                                                />
                                         </div>
                                     </div>
                                 </div>
@@ -470,37 +471,37 @@ export default function POS() {
                 <div className="p-3 sm:p-4 border-t bg-gray-50 rounded-b-lg space-y-3">
                     <div className="flex justify-between text-sm sm:text-base">
                         <span>Subtotal</span>
-                        <span>${calculateTotal().toFixed(2)}</span>
+                        <span>৳{calculateTotal().toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between items-center text-sm sm:text-base">
                         <span>Discount</span>
                         <input
                             type="number"
-                            className="w-20 sm:w-24 border rounded p-1 sm:p-2 text-right text-sm"
+                            className="w-20 sm:w-24 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 sm:p-2 text-right text-sm"
                             value={discount}
                             onChange={e => setDiscount(e.target.value)}
                         />
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="font-bold text-sm sm:text-base">Net Total</span>
-                        <span className="font-bold text-lg sm:text-xl">${(calculateTotal() - discount).toFixed(2)}</span>
+                        <span className="font-bold text-lg sm:text-xl">৳{(calculateTotal() - discount).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between items-center text-sm sm:text-base">
                         <span>Paid Amount</span>
                         <input
                             type="number"
-                            className="w-20 sm:w-28 border rounded p-1 sm:p-2 text-right font-bold text-green-600 text-sm"
+                            className="w-20 sm:w-28 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 sm:p-2 text-right font-bold text-green-600 text-sm"
                             value={paidAmount}
                             onChange={e => setPaidAmount(e.target.value)}
                         />
                     </div>
                     <div className="flex justify-between items-center text-sm sm:text-base">
                         <span>Due</span>
-                        <span className="text-red-600 font-bold">${(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
+                        <span className="text-red-600 font-bold">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
                     </div>
 
                     <select
-                        className="w-full border p-2 sm:p-3 rounded text-sm sm:text-base"
+                        className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 sm:p-3 rounded text-sm sm:text-base"
                         value={paymentMethod}
                         onChange={e => setPaymentMethod(e.target.value)}
                     >
@@ -510,7 +511,7 @@ export default function POS() {
                     </select>
 
                     <textarea
-                        className="w-full border p-2 sm:p-3 rounded text-xs sm:text-sm"
+                        className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 sm:p-3 rounded text-xs sm:text-sm"
                         placeholder="Add a note..."
                         rows="2"
                         value={note}
@@ -535,7 +536,7 @@ export default function POS() {
             {/* Held Transactions Modal */}
             {showHeldModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-                    <div className="bg-white p-4 sm:p-6 rounded shadow-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded shadow-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-base sm:text-lg font-bold">Held Transactions</h3>
                             <button onClick={() => setShowHeldModal(false)} className="text-red-500 font-bold text-xl">X</button>
@@ -543,11 +544,11 @@ export default function POS() {
                         {heldTransactions.length === 0 ? <p className="text-sm sm:text-base">No held transactions.</p> : (
                             <div className="space-y-2">
                                 {heldTransactions.map(t => (
-                                    <div key={t.id} className="border p-3 rounded flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-50 gap-2">
+                                    <div key={t.id} className="border dark:border-gray-700 p-3 rounded flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-50 dark:hover:bg-gray-700 gap-2">
                                         <div className="flex-1">
                                             <p className="font-bold text-sm sm:text-base">{t.date}</p>
                                             <p className="text-xs sm:text-sm">Customer: {t.customer?.name || 'Walk-in'}</p>
-                                            <p className="text-xs sm:text-sm">Items: {t.cart.length} | Total: ${t.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</p>
+                                            <p className="text-xs sm:text-sm">Items: {t.cart.length} | Total: ৳{t.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</p>
                                         </div>
                                         <div className="flex space-x-2 w-full sm:w-auto">
                                             <button onClick={() => handleRecall(t)} className="flex-1 sm:flex-none bg-green-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Recall</button>

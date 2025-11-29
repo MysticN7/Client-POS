@@ -46,13 +46,13 @@ export default function Dashboard() {
     return (
         <div className="p-2 sm:p-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Dashboard</h2>
-                <p className="text-xs sm:text-sm text-gray-500">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">Dashboard</h2>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
             </div>
 
             {/* Statistics Cards */}
             {loading ? (
-                <div className="text-center py-8 text-gray-500">Loading statistics...</div>
+                <div className="text-center py-8 text-gray-500 dark:text-gray-300">Loading statistics...</div>
             ) : stats && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg">

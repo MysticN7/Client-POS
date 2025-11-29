@@ -99,7 +99,7 @@ export default function JobCards() {
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Job Cards (Lab Orders)</h2>
+                <h2 className="text-2xl font-bold dark:text-gray-100">Job Cards (Lab Orders)</h2>
                 <button
                     onClick={() => setShowForm(!showForm)}
                     className="bg-blue-600 text-white px-4 py-2 rounded flex items-center hover:bg-blue-700"
@@ -109,12 +109,12 @@ export default function JobCards() {
             </div>
 
             {showForm && (
-                <div className="bg-white p-6 rounded shadow mb-6">
-                    <h3 className="text-lg font-bold mb-4">New Job Card</h3>
+                <div className="bg-white dark:bg-gray-800 p-6 rounded shadow mb-6">
+                    <h3 className="text-lg font-bold mb-4 dark:text-gray-100">New Job Card</h3>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                             <select
-                                className="border p-2 rounded"
+                                className="border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                 value={formData.customer_id}
                                 onChange={e => setFormData({ ...formData, customer_id: e.target.value })}
                                 required
@@ -124,28 +124,28 @@ export default function JobCards() {
                             </select>
                             <input
                                 type="date"
-                                className="border p-2 rounded"
+                                className="border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                 value={formData.delivery_date}
                                 onChange={e => setFormData({ ...formData, delivery_date: e.target.value })}
                                 required
                             />
                         </div>
 
-                        <div className="border p-4 rounded bg-gray-50">
-                            <h4 className="font-bold mb-2">Prescription Details</h4>
+                        <div className="border p-4 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                            <h4 className="font-bold mb-2 dark:text-gray-100">Prescription Details</h4>
 
                             {/* Right Eye */}
                             <div className="mb-4">
-                                <h5 className="font-bold text-sm mb-1">Right Eye</h5>
+                                <h5 className="font-bold text-sm mb-1 dark:text-gray-100">Right Eye</h5>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <p className="text-xs font-bold text-gray-500 mb-1">Distance</p>
+                                        <p className="text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Distance</p>
                                         <div className="grid grid-cols-3 gap-1">
                                             {['sph', 'cyl', 'axis'].map(field => (
                                                 <input
                                                     key={field}
                                                     placeholder={field.toUpperCase()}
-                                                    className="border p-1 rounded w-full text-sm"
+                                                    className="border p-1 rounded w-full text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                                     value={formData.prescription_snapshot.right.distance[field]}
                                                     onChange={e => {
                                                         const newSnapshot = { ...formData.prescription_snapshot };
@@ -157,13 +157,13 @@ export default function JobCards() {
                                         </div>
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold text-gray-500 mb-1">Near</p>
+                                        <p className="text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Near</p>
                                         <div className="grid grid-cols-3 gap-1">
                                             {['sph', 'cyl', 'axis'].map(field => (
                                                 <input
                                                     key={field}
                                                     placeholder={field.toUpperCase()}
-                                                    className="border p-1 rounded w-full text-sm"
+                                                    className="border p-1 rounded w-full text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                                     value={formData.prescription_snapshot.right.near[field]}
                                                     onChange={e => {
                                                         const newSnapshot = { ...formData.prescription_snapshot };
@@ -179,16 +179,16 @@ export default function JobCards() {
 
                             {/* Left Eye */}
                             <div className="mb-4">
-                                <h5 className="font-bold text-sm mb-1">Left Eye</h5>
+                                <h5 className="font-bold text-sm mb-1 dark:text-gray-100">Left Eye</h5>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <p className="text-xs font-bold text-gray-500 mb-1">Distance</p>
+                                        <p className="text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Distance</p>
                                         <div className="grid grid-cols-3 gap-1">
                                             {['sph', 'cyl', 'axis'].map(field => (
                                                 <input
                                                     key={field}
                                                     placeholder={field.toUpperCase()}
-                                                    className="border p-1 rounded w-full text-sm"
+                                                    className="border p-1 rounded w-full text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                                     value={formData.prescription_snapshot.left.distance[field]}
                                                     onChange={e => {
                                                         const newSnapshot = { ...formData.prescription_snapshot };
@@ -200,13 +200,13 @@ export default function JobCards() {
                                         </div>
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold text-gray-500 mb-1">Near</p>
+                                        <p className="text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Near</p>
                                         <div className="grid grid-cols-3 gap-1">
                                             {['sph', 'cyl', 'axis'].map(field => (
                                                 <input
                                                     key={field}
                                                     placeholder={field.toUpperCase()}
-                                                    className="border p-1 rounded w-full text-sm"
+                                                    className="border p-1 rounded w-full text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                                     value={formData.prescription_snapshot.left.near[field]}
                                                     onChange={e => {
                                                         const newSnapshot = { ...formData.prescription_snapshot };
@@ -222,9 +222,9 @@ export default function JobCards() {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-bold mb-1">Lens Type</label>
+                                    <label className="block text-xs font-bold mb-1 dark:text-gray-300">Lens Type</label>
                                     <input
-                                        className="border p-1 rounded w-full text-sm"
+                                        className="border p-1 rounded w-full text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.prescription_snapshot.lensType}
                                         onChange={e => {
                                             const newSnapshot = { ...formData.prescription_snapshot };
@@ -234,9 +234,9 @@ export default function JobCards() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold mb-1">Remarks</label>
+                                    <label className="block text-xs font-bold mb-1 dark:text-gray-300">Remarks</label>
                                     <input
-                                        className="border p-1 rounded w-full text-sm"
+                                        className="border p-1 rounded w-full text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.prescription_snapshot.remarks}
                                         onChange={e => {
                                             const newSnapshot = { ...formData.prescription_snapshot };
@@ -250,18 +250,18 @@ export default function JobCards() {
 
                         <textarea
                             placeholder="Lab Notes / Instructions"
-                            className="border p-2 rounded w-full"
+                            className="border p-2 rounded w-full dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                             value={formData.notes}
                             onChange={e => setFormData({ ...formData, notes: e.target.value })}
                         />
 
                         <div>
-                            <label className="block text-sm font-bold mb-1">Upload Prescription Image (Optional)</label>
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-300">Upload Prescription Image (Optional)</label>
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={e => setImageFile(e.target.files[0])}
-                                className="border p-2 rounded w-full"
+                                className="border p-2 rounded w-full dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                             />
                         </div>
 
@@ -272,11 +272,11 @@ export default function JobCards() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {jobCards.map(card => (
-                    <div key={card.id} className="bg-white p-6 rounded shadow border-t-4 border-blue-500">
+                    <div key={card.id} className="bg-white dark:bg-gray-800 p-6 rounded shadow border-t-4 border-blue-500">
                         <div className="flex justify-between items-start mb-4">
                             <div>
                                 <h3 className="font-bold text-lg">{card.job_number}</h3>
-                                <p className="text-sm text-gray-500">{card.Customer?.name}</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-300">{card.Customer?.name}</p>
                             </div>
                             <span className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(card.status)}`}>
                                 {card.status}
@@ -293,14 +293,14 @@ export default function JobCards() {
                                         <img
                                             src={`${API_URL}/${card.prescription_image_path}`}
                                             alt="Prescription"
-                                            className="w-full h-32 object-cover rounded border hover:opacity-75 transition-opacity"
+                                            className="w-full h-32 object-cover rounded border dark:border-gray-700 hover:opacity-75 transition-opacity"
                                         />
                                     </a>
                                 </div>
                             )}
                         </div>
 
-                        <div className="flex justify-between mt-4 pt-4 border-t">
+                        <div className="flex justify-between mt-4 pt-4 border-t dark:border-gray-700">
                             {card.status === 'Pending' && (
                                 <button onClick={() => updateStatus(card.id, 'Processing')} className="text-blue-600 text-sm font-bold flex items-center">
                                     <Clock className="w-4 h-4 mr-1" /> Start Process

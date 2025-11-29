@@ -143,9 +143,9 @@ const handleSubmit = async (e) => {
     });
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen dark:text-gray-100">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-800">Inventory Management</h1>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Inventory Management</h1>
                 <button
                     onClick={() => openModal()}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition"
@@ -154,22 +154,22 @@ const handleSubmit = async (e) => {
                 </button>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 mb-6">
                 <div className="flex gap-4 flex-col md:flex-row">
                     <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-300" size={20} />
                         <input
                             type="text"
                             placeholder="Search by name or SKU..."
-                            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <div className="flex items-center gap-2">
-                        <Filter size={20} className="text-gray-500" />
+                        <Filter size={20} className="text-gray-500 dark:text-gray-300" />
                         <select
-                            className="border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                             value={categoryFilter}
                             onChange={(e) => setCategoryFilter(e.target.value)}
                         >
@@ -182,47 +182,47 @@ const handleSubmit = async (e) => {
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="bg-gray-50 border-b border-gray-100">
+                        <thead className="bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-700">
                             <tr>
-                                <th className="px-6 py-4 font-semibold text-gray-600">Image</th>
-                                <th className="px-6 py-4 font-semibold text-gray-600">Name</th>
-                                <th className="px-6 py-4 font-semibold text-gray-600">SKU</th>
-                                <th className="px-6 py-4 font-semibold text-gray-600">Category</th>
-                                <th className="px-6 py-4 font-semibold text-gray-600">Price</th>
-                                <th className="px-6 py-4 font-semibold text-gray-600">Stock</th>
-                                <th className="px-6 py-4 font-semibold text-gray-600">Actions</th>
+                                <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">Image</th>
+                                <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">Name</th>
+                                <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">SKU</th>
+                                <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">Category</th>
+                                <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">Price</th>
+                                <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">Stock</th>
+                                <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                             {loading ? (
-                                <tr><td colSpan="7" className="text-center py-8">Loading...</td></tr>
+                                <tr><td colSpan="7" className="text-center py-8 text-gray-500 dark:text-gray-300">Loading...</td></tr>
                             ) : filteredProducts.length === 0 ? (
-                                <tr><td colSpan="7" className="text-center py-8 text-gray-500">No products found</td></tr>
+                                <tr><td colSpan="7" className="text-center py-8 text-gray-500 dark:text-gray-300">No products found</td></tr>
                             ) : (
                                 filteredProducts.map(product => (
-                                    <tr key={product.id} className="hover:bg-gray-50 transition">
+                                    <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                                         <td className="px-6 py-4">
                                             {product.imageUrl ? (
                                                 <img
                                                     src={product.imageUrl.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`}
                                                     alt={product.name}
-                                                    className="w-16 h-16 object-cover rounded-lg border border-gray-200"
+                                                    className="w-16 h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
                                                     onError={(e) => {
                                                         e.target.onerror = null;
                                                         e.target.src = NO_IMAGE_PLACEHOLDER;
                                                     }}
                                                 />
                                             ) : (
-                                                <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
-                                                    <span className="text-gray-400 text-xs">No Image</span>
+                                                <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700">
+                                                    <span className="text-gray-400 dark:text-gray-300 text-xs">No Image</span>
                                                 </div>
                                             )}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-800">{product.name}</td>
-                                        <td className="px-6 py-4 text-gray-600">{product.sku}</td>
+                                        <td className="px-6 py-4 font-medium text-gray-800 dark:text-gray-100">{product.name}</td>
+                                        <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{product.sku}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${product.category === 'FRAMES' ? 'bg-purple-100 text-purple-700' :
                                                 product.category === 'LENS' ? 'bg-blue-100 text-blue-700' :
@@ -231,7 +231,7 @@ const handleSubmit = async (e) => {
                                                 {product.category}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-600">${product.price}</td>
+                                        <td className="px-6 py-4 text-gray-600 dark:text-gray-300">${product.price}</td>
                                         <td className="px-6 py-4">
                                             <span className={`font-medium ${product.stockQuantity < 10 ? 'text-red-600' : 'text-green-600'}`}>
                                                 {product.stockQuantity}
@@ -263,38 +263,38 @@ const handleSubmit = async (e) => {
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg max-w-md w-full p-6">
                         <h2 className="text-2xl font-bold mb-6 text-gray-800">
                             {currentProduct ? 'Edit Product' : 'Add New Product'}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Product Name</label>
                                 <input
                                     type="text"
                                     name="name"
                                     required
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                     value={formData.name}
                                     onChange={handleInputChange}
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">SKU (optional)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SKU (optional)</label>
                                     <input
                                         type="text"
                                         name="sku"
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.sku}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
                                     <select
                                         name="category"
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.category}
                                         onChange={handleInputChange}
                                     >
@@ -306,24 +306,24 @@ const handleSubmit = async (e) => {
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Price (Optional)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price (Optional)</label>
                                     <input
                                         type="number"
                                         name="price"
                                         min="0"
                                         step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.price}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity{currentProduct ? ' (current)' : ''}</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Stock Quantity{currentProduct ? ' (current)' : ''}</label>
                                     <input
                                         type="number"
                                         name="stockQuantity"
                                         min="0"
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.stockQuantity}
                                         disabled={!!currentProduct}
                                         onChange={handleInputChange}
@@ -333,46 +333,46 @@ const handleSubmit = async (e) => {
                             {currentProduct && (
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Add Stock</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Add Stock</label>
                                         <input
                                             type="number"
                                             min="0"
-                                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                             value={additionalStock}
                                             onChange={(e) => setAdditionalStock(e.target.value)}
                                         />
                                     </div>
                                     <div className="flex items-end">
-                                        <div className="text-sm text-gray-600">
+                                        <div className="text-sm text-gray-600 dark:text-gray-300">
                                             {Number(formData.stockQuantity) || 0} + {Number(additionalStock) || 0} = <span className="font-bold text-green-700">{(Number(formData.stockQuantity) || 0) + (Number(additionalStock) || 0)}</span>
                                         </div>
                                     </div>
                                 </div>
                             )}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
                                 <textarea
                                     name="description"
                                     rows="3"
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                     value={formData.description}
                                     onChange={handleInputChange}
                                 ></textarea>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Product Image (Optional)</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Product Image (Optional)</label>
                                 <input
                                     type="file"
                                     accept="image/*"
                                     onChange={handleImageChange}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                 />
                                 {imagePreview && (
                                     <div className="mt-3">
                                         <img
                                             src={imagePreview}
                                             alt="Preview"
-                                            className="w-32 h-32 object-cover rounded-lg border-2 border-gray-300"
+                                            className="w-32 h-32 object-cover rounded-lg border-2 border-gray-300 dark:border-gray-700"
                                         />
                                     </div>
                                 )}
@@ -381,7 +381,7 @@ const handleSubmit = async (e) => {
                                 <button
                                     type="button"
                                     onClick={closeModal}
-                                    className="flex-1 px-4 py-2 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+                                    className="flex-1 px-4 py-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                                 >
                                     Cancel
                                 </button>

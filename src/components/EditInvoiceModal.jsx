@@ -151,12 +151,12 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4">
-            <div className="bg-white rounded-lg shadow-2xl w-full max-w-7xl h-full sm:h-[95vh] flex flex-col">
+            <div className="bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-2xl w-full max-w-7xl h-full sm:h-[95vh] flex flex-col">
                 {/* Header */}
-                <div className="flex justify-between items-center p-3 sm:p-6 border-b bg-blue-50 rounded-t-lg">
+                <div className="flex justify-between items-center p-3 sm:p-6 border-b bg-blue-50 dark:bg-gray-800 dark:border-gray-700 rounded-t-lg">
                     <div>
-                        <h2 className="text-lg sm:text-2xl font-bold text-gray-800">Edit Invoice & Rx</h2>
-                        <p className="text-xs sm:text-sm text-gray-600">Invoice: {invoice.invoice_number}</p>
+                        <h2 className="text-lg sm:text-2xl font-bold text-gray-800 dark:text-gray-100">Edit Invoice & Rx</h2>
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Invoice: {invoice.invoice_number}</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <button
@@ -166,7 +166,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                         >
                             <Printer size={18} /> Print
                         </button>
-                        <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+                        <button onClick={onClose} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
                             <X className="w-6 h-6" />
                         </button>
                     </div>
@@ -175,45 +175,45 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                 {/* Two Column Layout - Stack on mobile */}
                 <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
                     {/* Left Column - Edit Form */}
-                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 border-b lg:border-r lg:border-b-0 bg-gray-50">
+                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 border-b lg:border-r lg:border-b-0 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                         <form onSubmit={handleSubmit} className="space-y-6">
 
                             {/* Items Editing Section */}
                             <div className="space-y-4">
-                                <h3 className="font-bold text-lg border-b pb-2">Items & Prescription</h3>
+                                <h3 className="font-bold text-lg border-b dark:border-gray-700 pb-2">Items & Prescription</h3>
                                 {items.map((item, index) => (
-                                    <div key={item.id || index} className="bg-white p-4 rounded-lg border shadow-sm space-y-4">
+                                    <div key={item.id || index} className="bg-white dark:bg-gray-900 p-4 rounded-lg border dark:border-gray-700 shadow-sm space-y-4">
                                         {/* Item Details */}
                                         <div className="grid grid-cols-12 gap-2">
                                             <div className="col-span-6">
-                                                <label className="block text-xs font-bold text-gray-500 mb-1">Item Name</label>
+                                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Item Name</label>
                                                 <input
-                                                    className="w-full border p-2 rounded text-sm font-bold"
+                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 rounded text-sm font-bold"
                                                     value={item.item_name}
                                                     onChange={(e) => handleItemChange(index, 'item_name', e.target.value)}
                                                 />
                                             </div>
                                             <div className="col-span-2">
-                                                <label className="block text-xs font-bold text-gray-500 mb-1">Qty</label>
+                                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Qty</label>
                                                 <input
                                                     type="number"
-                                                    className="w-full border p-2 rounded text-sm text-center"
+                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 rounded text-sm text-center"
                                                     value={item.quantity}
                                                     onChange={(e) => handleItemChange(index, 'quantity', parseFloat(e.target.value))}
                                                 />
                                             </div>
                                             <div className="col-span-2">
-                                                <label className="block text-xs font-bold text-gray-500 mb-1">Rate</label>
+                                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Rate</label>
                                                 <input
                                                     type="number"
-                                                    className="w-full border p-2 rounded text-sm text-center"
+                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 rounded text-sm text-center"
                                                     value={item.unit_price}
                                                     onChange={(e) => handleItemChange(index, 'unit_price', parseFloat(e.target.value))}
                                                 />
                                             </div>
                                             <div className="col-span-2">
-                                                <label className="block text-xs font-bold text-gray-500 mb-1">Total</label>
-                                                <div className="w-full border p-2 rounded text-sm text-center bg-gray-100">
+                                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Total</label>
+                                                <div className="w-full border dark:border-gray-700 p-2 rounded text-sm text-center bg-gray-100 dark:bg-gray-700 dark:text-gray-100">
                                                     {(item.quantity * item.unit_price).toFixed(2)}
                                                 </div>
                                             </div>
@@ -221,24 +221,24 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
 
                                         {/* Rx Section (Conditional) */}
                                         {item.prescription_data && (
-                                            <div className="border-t pt-4 mt-2">
-                                                <h4 className="font-bold text-sm text-blue-600 mb-3 uppercase tracking-wide">Prescription Details</h4>
+                                            <div className="border-t dark:border-gray-700 pt-4 mt-2">
+                                                <h4 className="font-bold text-sm text-blue-600 dark:text-blue-400 mb-3 uppercase tracking-wide">Prescription Details</h4>
 
                                                 {/* Right Eye */}
                                                 <div className="mb-3">
                                                     <div className="flex items-center gap-2 mb-2">
                                                         <span className="w-16 font-bold text-right text-sm">Right</span>
-                                                        <div className="flex-1 grid grid-cols-3 gap-2 text-center text-xs font-bold text-gray-500">
+                                                        <div className="flex-1 grid grid-cols-3 gap-2 text-center text-xs font-bold text-gray-500 dark:text-gray-300">
                                                             <span>SPH</span><span>CYL</span><span>AXIS</span>
                                                         </div>
                                                     </div>
                                                     {/* Dist */}
                                                     <div className="flex items-center gap-2 mb-2">
-                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 uppercase">Dist</div>
+                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <input
                                                                 key={field}
-                                                                className="flex-1 border border-gray-300 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.right?.distance?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'right', 'distance', field, e.target.value)}
@@ -247,11 +247,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     </div>
                                                     {/* Near */}
                                                     <div className="flex items-center gap-2">
-                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 uppercase">Near</div>
+                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <input
                                                                 key={field}
-                                                                className="flex-1 border border-gray-300 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.right?.near?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'right', 'near', field, e.target.value)}
@@ -264,17 +264,17 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                 <div className="mb-3">
                                                     <div className="flex items-center gap-2 mb-2">
                                                         <span className="w-16 font-bold text-right text-sm">Left</span>
-                                                        <div className="flex-1 grid grid-cols-3 gap-2 text-center text-xs font-bold text-gray-500">
+                                                        <div className="flex-1 grid grid-cols-3 gap-2 text-center text-xs font-bold text-gray-500 dark:text-gray-300">
                                                             <span>SPH</span><span>CYL</span><span>AXIS</span>
                                                         </div>
                                                     </div>
                                                     {/* Dist */}
                                                     <div className="flex items-center gap-2 mb-2">
-                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 uppercase">Dist</div>
+                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <input
                                                                 key={field}
-                                                                className="flex-1 border border-gray-300 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.left?.distance?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'left', 'distance', field, e.target.value)}
@@ -283,11 +283,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     </div>
                                                     {/* Near */}
                                                     <div className="flex items-center gap-2">
-                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 uppercase">Near</div>
+                                                        <div className="w-16 text-right text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <input
                                                                 key={field}
-                                                                className="flex-1 border border-gray-300 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.left?.near?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'left', 'near', field, e.target.value)}
@@ -299,17 +299,17 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                 {/* Extra Fields */}
                                                 <div className="grid grid-cols-2 gap-4 mt-3">
                                                     <div>
-                                                        <label className="block text-xs font-bold text-gray-500 mb-1">Lens Type</label>
+                                                        <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Lens Type</label>
                                                         <input
-                                                            className="w-full border border-gray-300 p-2 text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                             value={item.prescription_data?.lensType || ''}
                                                             onChange={(e) => handleRxChange(index, 'extra', null, 'lensType', e.target.value)}
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="block text-xs font-bold text-gray-500 mb-1">Remarks</label>
+                                                        <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Remarks</label>
                                                         <input
-                                                            className="w-full border border-gray-300 p-2 text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                             value={item.prescription_data?.remarks || ''}
                                                             onChange={(e) => handleRxChange(index, 'extra', null, 'remarks', e.target.value)}
                                                         />
@@ -322,49 +322,49 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                             </div>
 
                             {/* Payment Section */}
-                            <div className="bg-white p-6 rounded-lg border shadow-sm">
-                                <h3 className="font-bold text-lg mb-4">Payment & Notes</h3>
+                            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg border dark:border-gray-700 shadow-sm">
+                                <h3 className="font-bold text-lg mb-4 dark:text-gray-100">Payment & Notes</h3>
 
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Discount</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Discount</label>
                                             <input
                                                 type="number"
                                                 min="0"
                                                 value={discount}
                                                 onChange={(e) => setDiscount(e.target.value)}
-                                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Add Payment</label>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add Payment</label>
                                             <input
                                                 type="number"
                                                 step="0.01"
                                                 min="0"
                                                 value={paymentAmount}
                                                 onChange={(e) => setPaymentAmount(e.target.value)}
-                                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
                                                 placeholder="0.00"
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="bg-gray-50 p-3 rounded text-sm space-y-1">
+                                    <div className="bg-gray-50 dark:bg-gray-800 dark:text-gray-100 p-3 rounded text-sm space-y-1">
                                         <div className="flex justify-between"><span>Subtotal:</span> <span className="font-bold">{totalAmount.toFixed(2)}</span></div>
                                         <div className="flex justify-between text-red-600"><span>Discount:</span> <span className="font-bold">-{parseFloat(discount || 0).toFixed(2)}</span></div>
-                                        <div className="flex justify-between border-t border-gray-300 pt-1"><span>Net Total:</span> <span className="font-bold">{finalAmount.toFixed(2)}</span></div>
+                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1"><span>Net Total:</span> <span className="font-bold">{finalAmount.toFixed(2)}</span></div>
                                         <div className="flex justify-between text-green-600"><span>Paid (Prev + New):</span> <span className="font-bold">{(parseFloat(invoice.paid_amount || 0) + (parseFloat(paymentAmount) || 0)).toFixed(2)}</span></div>
-                                        <div className="flex justify-between border-t border-gray-300 pt-1 text-lg"><span>Due:</span> <span className="font-bold">{dueAmount.toFixed(2)}</span></div>
+                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1 text-lg"><span>Due:</span> <span className="font-bold">{dueAmount.toFixed(2)}</span></div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
                                         <select
                                             value={paymentMethod}
                                             onChange={(e) => setPaymentMethod(e.target.value)}
-                                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                            className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
                                         >
                                             <option value="Cash">Cash</option>
                                             <option value="Card">Card</option>
@@ -374,11 +374,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes</label>
                                         <textarea
                                             value={notes}
                                             onChange={(e) => setNotes(e.target.value)}
-                                            className="w-full p-3 border rounded-lg h-24 focus:ring-2 focus:ring-blue-500"
+                                            className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg h-24 focus:ring-2 focus:ring-blue-500"
                                             placeholder="Invoice notes..."
                                         />
                                     </div>
@@ -386,11 +386,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                             </div>
 
                             {/* Footer Actions */}
-                            <div className="flex justify-end gap-3 pt-4 border-t sticky bottom-0 bg-gray-50 pb-4">
+                            <div className="flex justify-end gap-3 pt-4 border-t dark:border-gray-700 sticky bottom-0 bg-gray-50 dark:bg-gray-800 pb-4">
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-100 font-medium"
+                                    className="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 font-medium dark:text-gray-100"
                                     disabled={loading}
                                 >
                                     Cancel
@@ -408,9 +408,9 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                     </div>
 
                     {/* Right Column - Live Invoice Preview */}
-                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 flex justify-center items-start">
+                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 dark:bg-gray-900 flex justify-center items-start">
                         <div className="sticky top-2 sm:top-6 w-full">
-                            <h3 className="text-center font-bold text-gray-700 mb-2 sm:mb-4 text-sm sm:text-base">Live Preview</h3>
+                            <h3 className="text-center font-bold text-gray-700 dark:text-gray-300 mb-2 sm:mb-4 text-sm sm:text-base">Live Preview</h3>
                             <div className="shadow-2xl">
                                 <InvoicePrint
                                     ref={printRef}

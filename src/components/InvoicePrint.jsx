@@ -118,7 +118,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             {/* Customer Details */}
             <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'} text-xs`}>
                 <p className="mb-1"><strong>Date :</strong> {new Date(invoice.created_at || new Date()).toLocaleDateString('en-US')}</p>
-                <p className="mb-1"><strong>Customer :</strong> {customer?.name || 'Walk-In Customer'} ({customer?.phone || '00000000000'})</p>
+                <p className="mb-1"><strong>Customer :</strong> {customer?.name || 'Walk-In Customer'}{customer?.phone ? ` (${customer.phone})` : ''}</p>
                 <div className="flex justify-between mt-1">
                     {settings.show_served_by && <span>User: {user?.name || 'Admin User'}</span>}
                     {settings.show_date_time && <span>{new Date(invoice.created_at || new Date()).toLocaleTimeString('en-US', { hour12: true })}</span>}

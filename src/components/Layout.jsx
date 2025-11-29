@@ -1,7 +1,7 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LogOut, Menu, X, Moon, Sun } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { navigationItems } from '../config/navigation';
 
 export default function Layout() {
@@ -18,6 +18,10 @@ export default function Layout() {
         localStorage.setItem('pos-dark-mode', String(next));
         document.documentElement.classList.toggle('dark', next);
     };
+
+    useEffect(() => {
+        document.documentElement.classList.toggle('dark', darkMode);
+    }, []);
 
     const handleLogout = () => {
         logout();
@@ -51,9 +55,14 @@ export default function Layout() {
                 transform transition-transform duration-300 ease-in-out
                 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
             `}>
-                <div className="p-4 border-b mt-16 lg:mt-0">
-                    <h1 className="text-xl font-bold text-blue-600 hidden lg:block">Minar Optics</h1>
-                    <p className="text-sm text-gray-500 dark:text-gray-300">Welcome, {user?.name}</p>
+                <div className="p-4 border-b mt-16 lg:mt-0 flex items-center justify-between">
+                    <div>
+                        <h1 className="text-xl font-bold text-blue-600 hidden lg:block">Minar Optics</h1>
+                        <p className="text-sm text-gray-500 dark:text-gray-300">Welcome, {user?.name}</p>
+                    </div>
+                    <button onClick={toggleDark} className="ml-2 p-2 rounded text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hidden lg:block">
+                        {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    </button>
                 </div>
                 <nav className="p-4 space-y-2 overflow-y-auto h-[calc(100vh-120px)]">
                     {navigationItems.map((item) => (

@@ -84,7 +84,7 @@ export default function Users() {
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">User Management</h1>
+                <h1 className="text-2xl font-bold dark:text-gray-100">User Management</h1>
                 <button
                     onClick={() => {
                         setEditingUser(null);
@@ -97,9 +97,9 @@ export default function Users() {
                 </button>
             </div>
 
-            <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
                 <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
                             <th className="p-4 text-left">Name</th>
                             <th className="p-4 text-left">Email</th>
@@ -110,7 +110,7 @@ export default function Users() {
                     </thead>
                     <tbody>
                         {users.map(user => (
-                            <tr key={user.id} className="border-t">
+                            <tr key={user.id} className="border-t dark:border-gray-700">
                                 <td className="p-4">{user.name}</td>
                                 <td className="p-4">{user.email}</td>
                                 <td className="p-4">
@@ -141,25 +141,25 @@ export default function Users() {
 
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                         <h2 className="text-xl font-bold mb-4">{editingUser ? 'Edit User' : 'New User'}</h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">Name</label>
-                                    <input className="w-full border p-2 rounded" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+                                    <label className="block text-sm font-medium mb-1 dark:text-gray-300">Name</label>
+                                    <input className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">Email (optional)</label>
-                                    <input className="w-full border p-2 rounded" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                                    <label className="block text-sm font-medium mb-1 dark:text-gray-300">Email (optional)</label>
+                                    <input className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">Password {editingUser && '(Leave blank to keep)'}</label>
-                                    <input className="w-full border p-2 rounded" type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} />
+                                    <label className="block text-sm font-medium mb-1 dark:text-gray-300">Password {editingUser && '(Leave blank to keep)'}</label>
+                                    <input className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">Role</label>
-                                    <select className="w-full border p-2 rounded" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}>
+                                    <label className="block text-sm font-medium mb-1 dark:text-gray-300">Role</label>
+                                    <select className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}>
                                         <option value="SALESPERSON">Salesperson</option>
                                         <option value="MANAGER">Manager</option>
                                         <option value="ADMIN">Admin</option>
@@ -169,26 +169,26 @@ export default function Users() {
 
                             {formData.role !== 'ADMIN' && (
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Permissions</label>
+                                    <label className="block text-sm font-medium mb-2 dark:text-gray-300">Permissions</label>
                                     <div className="space-y-4">
                                         <div className="flex gap-2">
-                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: permissionsCatalog.list }))} className="px-3 py-1 text-xs border rounded">Select All</button>
-                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: [] }))} className="px-3 py-1 text-xs border rounded">Clear</button>
+                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: permissionsCatalog.list }))} className="px-3 py-1 text-xs border rounded dark:border-gray-700">Select All</button>
+                                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: [] }))} className="px-3 py-1 text-xs border rounded dark:border-gray-700">Clear</button>
                                         </div>
                                         {Object.entries(permissionsCatalog.groups || {}).map(([groupName, perms]) => (
                                             <div key={groupName}>
                                                 <div className="flex items-center justify-between mb-2">
-                                                    <h4 className="text-sm font-bold">{groupName}</h4>
+                                                    <h4 className="text-sm font-bold dark:text-gray-100">{groupName}</h4>
                                                     <div className="flex gap-2">
-                                                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: Array.from(new Set([...(prev.permissions || []), ...perms])) }))} className="px-2 py-1 text-xs border rounded">All</button>
-                                                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: (prev.permissions || []).filter(p => !perms.includes(p)) }))} className="px-2 py-1 text-xs border rounded">None</button>
+                                                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: Array.from(new Set([...(prev.permissions || []), ...perms])) }))} className="px-2 py-1 text-xs border rounded dark:border-gray-700">All</button>
+                                                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, permissions: (prev.permissions || []).filter(p => !perms.includes(p)) }))} className="px-2 py-1 text-xs border rounded dark:border-gray-700">None</button>
                                                     </div>
                                                 </div>
                                                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                                                     {perms.map(perm => (
                                                         <div key={perm}
                                                             onClick={() => togglePermission(perm)}
-                                                            className={`cursor-pointer border p-2 rounded flex items-center justify-between ${formData.permissions.includes(perm) ? 'bg-blue-50 border-blue-500' : 'hover:bg-gray-50'}`}
+                                                            className={`cursor-pointer border dark:border-gray-700 p-2 rounded flex items-center justify-between ${formData.permissions.includes(perm) ? 'bg-blue-50 border-blue-500' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                                                         >
                                                             <span className="text-xs">{perm}</span>
                                                             {formData.permissions.includes(perm) && <Check size={16} className="text-blue-600" />}
@@ -202,7 +202,7 @@ export default function Users() {
                             )}
 
                             <div className="flex justify-end space-x-2 mt-6">
-                                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 border rounded">Cancel</button>
+                                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 border rounded dark:border-gray-700">Cancel</button>
                                 <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
                             </div>
                         </form>

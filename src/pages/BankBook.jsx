@@ -117,7 +117,7 @@ export default function BankBook() {
     return (
         <div className="p-2 sm:p-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Bank Book</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">Bank Book</h2>
                 <button
                     onClick={() => { setShowForm(true); setEditingTransaction(null); resetForm(); }}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 w-full sm:w-auto touch-manipulation"
@@ -130,38 +130,38 @@ export default function BankBook() {
             {/* Summary Cards */}
             {summary && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <div className="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg border border-green-200 dark:border-green-800">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-xs sm:text-sm text-green-600 font-medium">Total Deposits</p>
-                                <p className="text-lg sm:text-2xl font-bold text-green-700">${summary.totalDeposits.toFixed(2)}</p>
+                                <p className="text-xs sm:text-sm text-green-600 dark:text-green-300 font-medium">Total Deposits</p>
+                                <p className="text-lg sm:text-2xl font-bold text-green-700 dark:text-green-200">${summary.totalDeposits.toFixed(2)}</p>
                             </div>
                             <TrendingUp className="w-8 h-8 text-green-600" />
                         </div>
                     </div>
-                    <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <div className="bg-red-50 dark:bg-red-900/30 p-4 rounded-lg border border-red-200 dark:border-red-800">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-xs sm:text-sm text-red-600 font-medium">Total Withdrawals</p>
-                                <p className="text-lg sm:text-2xl font-bold text-red-700">${summary.totalWithdrawals.toFixed(2)}</p>
+                                <p className="text-xs sm:text-sm text-red-600 dark:text-red-300 font-medium">Total Withdrawals</p>
+                                <p className="text-lg sm:text-2xl font-bold text-red-700 dark:text-red-200">${summary.totalWithdrawals.toFixed(2)}</p>
                             </div>
                             <TrendingDown className="w-8 h-8 text-red-600" />
                         </div>
                     </div>
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-xs sm:text-sm text-blue-600 font-medium">Current Balance</p>
-                                <p className="text-lg sm:text-2xl font-bold text-blue-700">৳{(summary.currentBalance || 0).toFixed(2)}</p>
+                                <p className="text-xs sm:text-sm text-blue-600 dark:text-blue-300 font-medium">Current Balance</p>
+                                <p className="text-lg sm:text-2xl font-bold text-blue-700 dark:text-blue-200">৳{(summary.currentBalance || 0).toFixed(2)}</p>
                             </div>
                             <Banknote className="w-8 h-8 text-blue-600" />
                         </div>
                     </div>
-                    <div className={`p-4 rounded-lg border ${summary.netChange >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                    <div className={`p-4 rounded-lg border ${summary.netChange >= 0 ? 'bg-green-50 border-green-200 dark:bg-green-900/30 dark:border-green-800' : 'bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-800'}`}>
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className={`text-xs sm:text-sm font-medium ${summary.netChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>Net Change</p>
-                                <p className={`text-lg sm:text-2xl font-bold ${summary.netChange >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                                <p className={`text-xs sm:text-sm font-medium ${summary.netChange >= 0 ? 'text-green-600 dark:text-green-300' : 'text-red-600 dark:text-red-300'}`}>Net Change</p>
+                                <p className={`text-lg sm:text-2xl font-bold ${summary.netChange >= 0 ? 'text-green-700 dark:text-green-200' : 'text-red-700 dark:text-red-200'}`}>
                                     ${Math.abs(summary.netChange).toFixed(2)}
                                 </p>
                             </div>
@@ -171,30 +171,30 @@ export default function BankBook() {
             )}
 
             {/* Filters */}
-            <div className="bg-white p-3 sm:p-4 rounded-lg shadow mb-4 sm:mb-6">
+            <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow mb-4 sm:mb-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <div>
-                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                        <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
                         <input
                             type="date"
-                            className="w-full border rounded p-2 text-sm"
+                            className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                             value={filters.startDate}
                             onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
                         />
                     </div>
                     <div>
-                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">End Date</label>
+                        <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Date</label>
                         <input
                             type="date"
-                            className="w-full border rounded p-2 text-sm"
+                            className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                             value={filters.endDate}
                             onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
                         />
                     </div>
                     <div>
-                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Type</label>
+                        <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
                         <select
-                            className="w-full border rounded p-2 text-sm"
+                            className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                             value={filters.type}
                             onChange={(e) => setFilters({ ...filters, type: e.target.value })}
                         >
@@ -205,10 +205,10 @@ export default function BankBook() {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
                         <input
                             type="text"
-                            className="w-full border rounded p-2 text-sm"
+                            className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                             placeholder="Filter by category"
                             value={filters.category}
                             onChange={(e) => setFilters({ ...filters, category: e.target.value })}
@@ -218,10 +218,10 @@ export default function BankBook() {
             </div>
 
             {/* Transactions Table */}
-            <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full min-w-[800px]">
-                        <thead className="bg-gray-50">
+                        <thead className="bg-gray-50 dark:bg-gray-700">
                             <tr>
                                 <th className="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                 <th className="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
@@ -232,18 +232,18 @@ export default function BankBook() {
                                 <th className="px-3 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="7" className="px-4 py-8 text-center text-gray-500">Loading...</td>
+                                    <td colSpan="7" className="px-4 py-8 text-center text-gray-500 dark:text-gray-300">Loading...</td>
                                 </tr>
                             ) : transactions.length === 0 ? (
                                 <tr>
-                                    <td colSpan="7" className="px-4 py-8 text-center text-gray-500">No transactions found</td>
+                                    <td colSpan="7" className="px-4 py-8 text-center text-gray-500 dark:text-gray-300">No transactions found</td>
                                 </tr>
                             ) : (
                                 transactions.map((transaction) => (
-                                    <tr key={transaction.id} className="hover:bg-gray-50">
+                                    <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm">
                                             {new Date(transaction.transaction_date).toLocaleDateString()}
                                         </td>
@@ -291,7 +291,7 @@ export default function BankBook() {
             {/* Transaction Form Modal */}
             {showForm && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4">
-                    <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                         <div className="p-4 sm:p-6 border-b">
                             <h3 className="text-lg sm:text-xl font-bold">
                                 {editingTransaction ? 'Edit Transaction' : 'Add Transaction'}
@@ -300,19 +300,19 @@ export default function BankBook() {
                         <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
                                     <input
                                         type="date"
-                                        className="w-full border rounded p-2 text-sm"
+                                        className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.transaction_date}
                                         onChange={(e) => setFormData({ ...formData, transaction_date: e.target.value })}
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
                                     <select
-                                        className="w-full border rounded p-2 text-sm"
+                                        className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.transaction_type}
                                         onChange={(e) => setFormData({ ...formData, transaction_type: e.target.value })}
                                         required
@@ -323,58 +323,58 @@ export default function BankBook() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
                                     <input
                                         type="number"
                                         step="0.01"
-                                        className="w-full border rounded p-2 text-sm"
+                                        className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.amount}
                                         onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bank Name</label>
                                     <input
                                         type="text"
-                                        className="w-full border rounded p-2 text-sm"
+                                        className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.bank_name}
                                         onChange={(e) => setFormData({ ...formData, bank_name: e.target.value })}
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                                    <label className="block text sm font-medium text-gray-700 dark:text-gray-300 mb-1">Account Number</label>
                                     <input
                                         type="text"
-                                        className="w-full border rounded p-2 text-sm"
+                                        className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.account_number}
                                         onChange={(e) => setFormData({ ...formData, account_number: e.target.value })}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Reference Number</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Reference Number</label>
                                     <input
                                         type="text"
-                                        className="w-full border rounded p-2 text-sm"
+                                        className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.reference_number}
                                         onChange={(e) => setFormData({ ...formData, reference_number: e.target.value })}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                                    <label className="block text sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
                                     <input
                                         type="text"
-                                        className="w-full border rounded p-2 text-sm"
+                                        className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.category}
                                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
                                 <textarea
-                                    className="w-full border rounded p-2 text-sm"
+                                    className="w-full border rounded p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                     rows="3"
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
