@@ -28,6 +28,27 @@ export default function InvoiceSettings() {
         paper_margin_mm: 4,
         compact_mode: true,
         farewell_text: 'Come Again',
+        text_styles: {
+            business_name: { font_family: 'Arial, sans-serif', font_size: 12, align: 'center', font_weight: '900' },
+            address: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '600' },
+            phone: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '700' },
+            email: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+            website: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+            invoice_banner: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
+            customer_section: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+            bill_header: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
+            table_header: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '900' },
+            table_body: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+            totals_labels: { font_family: 'Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
+            totals_values: { font_family: 'Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
+            in_words: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
+            note_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
+            note_text: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+            farewell_text_style: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
+            footer_text_style: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+            signature_customer_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+            signature_authorized_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+        },
     });
     const [uploadingLogo, setUploadingLogo] = useState(false);
 
@@ -153,6 +174,61 @@ export default function InvoiceSettings() {
                         <div>
                             <label className="block text-sm font-bold mb-1 dark:text-gray-200">Body Font Size (px)</label>
                             <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.body_font_size} onChange={e => setSettings({ ...settings, body_font_size: e.target.value })} />
+                        </div>
+                    </div>
+
+                    <div className="pt-4 border-t dark:border-gray-700">
+                        <h3 className="text-lg font-bold mb-3 dark:text-gray-100">Text Styles</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {[
+                                { key: 'business_name', label: 'Business Name' },
+                                { key: 'address', label: 'Address' },
+                                { key: 'phone', label: 'Phone' },
+                                { key: 'email', label: 'Email' },
+                                { key: 'website', label: 'Website' },
+                                { key: 'invoice_banner', label: 'Invoice Banner' },
+                                { key: 'customer_section', label: 'Customer Section' },
+                                { key: 'bill_header', label: 'Bill Header' },
+                                { key: 'table_header', label: 'Table Header' },
+                                { key: 'table_body', label: 'Table Body' },
+                                { key: 'totals_labels', label: 'Totals Labels' },
+                                { key: 'totals_values', label: 'Totals Values' },
+                                { key: 'in_words', label: 'In Words' },
+                                { key: 'note_label', label: 'Note Label' },
+                                { key: 'note_text', label: 'Note Text' },
+                                { key: 'farewell_text_style', label: 'Farewell Text' },
+                                { key: 'footer_text_style', label: 'Footer Text' },
+                                { key: 'signature_customer_label', label: 'Customer Signature Label' },
+                                { key: 'signature_authorized_label', label: 'Authorized Signature Label' },
+                            ].map(({ key, label }) => (
+                                <div key={key} className="border dark:border-gray-700 rounded p-3">
+                                    <div className="text-sm font-bold mb-2 dark:text-gray-200">{label}</div>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        <input
+                                            className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded text-xs"
+                                            placeholder="Font family"
+                                            value={settings.text_styles?.[key]?.font_family || ''}
+                                            onChange={e => setSettings(prev => ({ ...prev, text_styles: { ...prev.text_styles, [key]: { ...prev.text_styles?.[key], font_family: e.target.value } } }))}
+                                        />
+                                        <input
+                                            type="number"
+                                            className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded text-xs"
+                                            placeholder="Size"
+                                            value={settings.text_styles?.[key]?.font_size || ''}
+                                            onChange={e => setSettings(prev => ({ ...prev, text_styles: { ...prev.text_styles, [key]: { ...prev.text_styles?.[key], font_size: Number(e.target.value) } } }))}
+                                        />
+                                        <select
+                                            className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded text-xs"
+                                            value={settings.text_styles?.[key]?.align || 'left'}
+                                            onChange={e => setSettings(prev => ({ ...prev, text_styles: { ...prev.text_styles, [key]: { ...prev.text_styles?.[key], align: e.target.value } } }))}
+                                        >
+                                            <option value="left">Left</option>
+                                            <option value="center">Center</option>
+                                            <option value="right">Right</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
 

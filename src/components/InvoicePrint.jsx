@@ -15,19 +15,40 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
         header_font_size: 12,
         body_font_size: 10,
         show_note: true,
-        show_signature: false
+        show_signature: false,
+        text_styles: {
+            business_name: { font_family: 'Arial, sans-serif', font_size: 12, align: 'center', font_weight: '900' },
+            address: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '600' },
+            phone: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '700' },
+            email: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+            website: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+            invoice_banner: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
+            customer_section: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+            bill_header: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
+            table_header: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '900' },
+            table_body: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+            totals_labels: { font_family: 'Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
+            totals_values: { font_family: 'Arial, sans-serif', font_size: 10, align: 'right', font_weight: '700' },
+            in_words: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
+            note_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
+            note_text: { font_family: 'Arial, sans-serif', font_size: 10, align: 'left', font_weight: '400' },
+            farewell_text_style: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
+            footer_text_style: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+            signature_customer_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+            signature_authorized_label: { font_family: 'Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
+        }
     });
 
     useEffect(() => {
         const fetchSettings = async () => {
             try {
                 if (settingsOverride) {
-                    setSettings(settingsOverride);
+                    setSettings(prev => ({ ...prev, ...settingsOverride, text_styles: { ...prev.text_styles, ...(settingsOverride.text_styles || {}) } }));
                     return;
                 }
                 const res = await api.get('/invoice-settings');
                 if (res.data) {
-                    setSettings(res.data);
+                    setSettings(prev => ({ ...prev, ...res.data, text_styles: { ...prev.text_styles, ...(res.data.text_styles || {}) } }));
                 }
             } catch (err) {
                 console.error('Could not load invoice settings, using defaults:', err);
@@ -85,6 +106,18 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
     );
 
+    const styleFor = (key) => {
+        const s = settings.text_styles?.[key] || {};
+        const weightMap = { normal: 400, bold: 700, black: 900 };
+        const fw = s.font_weight && weightMap[s.font_weight] ? weightMap[s.font_weight] : (s.font_weight && Number.isFinite(Number(s.font_weight)) ? Number(s.font_weight) : undefined);
+        return {
+            fontFamily: s.font_family || undefined,
+            fontSize: s.font_size ? `${s.font_size}px` : undefined,
+            textAlign: s.align || undefined,
+            fontWeight: fw,
+        };
+    };
+
     return (
         <div ref={ref} className="bg-white text-black" style={{ width: contentWidth, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm` }}>
             {/* Header */}
@@ -94,29 +127,29 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                         <img src={settings.logo_url} alt="Logo" style={{ height: `${settings.logo_size_px || 24}px`, display: 'inline-block' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                     </div>
                 )}
-                <h1 className="font-black uppercase tracking-wide mb-1" style={{ fontSize: `${settings.header_font_size || 12}px`, color: accent }}>{settings.business_name}</h1>
-                <div className="text-xs font-semibold">
+                <h1 className="uppercase tracking-wide mb-1" style={{ ...styleFor('business_name'), color: accent }}>{settings.business_name}</h1>
+                <div className="text-xs" style={styleFor('address')}>
                     {settings.show_icons && <MapPinIcon style={{ display: 'inline', marginRight: 4, color: accent }} />}{settings.address}
                 </div>
-                <div className="text-xs font-bold">
+                <div className="text-xs" style={styleFor('phone')}>
                     {settings.show_icons && <PhoneIcon style={{ display: 'inline', marginRight: 4, color: accent }} />}{settings.phone}
                 </div>
                 {settings.email && (
-                    <div className="text-xs">
+                    <div className="text-xs" style={styleFor('email')}>
                         {settings.show_icons && <MailIcon style={{ display: 'inline', marginRight: 4, color: accent }} />}{settings.email}
                     </div>
                 )}
-                {settings.website && <div className="text-xs">{settings.website}</div>}
+                {settings.website && <div className="text-xs" style={styleFor('website')}>{settings.website}</div>}
                 {settings.map_link && <div className="text-xs"><a href={settings.map_link} target="_blank" rel="noreferrer" style={{ color: accent }}>Location</a></div>}
             </div>
 
             {/* Invoice Banner */}
-            <div className="text-center font-black py-1 mb-2 text-xs" style={{ backgroundColor: accent, color: 'white' }}>
+            <div className="py-1 mb-2 text-xs" style={{ backgroundColor: accent, color: 'white', ...styleFor('invoice_banner') }}>
                 INVOICE NO : {invoice.invoice_number}
             </div>
 
             {/* Customer Details */}
-            <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'} text-xs`}>
+            <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'} text-xs`} style={styleFor('customer_section')}>
                 <p className="mb-1"><strong>Date :</strong> {new Date(invoice.created_at || new Date()).toLocaleDateString('en-US')}</p>
                 <p className="mb-1"><strong>Customer :</strong> {customer?.name || 'Walk-In Customer'}{customer?.phone ? ` (${customer.phone})` : ''}</p>
                 <div className="flex justify-between mt-1">
@@ -194,17 +227,17 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             )}
 
             {/* Bill Header */}
-            <div className="text-center font-black mb-2 text-xs">Bill</div>
+            <div className="mb-2 text-xs" style={styleFor('bill_header')}>Bill</div>
 
             {/* Bill Table */}
-            <table className="w-full text-left mb-2 border-collapse border border-black" style={{ fontSize: `${settings.compact_mode ? 9 : 10}px`, borderWidth: gridThickness }}>
+            <table className="w-full text-left mb-2 border-collapse border border-black" style={{ fontSize: settings.text_styles?.table_body?.font_size ? `${settings.text_styles.table_body.font_size}px` : `${settings.compact_mode ? 9 : 10}px`, borderWidth: gridThickness, fontFamily: settings.text_styles?.table_body?.font_family }}>
                 <thead>
                     <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                        <th className="py-1 px-2 border-r border-black text-center font-black">Sl</th>
-                        <th className="py-1 px-2 border-r border-black font-black">Item</th>
-                        <th className="py-1 px-2 border-r border-black text-center font-black">Qty</th>
-                        <th className="py-1 px-2 border-r border-black text-center font-black">Rate</th>
-                        <th className="py-1 px-2 text-center font-black">Total</th>
+                        <th className="py-1 px-2 border-r border-black text-center" style={styleFor('table_header')}>Sl</th>
+                        <th className="py-1 px-2 border-r border-black" style={styleFor('table_header')}>Item</th>
+                        <th className="py-1 px-2 border-r border-black text-center" style={styleFor('table_header')}>Qty</th>
+                        <th className="py-1 px-2 border-r border-black text-center" style={styleFor('table_header')}>Rate</th>
+                        <th className="py-1 px-2 text-center" style={styleFor('table_header')}>Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -224,47 +257,47 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             <div className="flex justify-end text-xs mb-2">
                 <div style={{ width: '45%' }}>
                     <div className="flex justify-between py-1">
-                        <span className="font-bold">Total</span>
-                        <span className="font-bold">{Number(invoice.total_amount).toFixed(1)}</span>
+                        <span style={styleFor('totals_labels')}>Total</span>
+                        <span style={styleFor('totals_values')}>{Number(invoice.total_amount).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1">
-                        <span className="font-bold">Discount</span>
-                        <span className="font-bold">{Number(invoice.discount || 0).toFixed(1)}</span>
+                        <span style={styleFor('totals_labels')}>Discount</span>
+                        <span style={styleFor('totals_values')}>{Number(invoice.discount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black">
-                        <span className="font-bold">Paid Payment</span>
-                        <span className="font-bold">{Number(invoice.paid_amount || 0).toFixed(1)}</span>
+                        <span style={styleFor('totals_labels')}>Paid Payment</span>
+                        <span style={styleFor('totals_values')}>{Number(invoice.paid_amount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black">
-                        <span className="font-bold">Due</span>
-                        <span className="font-bold">{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
+                        <span style={styleFor('totals_labels')}>Due</span>
+                        <span style={styleFor('totals_values')}>{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
                     </div>
                 </div>
             </div>
 
             {/* In Words */}
-            <div className="text-xs font-bold mb-2">
+            <div className="mb-2" style={styleFor('in_words')}>
                 In Words : {amountInWords.toLowerCase()} Taka Only .
             </div>
 
             {/* Note */}
             {settings.show_note && invoice.note && (
                 <div className="mb-2 text-xs">
-                    <strong>Note:</strong> {invoice.note}
+                    <span style={styleFor('note_label')}>Note:</span> <span style={styleFor('note_text')}>{invoice.note}</span>
                 </div>
             )}
 
             <div className="text-center mt-4 text-xs">
-                <p className="font-black mb-1">{settings.farewell_text || 'Come Again'}</p>
-                <p className="font-normal">{settings.footer_text} 👓</p>
+                <p className="mb-1" style={styleFor('farewell_text_style')}>{settings.farewell_text || 'Come Again'}</p>
+                <p style={styleFor('footer_text_style')}>{settings.footer_text} 👓</p>
                 {settings.show_signature && (
                     <div className="mt-4">
                         <div className="flex justify-between text-xs">
                             <div style={{ width: '45%' }}>
-                                <div className="border-t border-black pt-1">Customer Signature</div>
+                                <div className="border-t border-black pt-1" style={styleFor('signature_customer_label')}>Customer Signature</div>
                             </div>
                             <div style={{ width: '45%' }}>
-                                <div className="border-t border-black pt-1">Authorized Signature</div>
+                                <div className="border-t border-black pt-1" style={styleFor('signature_authorized_label')}>Authorized Signature</div>
                             </div>
                         </div>
                     </div>
