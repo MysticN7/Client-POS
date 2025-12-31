@@ -132,18 +132,16 @@ export default function SalesInvoices() {
                     <label className="font-bold text-gray-700 dark:text-gray-300">Date :</label>
                     <input
                         type="date"
-                        className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
-                        disabled={!hasPermission('VIEW_MONTHLY_SALES')}
                     />
                     <span className="font-bold text-gray-700">To</span>
                     <input
                         type="date"
-                        className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
-                        disabled={!hasPermission('VIEW_MONTHLY_SALES')}
                     />
                 </div>
 
