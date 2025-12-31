@@ -83,7 +83,8 @@ const Inventory = () => {
             closeModal();
         } catch (error) {
             console.error('Error saving product:', error);
-            alert('Failed to save product');
+            const msg = error.response?.data?.message || 'Failed to save product';
+            alert(`Error: ${msg}`);
         }
     };
 
