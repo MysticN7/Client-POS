@@ -171,7 +171,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
                         return (
                             <div>
-                                <table className="w-full text-center border-collapse border border-black" style={{ fontSize: '10px', borderWidth: gridThickness }}>
+                                <table className="w-full text-center border-collapse border border-black" style={{ fontSize: `${settings.rx_font_size || 10}px`, borderWidth: gridThickness }}>
                                     <thead>
                                         <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
                                             <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness }}></th>
@@ -189,27 +189,31 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                                            <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness }}>Dist</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'sph')}</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'cyl')}</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'axis')}</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'distance', 'sph')}</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'distance', 'cyl')}</td>
-                                            <td className="py-1 px-1 font-bold">{getVal('left', 'distance', 'axis')}</td>
-                                        </tr>
-                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                                            <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness }}>Near</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'sph')}</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'cyl')}</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'axis')}</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'near', 'sph')}</td>
-                                            <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'near', 'cyl')}</td>
-                                            <td className="py-1 px-1 font-bold">{getVal('left', 'near', 'axis')}</td>
-                                        </tr>
+                                        {(rx.right?.distance?.sph || rx.right?.distance?.cyl || rx.right?.distance?.axis || rx.left?.distance?.sph || rx.left?.distance?.cyl || rx.left?.distance?.axis) && (
+                                            <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
+                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness }}>Dist</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'cyl')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'axis')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'distance', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'distance', 'cyl')}</td>
+                                                <td className="py-1 px-1 font-bold">{getVal('left', 'distance', 'axis')}</td>
+                                            </tr>
+                                        )}
+                                        {(rx.right?.near?.sph || rx.right?.near?.cyl || rx.right?.near?.axis || rx.left?.near?.sph || rx.left?.near?.cyl || rx.left?.near?.axis) && (
+                                            <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
+                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness }}>Near</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'cyl')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'axis')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'near', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'near', 'cyl')}</td>
+                                                <td className="py-1 px-1 font-bold">{getVal('left', 'near', 'axis')}</td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
-                                <table className="w-full border-collapse border-l border-r border-b border-black mb-2" style={{ fontSize: '10px', borderWidth: gridThickness }}>
+                                <table className="w-full border-collapse border-l border-r border-b border-black mb-2" style={{ fontSize: `${settings.rx_font_size || 10}px`, borderWidth: gridThickness }}>
                                     <tbody>
                                         <tr>
                                             <td className="border-r border-black py-1 px-2 font-bold text-left" style={{ width: '50%', borderRightWidth: gridThickness }}>

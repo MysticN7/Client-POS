@@ -104,6 +104,12 @@ export default function POS() {
         }
     };
 
+    const updatePrice = (index, newPrice) => {
+        const newCart = [...cart];
+        newCart[index].price = Number(newPrice);
+        setCart(newCart);
+    };
+
     const updatePrescription = (index, eye, type, field, value) => {
         const newCart = [...cart];
         if (eye === 'extra') {
@@ -347,9 +353,17 @@ export default function POS() {
                 <div className="flex-1 min-h-0 overflow-auto p-3 sm:p-4 space-y-4 lg:max-h-none">
                     {cart.map((item, index) => (
                         <div key={index} className="border-b pb-4">
-                            <div className="flex justify-between mb-2">
                                 <span className="font-medium text-sm sm:text-base">{item.name}</span>
-                                <span className="font-bold text-sm sm:text-base">৳{(item.price * item.quantity).toFixed(2)}</span>
+                                <div className="flex items-center space-x-1">
+                                    <span className="text-xs text-gray-500">৳</span>
+                                    <input
+                                        type="number"
+                                        className="w-20 border rounded px-1 text-right text-sm"
+                                        value={item.price}
+                                        onChange={(e) => updatePrice(index, e.target.value)}
+                                        onClick={(e) => e.target.select()}
+                                    />
+                                </div>
                             </div>
 
                             {item.is_prescription_required && (
@@ -554,37 +568,39 @@ export default function POS() {
                         </button>
                     </div>
                 </div>
-            </div>
+            </div >
 
-            {/* Held Transactions Modal */}
-            {showHeldModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-                    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded shadow-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-base sm:text-lg font-bold">Held Transactions</h3>
-                            <button onClick={() => setShowHeldModal(false)} className="text-red-500 font-bold text-xl">X</button>
-                        </div>
-                        {heldTransactions.length === 0 ? <p className="text-sm sm:text-base">No held transactions.</p> : (
-                            <div className="space-y-2">
-                                {heldTransactions.map(t => (
-                                    <div key={t.id} className="border dark:border-gray-700 p-3 rounded flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-50 dark:hover:bg-gray-700 gap-2">
-                                        <div className="flex-1">
-                                            <p className="font-bold text-sm sm:text-base">{t.date}</p>
-                                            <p className="text-xs sm:text-sm">Customer: {t.customer?.name || 'Walk-in'}</p>
-                                            <p className="text-xs sm:text-sm">Items: {t.cart.length} | Total: ৳{t.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</p>
-                                        </div>
-                                        <div className="flex space-x-2 w-full sm:w-auto">
-                                            <button onClick={() => handleRecall(t)} className="flex-1 sm:flex-none bg-green-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Recall</button>
-                                            <button onClick={() => deleteHeld(t.id)} className="flex-1 sm:flex-none bg-red-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Delete</button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+        {/* Held Transactions Modal */ }
+    {
+        showHeldModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded shadow-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-base sm:text-lg font-bold">Held Transactions</h3>
+                        <button onClick={() => setShowHeldModal(false)} className="text-red-500 font-bold text-xl">X</button>
                     </div>
+                    {heldTransactions.length === 0 ? <p className="text-sm sm:text-base">No held transactions.</p> : (
+                        <div className="space-y-2">
+                            {heldTransactions.map(t => (
+                                <div key={t.id} className="border dark:border-gray-700 p-3 rounded flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-50 dark:hover:bg-gray-700 gap-2">
+                                    <div className="flex-1">
+                                        <p className="font-bold text-sm sm:text-base">{t.date}</p>
+                                        <p className="text-xs sm:text-sm">Customer: {t.customer?.name || 'Walk-in'}</p>
+                                        <p className="text-xs sm:text-sm">Items: {t.cart.length} | Total: ৳{t.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</p>
+                                    </div>
+                                    <div className="flex space-x-2 w-full sm:w-auto">
+                                        <button onClick={() => handleRecall(t)} className="flex-1 sm:flex-none bg-green-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Recall</button>
+                                        <button onClick={() => deleteHeld(t.id)} className="flex-1 sm:flex-none bg-red-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Delete</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
-            )}
-        </div>
+            </div>
+        )
+    }
+        </div >
     );
 }
 const NO_IMAGE_PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='14'>No Image</text></svg>";

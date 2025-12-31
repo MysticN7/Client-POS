@@ -177,6 +177,10 @@ export default function InvoiceSettings() {
                             <label className="block text-sm font-bold mb-1 dark:text-gray-200">Body Font Size (px)</label>
                             <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.body_font_size} onChange={e => setSettings({ ...settings, body_font_size: e.target.value })} />
                         </div>
+                        <div>
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Rx Font Size (px)</label>
+                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.rx_font_size || 10} onChange={e => setSettings({ ...settings, rx_font_size: Number(e.target.value) })} />
+                        </div>
                     </div>
 
                     <div className="pt-4 border-t dark:border-gray-700">

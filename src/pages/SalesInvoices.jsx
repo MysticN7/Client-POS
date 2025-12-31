@@ -3,8 +3,10 @@ import api from '../api/axios';
 import { Search } from 'lucide-react';
 import InvoiceDetailModal from '../components/InvoiceDetailModal';
 import EditInvoiceModal from '../components/EditInvoiceModal';
+import { useAuth } from '../context/AuthContext';
 
 export default function SalesInvoices() {
+    const { hasPermission } = useAuth();
     const [invoices, setInvoices] = useState([]);
     const [summary, setSummary] = useState(null);
 
@@ -28,6 +30,10 @@ export default function SalesInvoices() {
     }, []);
 
     const fetchInvoices = async () => {
+        if (!hasPermission('VIEW_DAILY_SALES')) {
+            setLoading(false);
+            return;
+        }
         setLoading(true);
         try {
             const start = new Date(startDate);
