@@ -30,7 +30,12 @@ export default function SalesInvoices() {
     const fetchInvoices = async () => {
         setLoading(true);
         try {
-            const res = await api.get(`/sales/date-range?startDate=${startDate}&endDate=${endDate}&search=${search}`);
+            const start = new Date(startDate);
+            start.setHours(0, 0, 0, 0);
+            const end = new Date(endDate);
+            end.setHours(23, 59, 59, 999);
+
+            const res = await api.get(`/sales/date-range?startDate=${start.toISOString()}&endDate=${end.toISOString()}&search=${search}`);
             setInvoices(res.data.sales);
             setSummary(res.data.summary);
         } catch (err) {
