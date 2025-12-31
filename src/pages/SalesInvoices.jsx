@@ -136,10 +136,10 @@ export default function SalesInvoices() {
                         value={startDate}
                         onChange={(e) => {
                             const newDate = e.target.value;
-                            if (startDate === endDate) {
+                            setStartDate(newDate);
+                            if (!hasPermission('VIEW_MONTHLY_SALES') || startDate === endDate) {
                                 setEndDate(newDate);
                             }
-                            setStartDate(newDate);
                         }}
                     />
                     <span className="font-bold text-gray-700">To</span>
@@ -147,7 +147,13 @@ export default function SalesInvoices() {
                         type="date"
                         className="border border-gray-300 dark:border-gray-700 rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-100"
                         value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
+                        onChange={(e) => {
+                            const newDate = e.target.value;
+                            setEndDate(newDate);
+                            if (!hasPermission('VIEW_MONTHLY_SALES')) {
+                                setStartDate(newDate);
+                            }
+                        }}
                     />
                 </div>
 
