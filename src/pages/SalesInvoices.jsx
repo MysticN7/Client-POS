@@ -137,7 +137,7 @@ export default function SalesInvoices() {
                         onChange={(e) => {
                             const newDate = e.target.value;
                             setStartDate(newDate);
-                            if (!hasPermission('VIEW_MONTHLY_SALES') || startDate === endDate) {
+                            if (!hasPermission('VIEW_MONTHLY_SALES')) {
                                 setEndDate(newDate);
                             }
                         }}
