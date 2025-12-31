@@ -17,10 +17,6 @@ export default function Dashboard() {
     }, []);
 
     const fetchDashboardData = async () => {
-        if (!hasPermission('VIEW_MONTHLY_SALES')) {
-            setLoading(false);
-            return;
-        }
         setLoading(true);
         try {
             const response = await api.get('/reports/dashboard-stats');
