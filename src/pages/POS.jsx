@@ -359,7 +359,7 @@ export default function POS() {
                                     <span className="text-xs text-gray-500">৳</span>
                                     <input
                                         type="number"
-                                        className="w-20 border rounded px-1 text-right text-sm"
+                                        className="w-20 border rounded px-1 text-right text-sm dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
                                         value={item.price}
                                         onChange={(e) => updatePrice(index, e.target.value)}
                                         onClick={(e) => e.target.select()}
