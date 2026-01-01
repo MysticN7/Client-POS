@@ -335,7 +335,7 @@ export default function POS() {
                 </div>
 
                 {/* Category Navigation */}
-                <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+                <div className="flex gap-2 mb-4 overflow-x-auto py-2 scrollbar-hide">
                     {categories.map(cat => (
                         <button
                             key={cat}

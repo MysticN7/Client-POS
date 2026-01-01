@@ -193,7 +193,7 @@ const Inventory = () => {
                         onClick={() => setIsCategoryModalOpen(true)}
                         className="bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-purple-700 transition"
                     >
-                        categories
+                        Categories
                     </button>
                     <button
                         onClick={() => openModal()}
