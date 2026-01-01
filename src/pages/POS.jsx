@@ -496,11 +496,11 @@ export default function POS() {
                                                     <div key={field} className="flex-1">
                                                         <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
                                                         <input
+                                                            type="tel"
                                                             className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                             placeholder="-"
                                                             value={item.prescription_data.right.distance[field]}
                                                             onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
-                                                            inputMode="decimal"
                                                         />
                                                     </div>
                                                 ))}
@@ -513,11 +513,11 @@ export default function POS() {
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1">
                                                         <input
+                                                            type="tel"
                                                             className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                             placeholder="-"
                                                             value={item.prescription_data.right.near[field]}
                                                             onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
-                                                            inputMode="decimal"
                                                         />
                                                     </div>
                                                 ))}
@@ -536,11 +536,11 @@ export default function POS() {
                                                     <div key={field} className="flex-1">
                                                         <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
                                                         <input
+                                                            type="tel"
                                                             className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                             placeholder="-"
                                                             value={item.prescription_data.left.distance[field]}
                                                             onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
-                                                            inputMode="decimal"
                                                         />
                                                     </div>
                                                 ))}
@@ -553,11 +553,11 @@ export default function POS() {
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1">
                                                         <input
+                                                            type="tel"
                                                             className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                                             placeholder="-"
                                                             value={item.prescription_data.left.near[field]}
                                                             onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
-                                                            inputMode="decimal"
                                                         />
                                                     </div>
                                                 ))}
