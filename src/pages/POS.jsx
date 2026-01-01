@@ -266,7 +266,7 @@ export default function POS() {
 
         // Otherwise filter by selected category
         if (selectedCategory === 'ALL') return true;
-        return p.category === selectedCategory;
+        return p.category && String(p.category).toLowerCase() === String(selectedCategory).toLowerCase();
     });
 
     return (
@@ -340,9 +340,9 @@ export default function POS() {
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-colors flex-shrink-0 min-w-[5rem] text-center ${selectedCategory === cat
-                                ? 'bg-blue-600 text-white shadow-md'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                            className={`px-6 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all transform active:scale-95 flex-shrink-0 ${selectedCategory === cat
+                                ? 'bg-blue-600 text-white shadow-md scale-105'
+                                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
                                 }`}
                         >
                             {cat}
