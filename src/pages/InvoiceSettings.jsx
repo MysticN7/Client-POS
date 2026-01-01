@@ -23,7 +23,7 @@ const DEFAULT_TEXT_STYLES = {
     footer_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
     signature_customer_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
     signature_authorized_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
-    rx_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 15, align: 'center', font_weight: '700' },
+    rx_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'center', font_weight: '700' },
     rx_value: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 15, align: 'center', font_weight: '400' },
 };
 
