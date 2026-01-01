@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Search } from 'lucide-react';
+import { Search, Trash2 } from 'lucide-react';
 import InvoiceDetailModal from '../components/InvoiceDetailModal';
 import EditInvoiceModal from '../components/EditInvoiceModal';
 import { useAuth } from '../context/AuthContext';
@@ -221,12 +221,15 @@ export default function SalesInvoices() {
                                         </button>
                                     </td>
                                     <td className="border border-gray-200 px-4 py-2 text-center">
-                                        <button
-                                            onClick={() => handleDeleteInvoice(invoice.id)}
-                                            className="bg-red-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-700"
-                                        >
-                                            Delete
-                                        </button>
+                                        {(hasPermission('DELETE_SALES') || hasPermission('ADMIN')) && (
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); handleDeleteInvoice(invoice._id); }}
+                                                className="p-1 text-red-600 hover:bg-red-50 rounded"
+                                                title="Delete Invoice"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        )}
                                     </td>
                                 </tr>
                             ))
