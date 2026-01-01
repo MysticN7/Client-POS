@@ -10,10 +10,18 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkLoggedIn = async () => {
             const token = localStorage.getItem('token');
-            const storedUser = localStorage.getItem('user');
-
-            if (token && storedUser) {
-                setUser(JSON.parse(storedUser));
+            if (token) {
+                try {
+                    // Always verify token and get fresh user data
+                    const res = await api.get('/auth/me');
+                    setUser(res.data);
+                    localStorage.setItem('user', JSON.stringify(res.data));
+                } catch (err) {
+                    // Token invalid or expired
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    setUser(null);
+                }
             }
             setLoading(false);
         };
