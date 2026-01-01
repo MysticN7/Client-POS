@@ -97,7 +97,7 @@ export default function Users() {
                 </button>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden overflow-x-auto">
                 <table className="w-full">
                     <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
@@ -144,7 +144,7 @@ export default function Users() {
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                         <h2 className="text-xl font-bold mb-4">{editingUser ? 'Edit User' : 'New User'}</h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium mb-1 dark:text-gray-300">Name</label>
                                     <input className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />

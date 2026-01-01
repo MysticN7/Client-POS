@@ -70,7 +70,7 @@ export default function Expenses() {
                 </div>
             )}
 
-            <div className="bg-white dark:bg-gray-800 rounded shadow overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded shadow overflow-hidden overflow-x-auto">
                 <table className="w-full text-left">
                     <thead className="bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-700">
                         <tr>
