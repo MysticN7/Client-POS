@@ -335,14 +335,14 @@ export default function POS() {
                 </div>
 
                 {/* Category Navigation */}
-                <div className="flex gap-2 mb-4 overflow-x-auto py-2 scrollbar-hide">
+                <div className="flex flex-wrap gap-2 mb-4">
                     {categories.map(cat => (
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all transform active:scale-95 flex-shrink-0 shadow-sm ${selectedCategory === cat
-                                ? 'bg-indigo-600 text-white shadow-indigo-200 shadow-lg scale-105'
-                                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-2 border-transparent hover:border-indigo-100 hover:bg-indigo-50 dark:hover:bg-gray-700'
+                            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all transform active:scale-95 shadow-sm border-2 ${selectedCategory === cat
+                                ? 'bg-indigo-600 text-white border-indigo-600 shadow-indigo-200'
+                                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-transparent hover:border-indigo-100 hover:bg-indigo-50 dark:hover:bg-gray-700'
                                 }`}
                         >
                             {cat}
@@ -361,7 +361,7 @@ export default function POS() {
                         autoComplete="off"
                     />
                     {searchTerm && (
-                        <div className="absolute z-50 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-b-lg shadow-2xl max-h-80 overflow-y-auto top-full mt-1 divide-y dark:divide-gray-700 ring-1 ring-black ring-opacity-5">
+                        <div className="absolute z-[100] w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-b-lg shadow-2xl max-h-80 overflow-y-auto top-full mt-1 divide-y dark:divide-gray-700 ring-1 ring-black ring-opacity-5">
                             {products.filter(p => {
                                 const term = searchTerm.toLowerCase();
                                 return (p.name && p.name.toLowerCase().includes(term)) || (p.sku && p.sku.toLowerCase().includes(term));
