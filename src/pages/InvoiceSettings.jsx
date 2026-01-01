@@ -63,7 +63,17 @@ export default function InvoiceSettings() {
     const fetchSettings = async () => {
         try {
             const res = await api.get('/invoice-settings');
-            setSettings(res.data);
+            if (res.data) {
+                // Merge fetched settings with defaults to ensure all styles exist
+                const mergedSettings = {
+                    ...res.data,
+                    text_styles: {
+                        ...DEFAULT_TEXT_STYLES,
+                        ...(res.data.text_styles || {})
+                    }
+                };
+                setSettings(mergedSettings);
+            }
         } catch (err) {
             console.error(err);
         }
