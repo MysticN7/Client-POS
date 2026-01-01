@@ -40,6 +40,7 @@ export default function InvoiceSettings() {
         show_date_time: true,
         header_font_size: 12,
         body_font_size: 10,
+        rx_font_size: 10,
         show_note: true,
         show_signature: false,
         accent_color: '#1f2937',
@@ -183,11 +184,11 @@ export default function InvoiceSettings() {
                         </div>
                         <div>
                             <label className="block text-sm font-bold mb-1 dark:text-gray-200">Header Font Size (px)</label>
-                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.header_font_size} onChange={e => setSettings({ ...settings, header_font_size: e.target.value })} />
+                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.header_font_size} onChange={e => setSettings({ ...settings, header_font_size: Number(e.target.value) })} />
                         </div>
                         <div>
                             <label className="block text-sm font-bold mb-1 dark:text-gray-200">Body Font Size (px)</label>
-                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.body_font_size} onChange={e => setSettings({ ...settings, body_font_size: e.target.value })} />
+                            <input type="number" className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.body_font_size} onChange={e => setSettings({ ...settings, body_font_size: Number(e.target.value) })} />
                         </div>
                         <div>
                             <label className="block text-sm font-bold mb-1 dark:text-gray-200">Rx Font Size (px)</label>
