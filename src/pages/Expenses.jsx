@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { Plus, Trash2 } from 'lucide-react';
+import { formatDate } from '../utils/dateUtils';
 
 export default function Expenses() {
     const [expenses, setExpenses] = useState([]);
@@ -84,7 +85,7 @@ export default function Expenses() {
                     <tbody>
                         {expenses.map(expense => (
                             <tr key={expense.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td className="p-4">{new Date(expense.date).toLocaleDateString()}</td>
+                                <td className="p-4">{formatDate(expense.date)}</td>
                                 <td className="p-4">{expense.category}</td>
                                 <td className="p-4">{expense.description}</td>
                                 <td className="p-4 font-bold text-red-600">৳{expense.amount}</td>

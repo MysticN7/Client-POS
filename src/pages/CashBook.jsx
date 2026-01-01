@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { Plus, Edit2, Trash2, TrendingUp, TrendingDown, Wallet } from 'lucide-react';
+import { formatDate } from '../utils/dateUtils';
 
 export default function CashBook() {
     const [transactions, setTransactions] = useState([]);
@@ -238,7 +239,7 @@ export default function CashBook() {
                                 transactions.map((transaction) => (
                                     <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm">
-                                            {new Date(transaction.transaction_date).toLocaleDateString()}
+                                            {formatDate(transaction.transaction_date)}
                                         </td>
                                         <td className="px-3 sm:px-4 py-3">
                                             <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${transaction.transaction_type === 'cash_in' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'

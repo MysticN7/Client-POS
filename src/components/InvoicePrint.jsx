@@ -1,4 +1,5 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { useRef, forwardRef, useEffect, useState } from 'react';
+import { formatDate } from '../utils/dateUtils';
 import api from '../api/axios';
 
 const DEFAULT_TEXT_STYLES = {
@@ -153,10 +154,10 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
             {/* Customer Details */}
             <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'} text-xs`} style={styleFor('customer_section')}>
-                <p className="mb-1"><strong>Date :</strong> {new Date(invoice.created_at || new Date()).toLocaleDateString('en-US')}</p>
-                <p className="mb-1"><strong>Customer :</strong> <span style={{ fontWeight: 900 }}>{customer?.name || 'Walk-In Customer'}</span>{customer?.phone ? ` (${customer.phone})` : ''}</p>
+                <p className="mb-1"><strong>Date :</strong> {formatDate(invoice.created_at || new Date())}</p>
+                <p className="mb-1"><strong>Customer :</strong> <span style={{ fontWeight: 900 }}>{customer?.name || 'Walk-In Customer'}</span>{customer?.phone ? <span style={{ fontWeight: 900 }}> ({customer.phone})</span> : ''}</p>
                 <div className="flex justify-between mt-1">
-                    {settings.show_served_by && <span>User: <span style={{ fontWeight: 900 }}>{user?.name || 'Admin User'}</span></span>}
+                    {settings.show_served_by && <span>User: <span style={{ fontWeight: 700 }}>{user?.name || 'Admin User'}</span></span>}
                     {settings.show_date_time && <span>{new Date(invoice.created_at || new Date()).toLocaleTimeString('en-US', { hour12: true })}</span>}
                 </div>
             </div>
@@ -265,19 +266,19 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                 <div style={{ width: '45%' }}>
                     <div className="flex justify-between py-1">
                         <span style={styleFor('totals_labels')}>Total</span>
-                        <span style={styleFor('totals_values')}>৳{Number(invoice.total_amount).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}>{settings.currency_symbol || '৳'}{Number(invoice.total_amount).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1">
                         <span style={styleFor('totals_labels')}>Discount</span>
-                        <span style={styleFor('totals_values')}>৳{Number(invoice.discount || 0).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}>{settings.currency_symbol || '৳'}{Number(invoice.discount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dashed' }}>
                         <span style={styleFor('totals_labels')}>Paid Payment</span>
-                        <span style={styleFor('totals_values')}>৳{Number(invoice.paid_amount || 0).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}>{settings.currency_symbol || '৳'}{Number(invoice.paid_amount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dashed' }}>
                         <span style={styleFor('totals_labels')}>Due</span>
-                        <span style={styleFor('totals_values')}>৳{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}>{settings.currency_symbol || '৳'}{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
                     </div>
                 </div>
             </div>

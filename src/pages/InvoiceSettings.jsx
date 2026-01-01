@@ -53,6 +53,7 @@ export default function InvoiceSettings() {
         paper_margin_mm: 4,
         compact_mode: true,
         farewell_text: 'Come Again',
+        currency_symbol: '৳',
         text_styles: DEFAULT_TEXT_STYLES,
     });
     const [uploadingLogo, setUploadingLogo] = useState(false);
@@ -164,6 +165,14 @@ export default function InvoiceSettings() {
                                 <option value="modern">Modern</option>
                                 <option value="classic">Classic</option>
                                 <option value="minimal">Minimal</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold mb-1 dark:text-gray-200">Currency Symbol</label>
+                            <select className="w-full border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 rounded" value={settings.currency_symbol || '৳'} onChange={e => setSettings({ ...settings, currency_symbol: e.target.value })}>
+                                <option value="BDT">BDT</option>
+                                <option value="TK">TK</option>
+                                <option value="৳">৳</option>
                             </select>
                         </div>
                         <div>

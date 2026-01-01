@@ -2,6 +2,7 @@ import { X, Printer } from 'lucide-react';
 import { useRef } from 'react';
 // import { useReactToPrint } from 'react-to-print';
 import InvoicePrint from './InvoicePrint';
+import { formatDate } from '../utils/dateUtils';
 
 export default function InvoiceDetailModal({ invoice, onClose }) {
     if (!invoice) return null;
@@ -42,7 +43,7 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
                         </div>
                         <div>
                             <h3 className="text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-300 mb-2">Date</h3>
-                            <p className="text-sm sm:text-lg">{new Date(invoice.createdAt).toLocaleString()}</p>
+                            <p className="text-sm sm:text-lg">{formatDate(invoice.createdAt, true)}</p>
                         </div>
                         <div>
                             <h3 className="text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-300 mb-2">Status</h3>

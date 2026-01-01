@@ -1,0 +1,13 @@
+export const formatDate = (dateString, showTime = false) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
+
+    if (showTime) {
+        return `${formattedDate} ${date.toLocaleTimeString('en-US', { hour12: true })}`;
+    }
+    return formattedDate;
+};

@@ -4,6 +4,7 @@ import { Search } from 'lucide-react';
 import InvoiceDetailModal from '../components/InvoiceDetailModal';
 import EditInvoiceModal from '../components/EditInvoiceModal';
 import { useAuth } from '../context/AuthContext';
+import { formatDate } from '../utils/dateUtils';
 
 export default function SalesInvoices() {
     const { hasPermission } = useAuth();
@@ -196,7 +197,7 @@ export default function SalesInvoices() {
                                     <td className="border border-gray-200 px-4 py-2 text-center text-sm">{index + 1}</td>
                                     <td className="border border-gray-200 px-4 py-2 text-sm">
                                         <div className="font-bold">{invoice.Customer?.name || 'Walk-in Customer'}</div>
-                                        <div className="text-xs text-gray-500 dark:text-gray-300">{new Date(invoice.createdAt).toLocaleDateString()} {new Date(invoice.createdAt).toLocaleTimeString()}</div>
+                                        <div className="text-xs text-gray-500 dark:text-gray-300">{formatDate(invoice.createdAt)} {new Date(invoice.createdAt).toLocaleTimeString()}</div>
                                         <div className="text-xs text-gray-500">Bill: {invoice.invoice_number}</div>
                                     </td>
                                     <td className="border border-gray-200 px-4 py-2 text-center text-sm">0</td>

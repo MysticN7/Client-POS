@@ -4,6 +4,7 @@ import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { RefreshCw, Banknote, AlertCircle, TrendingUp, Briefcase, Lock, Sparkles, Activity, Eye, EyeOff } from 'lucide-react';
 import { navigationItems } from '../config/navigation';
+import { formatDate } from '../utils/dateUtils';
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -98,7 +99,7 @@ export default function Dashboard() {
                     </div>
                     <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
                         <Activity className="w-4 h-4" />
-                        {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                        {formatDate(new Date())}
                     </p>
                 </div>
                 <button

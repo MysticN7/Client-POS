@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { Plus, Edit2, Trash2, TrendingUp, TrendingDown, Banknote } from 'lucide-react';
+import { formatDate } from '../utils/dateUtils';
 
 export default function BankBook() {
     const [transactions, setTransactions] = useState([]);
@@ -245,7 +246,7 @@ export default function BankBook() {
                                 transactions.map((transaction) => (
                                     <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm">
-                                            {new Date(transaction.transaction_date).toLocaleDateString()}
+                                            {formatDate(transaction.transaction_date)}
                                         </td>
                                         <td className="px-3 sm:px-4 py-3">
                                             <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${transaction.transaction_type === 'deposit' ? 'bg-green-100 text-green-800' :
