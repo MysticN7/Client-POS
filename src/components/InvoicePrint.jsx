@@ -22,7 +22,7 @@ const DEFAULT_TEXT_STYLES = {
     signature_customer_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
     signature_authorized_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
     rx_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'center', font_weight: '700' },
-    rx_value: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 15, align: 'center', font_weight: '700' },
+    rx_value: { font_family: 'Arial, Helvetica, sans-serif', font_size: 15, align: 'center', font_weight: '700' },
 };
 
 const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverride }, ref) => {
@@ -218,11 +218,11 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                         )}
                                     </tbody>
                                 </table>
-                                <table className="w-full mb-2" style={{ fontSize: `${settings.rx_font_size || 15}px`, border: '1px dashed black', borderTop: 'none', borderCollapse: 'collapse' }}>
+                                <table className="w-full mb-2" style={{ fontSize: `${settings.rx_font_size || 15}px`, border: '1px dashed black', borderTop: 'none', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                                     <tbody>
                                         <tr>
-                                            <td className="py-1 px-2 font-bold text-left" style={{ ...styleFor('rx_header') }}>
-                                                Lens: <span style={styleFor('rx_value')}>{rx.lensType || ''}</span>
+                                            <td className="py-1 px-2 font-bold text-left" style={{ ...styleFor('rx_header'), border: 'none', width: '100%' }}>
+                                                Lens: <span style={{ ...styleFor('rx_value'), fontWeight: '700' }}>{rx.lensType || ''}</span>
                                             </td>
                                         </tr>
                                     </tbody>
