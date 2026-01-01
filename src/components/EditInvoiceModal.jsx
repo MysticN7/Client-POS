@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, DollarSign, Printer, Save, Plus, Trash2 } from 'lucide-react';
-import { useReactToPrint } from 'react-to-print';
+// import { useReactToPrint } from 'react-to-print';
 import api from '../api/axios';
 import InvoicePrint from './InvoicePrint';
 
@@ -26,12 +26,9 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
         };
         fetchSettings();
     }, []);
-    const handlePrint = useReactToPrint({
-        contentRef: printRef,
-        removeAfterPrint: true,
-        pageStyle: `@page { size: ${printSettings.paper_width_mm}mm auto; margin: ${printSettings.paper_margin_mm}mm; } 
-                    @media print { body { -webkit-print-color-adjust: exact; } }`
-    });
+    const handlePrint = () => {
+        window.print();
+    };
 
     useEffect(() => {
         if (invoice) {
@@ -415,7 +412,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                     <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 dark:bg-gray-900 flex justify-center items-start print:w-full print:bg-white">
                         <div className="sticky top-2 sm:top-6 w-full">
                             <h3 className="text-center font-bold text-gray-700 dark:text-gray-300 mb-2 sm:mb-4 text-sm sm:text-base print:hidden">Live Preview</h3>
-                            <div className="shadow-2xl print:shadow-none">
+                            <div className="shadow-2xl print:shadow-none print-only">
                                 <InvoicePrint
                                     ref={printRef}
                                     invoice={invoiceForPrint}

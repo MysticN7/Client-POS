@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useReactToPrint } from 'react-to-print';
+import { useRef, useEffect, useState } from 'react';
+// import { useReactToPrint } from 'react-to-print';
 import InvoicePrint from './InvoicePrint';
 import { Check, Printer, X } from 'lucide-react';
 import api from '../api/axios';
@@ -21,13 +21,9 @@ const InvoiceModal = ({ invoice, items, customer, user, onClose }) => {
         fetchSettings();
     }, []);
 
-    const handlePrint = useReactToPrint({
-        contentRef: componentRef,
-        documentTitle: `Invoice-${invoice?.invoice_number || 'New'}`,
-        removeAfterPrint: true,
-        pageStyle: `@page { size: ${printSettings.paper_width_mm}mm auto; margin: ${printSettings.paper_margin_mm}mm; } 
-                    @media print { body { -webkit-print-color-adjust: exact; } }`
-    });
+    const handlePrint = () => {
+        window.print();
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4 print:p-0 print:bg-white print:absolute print:z-[9999]">
@@ -41,13 +37,15 @@ const InvoiceModal = ({ invoice, items, customer, user, onClose }) => {
 
                 {/* Invoice Preview */}
                 <div className="mb-4">
-                    <InvoicePrint
-                        ref={componentRef}
-                        invoice={invoice}
-                        items={items}
-                        customer={customer}
-                        user={user}
-                    />
+                    <div className="print-only">
+                        <InvoicePrint
+                            ref={componentRef}
+                            invoice={invoice}
+                            items={items}
+                            customer={customer}
+                            user={user}
+                        />
+                    </div>
                 </div>
 
                 {/* Actions */}

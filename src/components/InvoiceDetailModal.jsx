@@ -1,6 +1,6 @@
 import { X, Printer } from 'lucide-react';
 import { useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
+// import { useReactToPrint } from 'react-to-print';
 import InvoicePrint from './InvoicePrint';
 
 export default function InvoiceDetailModal({ invoice, onClose }) {
@@ -9,10 +9,9 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
     const dueAmount = parseFloat(invoice.final_amount) - parseFloat(invoice.paid_amount);
 
     const printRef = useRef();
-    const handlePrint = useReactToPrint({
-        contentRef: printRef,
-        removeAfterPrint: true
-    });
+    const handlePrint = () => {
+        window.print();
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4 print:p-0 print:bg-white print:absolute print:z-[9999]">
@@ -234,7 +233,7 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
                 </div>
             </div>
             {/* Hidden Print Component - Visible ONLY on Print */}
-            <div className="hidden print:block print:w-full print:h-full">
+            <div className="hidden print:block print:w-full print:h-full print-only">
                 <InvoicePrint
                     ref={printRef}
                     invoice={invoice}
