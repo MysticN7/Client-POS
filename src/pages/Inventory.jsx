@@ -140,8 +140,12 @@ const Inventory = () => {
     };
 
     const filteredProducts = products.filter(product => {
-        const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.sku.toLowerCase().includes(searchTerm.toLowerCase());
+        if (!product) return false;
+        const name = product.name ? String(product.name).toLowerCase() : '';
+        const sku = product.sku ? String(product.sku).toLowerCase() : '';
+        const term = searchTerm ? String(searchTerm).toLowerCase() : '';
+
+        const matchesSearch = name.includes(term) || sku.includes(term);
         const matchesCategory = categoryFilter === 'ALL' || product.category === categoryFilter;
         return matchesSearch && matchesCategory;
     });

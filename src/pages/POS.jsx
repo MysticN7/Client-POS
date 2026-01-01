@@ -221,7 +221,14 @@ export default function POS() {
         setLastInvoice(null);
     };
 
-    const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.sku.includes(searchTerm));
+    const filteredProducts = products.filter(p => {
+        if (!p) return false;
+        const name = p.name ? String(p.name).toLowerCase() : '';
+        const sku = p.sku ? String(p.sku).toLowerCase() : '';
+        const term = searchTerm ? String(searchTerm).toLowerCase() : '';
+
+        return name.includes(term) || sku.includes(term);
+    });
 
     return (
         <div className="flex flex-col lg:flex-row h-full gap-4 lg:gap-6 dark:text-gray-100">
