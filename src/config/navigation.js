@@ -106,15 +106,7 @@ export const navigationItems = [
         color: 'bg-cyan-500',
         showInQuickActions: true
     },
-    {
-        id: 'job-cards',
-        title: 'Job Cards',
-        path: '/job-cards',
-        icon: Briefcase,
-        permission: 'JOBCARDS',
-        color: 'bg-amber-500',
-        showInQuickActions: true
-    },
+
     {
         id: 'invoice-settings',
         title: 'Invoice Settings',

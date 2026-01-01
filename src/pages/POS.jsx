@@ -22,6 +22,24 @@ export default function POS() {
     const [discount, setDiscount] = useState(0);
     const [paidAmount, setPaidAmount] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState('Cash');
+
+
+    const availableLensTypes = products
+        .filter(p => p.category === 'LENS')
+        .map(p => p.name);
+
+    // Simple color assignment for lens types
+    const getLensColor = (index) => {
+        const colors = [
+            'bg-blue-100 text-blue-800 border-blue-200',
+            'bg-purple-100 text-purple-800 border-purple-200',
+            'bg-green-100 text-green-800 border-green-200',
+            'bg-indigo-100 text-indigo-800 border-indigo-200',
+            'bg-teal-100 text-teal-800 border-teal-200',
+            'bg-orange-100 text-orange-800 border-orange-200'
+        ];
+        return colors[index % colors.length];
+    };
     const [note, setNote] = useState('');
     const [lastInvoice, setLastInvoice] = useState(null);
     const [heldTransactions, setHeldTransactions] = useState([]);
@@ -370,6 +388,7 @@ export default function POS() {
                                         value={item.price}
                                         onChange={(e) => updatePrice(index, e.target.value)}
                                         onClick={(e) => e.target.select()}
+                                        inputMode="decimal"
                                     />
                                 </div>
                             </div>
@@ -392,6 +411,7 @@ export default function POS() {
                                                         placeholder="-"
                                                         value={item.prescription_data.right.distance[field]}
                                                         onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
+                                                        inputMode="decimal"
                                                     />
                                                 </div>
                                             ))}
@@ -408,6 +428,7 @@ export default function POS() {
                                                         placeholder="-"
                                                         value={item.prescription_data.right.near[field]}
                                                         onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
+                                                        inputMode="decimal"
                                                     />
                                                 </div>
                                             ))}
@@ -430,6 +451,7 @@ export default function POS() {
                                                         placeholder="-"
                                                         value={item.prescription_data.left.distance[field]}
                                                         onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
+                                                        inputMode="decimal"
                                                     />
                                                 </div>
                                             ))}
@@ -446,6 +468,7 @@ export default function POS() {
                                                         placeholder="-"
                                                         value={item.prescription_data.left.near[field]}
                                                         onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
+                                                        inputMode="decimal"
                                                     />
                                                 </div>
                                             ))}
@@ -464,6 +487,18 @@ export default function POS() {
                                                 value={item.prescription_data.lensType}
                                                 onChange={(e) => updatePrescription(index, 'extra', null, 'lensType', e.target.value)}
                                             />
+                                        </div>
+                                        {/* Quick Lens Selection */}
+                                        <div className="flex flex-wrap gap-2 pl-16 sm:pl-20">
+                                            {availableLensTypes.map((type, i) => (
+                                                <button
+                                                    key={type}
+                                                    onClick={() => updatePrescription(index, 'extra', null, 'lensType', type)}
+                                                    className={`px-2 py-1 rounded text-[10px] sm:text-xs border ${getLensColor(i)} hover:opacity-80 transition-opacity`}
+                                                >
+                                                    {type}
+                                                </button>
+                                            ))}
                                         </div>
                                         <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
                                             <div className="w-16 sm:w-20 text-right">
@@ -520,6 +555,7 @@ export default function POS() {
                                 className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right text-sm"
                                 value={discount}
                                 onChange={e => setDiscount(e.target.value)}
+                                inputMode="decimal"
                             />
                         </div>
                     </div>
@@ -537,6 +573,7 @@ export default function POS() {
                                 className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right font-bold text-green-600 text-sm"
                                 value={paidAmount}
                                 onChange={e => setPaidAmount(e.target.value)}
+                                inputMode="decimal"
                             />
                         </div>
                         <div className="flex justify-between items-center w-1/2">

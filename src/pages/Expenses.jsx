@@ -84,7 +84,7 @@ export default function Expenses() {
                     <tbody>
                         {expenses.map(expense => (
                             <tr key={expense.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td className="p-4">{expense.date}</td>
+                                <td className="p-4">{new Date(expense.date).toLocaleDateString()}</td>
                                 <td className="p-4">{expense.category}</td>
                                 <td className="p-4">{expense.description}</td>
                                 <td className="p-4 font-bold text-red-600">৳{expense.amount}</td>

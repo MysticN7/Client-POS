@@ -6,7 +6,7 @@ import POS from './pages/POS';
 import Inventory from './pages/Inventory';
 import Reports from './pages/Reports';
 import Expenses from './pages/Expenses';
-import JobCards from './pages/JobCards';
+
 import InvoiceSettings from './pages/InvoiceSettings';
 import SalesInvoices from './pages/SalesInvoices';
 import BankBook from './pages/BankBook';
@@ -41,7 +41,7 @@ function App() {
             <Route path="inventory" element={<ProtectedRoute permission="INVENTORY"><Inventory /></ProtectedRoute>} />
             <Route path="reports" element={<ProtectedRoute permission="REPORTS"><Reports /></ProtectedRoute>} />
             <Route path="expenses" element={<ProtectedRoute permission="EXPENSES"><Expenses /></ProtectedRoute>} />
-            <Route path="job-cards" element={<ProtectedRoute permission="JOBCARDS"><JobCards /></ProtectedRoute>} />
+
             <Route path="invoice-settings" element={<ProtectedRoute permission="SETTINGS"><InvoiceSettings /></ProtectedRoute>} />
             <Route path="sales-invoices" element={<ProtectedRoute permission="POS"><SalesInvoices /></ProtectedRoute>} />
             <Route path="customers" element={<ProtectedRoute permission="POS"><Customers /></ProtectedRoute>} />
