@@ -12,8 +12,8 @@ const DEFAULT_TEXT_STYLES = {
     bill_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 12, align: 'center', font_weight: '900' },
     table_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'left', font_weight: '900' },
     table_body: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'left', font_weight: '500' },
-    totals_labels: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'right', font_weight: '800' },
-    totals_values: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'right', font_weight: '800' },
+    totals_labels: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'right', font_weight: '900' },
+    totals_values: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'right', font_weight: '900' },
     in_words: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'left', font_weight: '700' },
     note_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'left', font_weight: '700' },
     note_text: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 11, align: 'left', font_weight: '500' },
@@ -154,9 +154,9 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             {/* Customer Details */}
             <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'} text-xs`} style={styleFor('customer_section')}>
                 <p className="mb-1"><strong>Date :</strong> {new Date(invoice.created_at || new Date()).toLocaleDateString('en-US')}</p>
-                <p className="mb-1"><strong>Customer :</strong> {customer?.name || 'Walk-In Customer'}{customer?.phone ? ` (${customer.phone})` : ''}</p>
+                <p className="mb-1"><strong>Customer :</strong> <span style={{ fontWeight: 900 }}>{customer?.name || 'Walk-In Customer'}</span>{customer?.phone ? ` (${customer.phone})` : ''}</p>
                 <div className="flex justify-between mt-1">
-                    {settings.show_served_by && <span>User: {user?.name || 'Admin User'}</span>}
+                    {settings.show_served_by && <span>User: <span style={{ fontWeight: 900 }}>{user?.name || 'Admin User'}</span></span>}
                     {settings.show_date_time && <span>{new Date(invoice.created_at || new Date()).toLocaleTimeString('en-US', { hour12: true })}</span>}
                 </div>
             </div>
