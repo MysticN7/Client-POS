@@ -28,7 +28,7 @@ export default function POS() {
 
 
     const availableLensTypes = products
-        .filter(p => p.category === 'LENS')
+        .filter(p => p.category && (String(p.category).toUpperCase() === 'LENS' || String(p.category).toUpperCase() === 'LENSES'))
         .map(p => p.name);
 
     // Simple color assignment for lens types
@@ -99,7 +99,8 @@ export default function POS() {
     };
 
     const addToCart = (product) => {
-        const isPrescription = product.category === 'FRAMES' || product.category === 'LENS';
+        const category = product.category ? String(product.category).toUpperCase() : '';
+        const isPrescription = category === 'FRAMES' || category === 'LENS' || category === 'LENSES';
 
         if (isPrescription) {
             setCart([...cart, {
