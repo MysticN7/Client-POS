@@ -28,7 +28,7 @@ export default function POS() {
 
 
     const availableLensTypes = products
-        .filter(p => p.category && (String(p.category).toUpperCase() === 'LENS' || String(p.category).toUpperCase() === 'LENSES'))
+        .filter(p => p.category && (String(p.category).trim().toUpperCase() === 'LENS' || String(p.category).trim().toUpperCase() === 'LENSES') && p.stockQuantity > 0)
         .map(p => p.name);
 
     // Simple color assignment for lens types
