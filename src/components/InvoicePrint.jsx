@@ -173,21 +173,21 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
                         return (
                             <div>
-                                <table className="w-full text-center border-collapse border border-black" style={{ fontSize: `${settings.rx_font_size || 10}px`, borderWidth: gridThickness }}>
+                                <table className="w-full text-center border-collapse border-b border-black" style={{ fontSize: `${settings.rx_font_size || 10}px`, borderBottomWidth: gridThickness, borderStyle: 'dotted' }}>
                                     {/* HEADERS */}
                                     <thead>
-                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                                            <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness }}></th>
+                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness, borderStyle: 'dotted' }}>
+                                            <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted' }}></th>
                                             <th className="border-r border-black py-1 px-1 font-black" colSpan="3" style={styleFor('rx_header')}>Right</th>
                                             <th className="py-1 px-1 font-black" colSpan="3" style={styleFor('rx_header')}>Left</th>
                                         </tr>
-                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                                            <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness }}></th>
-                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>SPH</th>
-                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>CYL</th>
-                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>AXIS</th>
-                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>SPH</th>
-                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>CYL</th>
+                                        <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness, borderStyle: 'dotted' }}>
+                                            <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted' }}></th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_header') }}>SPH</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_header') }}>CYL</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_header') }}>AXIS</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_header') }}>SPH</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_header') }}>CYL</th>
                                             <th className="py-1 px-1 font-black" style={styleFor('rx_header')}>AXIS</th>
                                         </tr>
                                     </thead>
@@ -195,37 +195,34 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                     {/* VALUES */}
                                     <tbody>
                                         {(rx.right?.distance?.sph || rx.right?.distance?.cyl || rx.right?.distance?.axis || rx.left?.distance?.sph || rx.left?.distance?.cyl || rx.left?.distance?.axis) && (
-                                            <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness, ...styleFor('rx_header') }}>Dist</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'distance', 'sph')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'distance', 'cyl')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'distance', 'axis')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'distance', 'sph')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'distance', 'cyl')}</td>
+                                            <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness, borderStyle: 'dotted' }}>
+                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_header') }}>Dist</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'cyl')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'axis')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'cyl')}</td>
                                                 <td className="py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'distance', 'axis')}</td>
                                             </tr>
                                         )}
                                         {(rx.right?.near?.sph || rx.right?.near?.cyl || rx.right?.near?.axis || rx.left?.near?.sph || rx.left?.near?.cyl || rx.left?.near?.axis) && (
-                                            <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness, ...styleFor('rx_header') }}>Near</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'near', 'sph')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'near', 'cyl')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'near', 'axis')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'near', 'sph')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'near', 'cyl')}</td>
+                                            <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness, borderStyle: 'dotted' }}>
+                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_header') }}>Near</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('right', 'near', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('right', 'near', 'cyl')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('right', 'near', 'axis')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('left', 'near', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('rx_value') }}>{getVal('left', 'near', 'cyl')}</td>
                                                 <td className="py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'near', 'axis')}</td>
                                             </tr>
                                         )}
                                     </tbody>
                                 </table>
-                                <table className="w-full border-collapse border-l border-r border-b border-black mb-2" style={{ fontSize: `${settings.rx_font_size || 10}px`, borderWidth: gridThickness }}>
+                                <table className="w-full border-collapse border-l border-r border-b border-black mb-2" style={{ fontSize: `${settings.rx_font_size || 10}px`, borderWidth: gridThickness, borderStyle: 'dotted' }}>
                                     <tbody>
                                         <tr>
-                                            <td className="border-r border-black py-1 px-2 font-bold text-left" style={{ width: '50%', borderRightWidth: gridThickness }}>
-                                                Lens: {rx.lensType || ''}
-                                            </td>
-                                            <td className="py-1 px-2 font-bold text-left">
-                                                Rem: {rx.remarks || ''}
+                                            <td className="py-1 px-2 font-bold text-left" style={{ ...styleFor('rx_header') }}>
+                                                Lens: <span style={styleFor('rx_value')}>{rx.lensType || ''}</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -240,23 +237,23 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             <div className="mb-2 text-xs" style={styleFor('bill_header')}>Bill</div>
 
             {/* Bill Table */}
-            <table className="w-full text-left mb-2 border-collapse border border-black" style={{ fontSize: settings.text_styles?.table_body?.font_size ? `${settings.text_styles.table_body.font_size}px` : `${settings.compact_mode ? 9 : 10}px`, borderWidth: gridThickness, fontFamily: settings.text_styles?.table_body?.font_family }}>
+            <table className="w-full text-left mb-2 border-collapse border-b border-black" style={{ fontSize: settings.text_styles?.table_body?.font_size ? `${settings.text_styles.table_body.font_size}px` : `${settings.compact_mode ? 9 : 10}px`, borderWidth: gridThickness, fontFamily: settings.text_styles?.table_body?.font_family, borderStyle: 'dotted' }}>
                 <thead>
-                    <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                        <th className="py-1 px-2 border-r border-black text-center" style={styleFor('table_header')}>Sl</th>
-                        <th className="py-1 px-2 border-r border-black" style={styleFor('table_header')}>Item</th>
-                        <th className="py-1 px-2 border-r border-black text-center" style={styleFor('table_header')}>Qty</th>
-                        <th className="py-1 px-2 border-r border-black text-center" style={styleFor('table_header')}>Rate</th>
+                    <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness, borderStyle: 'dotted' }}>
+                        <th className="py-1 px-2 border-r border-black text-center" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('table_header') }}>Sl</th>
+                        <th className="py-1 px-2 border-r border-black" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('table_header') }}>Item</th>
+                        <th className="py-1 px-2 border-r border-black text-center" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('table_header') }}>Qty</th>
+                        <th className="py-1 px-2 border-r border-black text-center" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted', ...styleFor('table_header') }}>Rate</th>
                         <th className="py-1 px-2 text-center" style={styleFor('table_header')}>Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     {parsedItems.map((item, index) => (
                         <tr key={index}>
-                            <td className="py-1 px-2 border-r border-black text-center">{index + 1}</td>
-                            <td className="py-1 px-2 border-r border-black">{item.item_name || item.name}</td>
-                            <td className="py-1 px-2 border-r border-black text-center">{item.quantity}</td>
-                            <td className="py-1 px-2 border-r border-black text-center">{item.unit_price || item.price}</td>
+                            <td className="py-1 px-2 border-r border-black text-center" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted' }}>{index + 1}</td>
+                            <td className="py-1 px-2 border-r border-black" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted' }}>{item.item_name || item.name}</td>
+                            <td className="py-1 px-2 border-r border-black text-center" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted' }}>{item.quantity}</td>
+                            <td className="py-1 px-2 border-r border-black text-center" style={{ borderRightWidth: gridThickness, borderStyle: 'dotted' }}>{item.unit_price || item.price}</td>
                             <td className="py-1 px-2 text-center">{((item.unit_price || item.price) * item.quantity).toFixed(2)}</td>
                         </tr>
                     ))}
@@ -274,11 +271,11 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                         <span style={styleFor('totals_labels')}>Discount</span>
                         <span style={styleFor('totals_values')}>৳{Number(invoice.discount || 0).toFixed(1)}</span>
                     </div>
-                    <div className="flex justify-between py-1 border-t border-black">
+                    <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dotted' }}>
                         <span style={styleFor('totals_labels')}>Paid Payment</span>
                         <span style={styleFor('totals_values')}>৳{Number(invoice.paid_amount || 0).toFixed(1)}</span>
                     </div>
-                    <div className="flex justify-between py-1 border-t border-black">
+                    <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dotted' }}>
                         <span style={styleFor('totals_labels')}>Due</span>
                         <span style={styleFor('totals_values')}>৳{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
                     </div>
