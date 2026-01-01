@@ -21,6 +21,8 @@ const DEFAULT_TEXT_STYLES = {
     footer_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
     signature_customer_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
     signature_authorized_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    rx_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '700' },
+    rx_value: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
 };
 
 const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverride }, ref) => {
@@ -172,43 +174,46 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                         return (
                             <div>
                                 <table className="w-full text-center border-collapse border border-black" style={{ fontSize: `${settings.rx_font_size || 10}px`, borderWidth: gridThickness }}>
+                                    {/* HEADERS */}
                                     <thead>
                                         <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
                                             <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness }}></th>
-                                            <th className="border-r border-black py-1 px-1 font-black" colSpan="3">Right</th>
-                                            <th className="py-1 px-1 font-black" colSpan="3">Left</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" colSpan="3" style={styleFor('rx_header')}>Right</th>
+                                            <th className="py-1 px-1 font-black" colSpan="3" style={styleFor('rx_header')}>Left</th>
                                         </tr>
                                         <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
                                             <th className="border-r border-black py-1 px-1" style={{ borderRightWidth: gridThickness }}></th>
-                                            <th className="border-r border-black py-1 px-1 font-black">SPH</th>
-                                            <th className="border-r border-black py-1 px-1 font-black">CYL</th>
-                                            <th className="border-r border-black py-1 px-1 font-black">AXIS</th>
-                                            <th className="border-r border-black py-1 px-1 font-black">SPH</th>
-                                            <th className="border-r border-black py-1 px-1 font-black">CYL</th>
-                                            <th className="py-1 px-1 font-black">AXIS</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>SPH</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>CYL</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>AXIS</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>SPH</th>
+                                            <th className="border-r border-black py-1 px-1 font-black" style={styleFor('rx_header')}>CYL</th>
+                                            <th className="py-1 px-1 font-black" style={styleFor('rx_header')}>AXIS</th>
                                         </tr>
                                     </thead>
+
+                                    {/* VALUES */}
                                     <tbody>
                                         {(rx.right?.distance?.sph || rx.right?.distance?.cyl || rx.right?.distance?.axis || rx.left?.distance?.sph || rx.left?.distance?.cyl || rx.left?.distance?.axis) && (
                                             <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness }}>Dist</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'sph')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'cyl')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'distance', 'axis')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'distance', 'sph')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'distance', 'cyl')}</td>
-                                                <td className="py-1 px-1 font-bold">{getVal('left', 'distance', 'axis')}</td>
+                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness, ...styleFor('rx_header') }}>Dist</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'distance', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'distance', 'cyl')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'distance', 'axis')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'distance', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'distance', 'cyl')}</td>
+                                                <td className="py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'distance', 'axis')}</td>
                                             </tr>
                                         )}
                                         {(rx.right?.near?.sph || rx.right?.near?.cyl || rx.right?.near?.axis || rx.left?.near?.sph || rx.left?.near?.cyl || rx.left?.near?.axis) && (
                                             <tr className="border-b border-black" style={{ borderBottomWidth: gridThickness }}>
-                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness }}>Near</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'sph')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'cyl')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('right', 'near', 'axis')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'near', 'sph')}</td>
-                                                <td className="border-r border-black py-1 px-1 font-bold">{getVal('left', 'near', 'cyl')}</td>
-                                                <td className="py-1 px-1 font-bold">{getVal('left', 'near', 'axis')}</td>
+                                                <td className="border-r border-black py-1 px-2 font-black text-left" style={{ borderRightWidth: gridThickness, ...styleFor('rx_header') }}>Near</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'near', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'near', 'cyl')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('right', 'near', 'axis')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'near', 'sph')}</td>
+                                                <td className="border-r border-black py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'near', 'cyl')}</td>
+                                                <td className="py-1 px-1 font-bold" style={styleFor('rx_value')}>{getVal('left', 'near', 'axis')}</td>
                                             </tr>
                                         )}
                                     </tbody>

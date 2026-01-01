@@ -23,6 +23,8 @@ const DEFAULT_TEXT_STYLES = {
     footer_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
     signature_customer_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
     signature_authorized_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 9, align: 'center', font_weight: '400' },
+    rx_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '700' },
+    rx_value: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '400' },
 };
 
 export default function InvoiceSettings() {
@@ -209,6 +211,8 @@ export default function InvoiceSettings() {
                                 { key: 'footer_text_style', label: 'Footer Text' },
                                 { key: 'signature_customer_label', label: 'Customer Signature Label' },
                                 { key: 'signature_authorized_label', label: 'Authorized Signature Label' },
+                                { key: 'rx_header', label: 'Rx Header (SPH, CYL...)' },
+                                { key: 'rx_value', label: 'Rx Values (+2.50...)' },
                             ].map(({ key, label }) => (
                                 <div key={key} className="border dark:border-gray-700 rounded p-3">
                                     <div className="text-sm font-bold mb-2 dark:text-gray-200">{label}</div>
@@ -289,7 +293,17 @@ export default function InvoiceSettings() {
                 <div className="overflow-auto">
                     <InvoicePrint
                         invoice={{ invoice_number: '01', total_amount: 100, discount: 0, paid_amount: 100, note: 'Sample note' }}
-                        items={[{ name: 'Frame A', quantity: 1, price: 100 }]}
+                        items={[{
+                            name: 'Frame A',
+                            quantity: 1,
+                            price: 100,
+                            prescription_data: {
+                                right: { distance: { sph: '+2.00', cyl: '-1.00', axis: '180' }, near: { sph: '+4.00', cyl: '', axis: '' } },
+                                left: { distance: { sph: '+2.00', cyl: '-1.00', axis: '180' }, near: { sph: '+4.00', cyl: '', axis: '' } },
+                                lensType: 'Bifocal',
+                                remarks: 'Photochromic'
+                            }
+                        }]}
                         customer={{ name: 'Walk-in Customer' }}
                         user={{ name: 'Admin User' }}
                         settingsOverride={settings}
