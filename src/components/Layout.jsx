@@ -35,7 +35,7 @@ export default function Layout() {
     return (
         <div className="flex h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
             {/* Mobile Header */}
-            <div className="lg:hidden fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-40 flex items-center justify-between p-4">
+            <div className="lg:hidden fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-40 flex items-center justify-between p-4 print:hidden">
                 <h1 className="text-lg font-bold text-blue-600">Minar Optics</h1>
                 <button
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -54,6 +54,7 @@ export default function Layout() {
                 w-64 bg-white dark:bg-gray-800 shadow-md
                 transform transition-transform duration-300 ease-in-out
                 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                print:hidden
             `}>
                 <div className="p-4 border-b mt-16 lg:mt-0 flex items-center justify-between">
                     <div>

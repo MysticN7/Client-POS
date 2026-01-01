@@ -150,10 +150,10 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4">
-            <div className="bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-2xl w-full max-w-7xl h-full sm:h-[95vh] flex flex-col">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4 print:p-0 print:bg-white print:absolute print:z-[9999]">
+            <div className="bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-2xl w-full max-w-7xl h-full sm:h-[95vh] flex flex-col print:shadow-none print:max-w-none print:w-full print:h-full print:max-h-full">
                 {/* Header */}
-                <div className="flex justify-between items-center p-3 sm:p-6 border-b bg-blue-50 dark:bg-gray-800 dark:border-gray-700 rounded-t-lg">
+                <div className="flex justify-between items-center p-3 sm:p-6 border-b bg-blue-50 dark:bg-gray-800 dark:border-gray-700 rounded-t-lg print:hidden">
                     <div>
                         <h2 className="text-lg sm:text-2xl font-bold text-gray-800 dark:text-gray-100">Edit Invoice & Rx</h2>
                         <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Invoice: {invoice.invoice_number}</p>
@@ -175,7 +175,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                 {/* Two Column Layout - Stack on mobile */}
                 <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
                     {/* Left Column - Edit Form */}
-                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 border-b lg:border-r lg:border-b-0 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 border-b lg:border-r lg:border-b-0 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 print:hidden">
                         <form onSubmit={handleSubmit} className="space-y-6">
 
                             {/* Items Editing Section */}
@@ -412,10 +412,10 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                     </div>
 
                     {/* Right Column - Live Invoice Preview */}
-                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 dark:bg-gray-900 flex justify-center items-start">
+                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 dark:bg-gray-900 flex justify-center items-start print:w-full print:bg-white">
                         <div className="sticky top-2 sm:top-6 w-full">
-                            <h3 className="text-center font-bold text-gray-700 dark:text-gray-300 mb-2 sm:mb-4 text-sm sm:text-base">Live Preview</h3>
-                            <div className="shadow-2xl">
+                            <h3 className="text-center font-bold text-gray-700 dark:text-gray-300 mb-2 sm:mb-4 text-sm sm:text-base print:hidden">Live Preview</h3>
+                            <div className="shadow-2xl print:shadow-none">
                                 <InvoicePrint
                                     ref={printRef}
                                     invoice={invoiceForPrint}

@@ -15,8 +15,8 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
     });
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4">
-            <div className="bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2 sm:p-4 print:p-0 print:bg-white print:absolute print:z-[9999]">
+            <div className="bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto print:hidden">
                 {/* Header */}
                 <div className="flex justify-between items-center p-4 sm:p-6 border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">Invoice Details</h2>
@@ -233,8 +233,8 @@ export default function InvoiceDetailModal({ invoice, onClose }) {
                     )}
                 </div>
             </div>
-            {/* Hidden Print Component */}
-            <div style={{ display: 'none' }}>
+            {/* Hidden Print Component - Visible ONLY on Print */}
+            <div className="hidden print:block print:w-full print:h-full">
                 <InvoicePrint
                     ref={printRef}
                     invoice={invoice}
