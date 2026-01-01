@@ -11,6 +11,9 @@ export default function POS() {
     const [cart, setCart] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [isCartExpanded, setIsCartExpanded] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('ALL');
+
+    const CATEGORIES = ['ALL', 'FRAMES', 'LENS', 'ACCESSORIES'];
 
     // Customer State
     const [customers, setCustomers] = useState([]);
@@ -246,7 +249,14 @@ export default function POS() {
         const sku = p.sku ? String(p.sku).toLowerCase() : '';
         const term = searchTerm ? String(searchTerm).toLowerCase() : '';
 
-        return name.includes(term) || sku.includes(term);
+        // If searching, search across ALL categories
+        if (term) {
+            return name.includes(term) || sku.includes(term);
+        }
+
+        // Otherwise filter by selected category
+        if (selectedCategory === 'ALL') return true;
+        return p.category === selectedCategory;
     });
 
     return (
@@ -312,6 +322,22 @@ export default function POS() {
                             )}
                         </div>
                     )}
+                </div>
+
+                {/* Category Navigation */}
+                <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+                    {CATEGORIES.map(cat => (
+                        <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-colors ${selectedCategory === cat
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                                }`}
+                        >
+                            {cat}
+                        </button>
+                    ))}
                 </div>
 
                 {/* Product Search & Grid */}
