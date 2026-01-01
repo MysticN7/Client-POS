@@ -266,19 +266,19 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                 <div style={{ width: '45%' }}>
                     <div className="flex justify-between py-1">
                         <span style={styleFor('totals_labels')}>Total</span>
-                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900 }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.total_amount).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.total_amount).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1">
                         <span style={styleFor('totals_labels')}>Discount</span>
-                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900 }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.discount || 0).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.discount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dashed' }}>
                         <span style={styleFor('totals_labels')}>Paid Payment</span>
-                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900 }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.paid_amount || 0).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.paid_amount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dashed' }}>
                         <span style={styleFor('totals_labels')}>Due</span>
-                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900 }}>{settings.currency_symbol || '৳'}</span>{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
+                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}</span>{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
                     </div>
                 </div>
             </div>
