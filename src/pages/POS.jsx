@@ -12,8 +12,7 @@ export default function POS() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isCartExpanded, setIsCartExpanded] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('ALL');
-
-    const CATEGORIES = ['ALL', 'FRAMES', 'LENS', 'ACCESSORIES'];
+    const [categories, setCategories] = useState(['ALL']);
 
     // Customer State
     const [customers, setCustomers] = useState([]);
@@ -52,9 +51,20 @@ export default function POS() {
 
     useEffect(() => {
         fetchProducts();
+        fetchCategories();
         const saved = localStorage.getItem('heldTransactions');
         if (saved) setHeldTransactions(JSON.parse(saved));
     }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const res = await api.get('/categories');
+            const catNames = res.data.map(c => c.name);
+            setCategories(['ALL', ...catNames]);
+        } catch (error) {
+            console.error('Error fetching categories');
+        }
+    };
 
     useEffect(() => {
         if (customerSearch.length > 2) {
@@ -326,11 +336,11 @@ export default function POS() {
 
                 {/* Category Navigation */}
                 <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
-                    {CATEGORIES.map(cat => (
+                    {categories.map(cat => (
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-colors flex-shrink-0 ${selectedCategory === cat
+                            className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-colors flex-shrink-0 min-w-[5rem] text-center ${selectedCategory === cat
                                 ? 'bg-blue-600 text-white shadow-md'
                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                                 }`}

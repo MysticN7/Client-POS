@@ -7,8 +7,11 @@ const Inventory = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [categories, setCategories] = useState([]);
     const [categoryFilter, setCategoryFilter] = useState('ALL');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState('');
     const [currentProduct, setCurrentProduct] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -24,7 +27,38 @@ const Inventory = () => {
 
     useEffect(() => {
         fetchProducts();
+        fetchCategories();
     }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const res = await api.get('/categories');
+            setCategories(res.data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    };
+
+    const handleAddCategory = async (e) => {
+        e.preventDefault();
+        try {
+            await api.post('/categories', { name: newCategoryName });
+            setNewCategoryName('');
+            fetchCategories();
+        } catch (error) {
+            alert('Failed to add category');
+        }
+    };
+
+    const handleDeleteCategory = async (id) => {
+        if (!window.confirm('Delete this category?')) return;
+        try {
+            await api.delete(`/categories/${id}`);
+            fetchCategories();
+        } catch (error) {
+            alert('Failed to delete category');
+        }
+    };
 
     const fetchProducts = async () => {
         try {
@@ -154,12 +188,20 @@ const Inventory = () => {
         <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen dark:text-gray-100">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Inventory Management</h1>
-                <button
-                    onClick={() => openModal()}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition"
-                >
-                    <Plus size={20} /> Add Product
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => setIsCategoryModalOpen(true)}
+                        className="bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-purple-700 transition"
+                    >
+                        categories
+                    </button>
+                    <button
+                        onClick={() => openModal()}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition"
+                    >
+                        <Plus size={20} /> Add Product
+                    </button>
+                </div>
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 mb-6">
@@ -182,9 +224,9 @@ const Inventory = () => {
                             onChange={(e) => setCategoryFilter(e.target.value)}
                         >
                             <option value="ALL">All Categories</option>
-                            <option value="FRAMES">Frames</option>
-                            <option value="LENS">Lens</option>
-                            <option value="ACCESSORIES">Accessories</option>
+                            {categories.map(cat => (
+                                <option key={cat.id} value={cat.name}>{cat.name}</option>
+                            ))}
                         </select>
                     </div>
                 </div>
@@ -306,9 +348,9 @@ const Inventory = () => {
                                         value={formData.category}
                                         onChange={handleInputChange}
                                     >
-                                        <option value="FRAMES">Frames</option>
-                                        <option value="LENS">Lens</option>
-                                        <option value="ACCESSORIES">Accessories</option>
+                                        {categories.map(cat => (
+                                            <option key={cat.id} value={cat.name}>{cat.name}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -400,6 +442,39 @@ const Inventory = () => {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+            {/* Category Management Modal */}
+            {isCategoryModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg max-w-md w-full p-6">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">Manage Categories</h2>
+                            <button onClick={() => setIsCategoryModalOpen(false)} className="text-gray-500 hover:text-gray-700">X</button>
+                        </div>
+
+                        <form onSubmit={handleAddCategory} className="flex gap-2 mb-4">
+                            <input
+                                className="flex-1 border dark:border-gray-700 p-2 rounded dark:bg-gray-900 dark:text-gray-100"
+                                placeholder="New Category Name"
+                                value={newCategoryName}
+                                onChange={e => setNewCategoryName(e.target.value)}
+                                required
+                            />
+                            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">Add</button>
+                        </form>
+
+                        <div className="max-h-60 overflow-y-auto space-y-2">
+                            {categories.map(cat => (
+                                <div key={cat.id || cat._id} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-700 rounded">
+                                    <span className="font-medium dark:text-gray-100">{cat.name}</span>
+                                    <button onClick={() => handleDeleteCategory(cat.id || cat._id)} className="text-red-500 hover:text-red-700">
+                                        <Trash2 size={16} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}
