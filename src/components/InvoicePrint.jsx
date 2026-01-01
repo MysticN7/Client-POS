@@ -173,7 +173,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
                         return (
                             <div>
-                                <table className="w-full text-center" style={{ fontSize: `${settings.rx_font_size || 10}px`, border: '1px dashed black', borderCollapse: 'collapse' }}>
+                                <table className="w-full text-center" style={{ fontSize: `${settings.rx_font_size || 15}px`, border: '1px dashed black', borderCollapse: 'collapse' }}>
                                     {/* HEADERS */}
                                     <thead>
                                         <tr>
@@ -218,7 +218,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                         )}
                                     </tbody>
                                 </table>
-                                <table className="w-full mb-2" style={{ fontSize: `${settings.rx_font_size || 10}px`, border: '1px dashed black', borderTop: 'none', borderCollapse: 'collapse' }}>
+                                <table className="w-full mb-2" style={{ fontSize: `${settings.rx_font_size || 15}px`, border: '1px dashed black', borderTop: 'none', borderCollapse: 'collapse' }}>
                                     <tbody>
                                         <tr>
                                             <td className="py-1 px-2 font-bold text-left" style={{ ...styleFor('rx_header') }}>
