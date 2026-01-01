@@ -314,4 +314,4 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
     );
 });
 
-export default InvoicePrint;
+export default InvoicePrint; // Export component
