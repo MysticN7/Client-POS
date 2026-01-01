@@ -251,7 +251,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                     {parsedItems.map((item, index) => (
                         <tr key={index}>
                             <td className="py-1 px-2 text-center" style={{ border: '1px dashed black' }}>{index + 1}</td>
-                            <td className="py-1 px-2" style={{ border: '1px dashed black' }}>{item.item_name || item.name}</td>
+                            <td className="py-1 px-2" style={{ border: '1px dashed black', fontWeight: '600' }}>{item.item_name || item.name}</td>
                             <td className="py-1 px-2 text-center" style={{ border: '1px dashed black' }}>{item.quantity}</td>
                             <td className="py-1 px-2 text-center" style={{ border: '1px dashed black' }}>{item.unit_price || item.price}</td>
                             <td className="py-1 px-2 text-center" style={{ border: '1px dashed black' }}>{((item.unit_price || item.price) * item.quantity).toFixed(2)}</td>
