@@ -337,364 +337,400 @@ export default function POS() {
                 {/* Category Navigation */}
                 <div className="flex gap-2 mb-4 overflow-x-auto py-2 scrollbar-hide">
                     {categories.map(cat => (
-                        <button
-                            key={cat}
-                            onClick={() => setSelectedCategory(cat)}
-                            className={`px-6 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all transform active:scale-95 flex-shrink-0 ${selectedCategory === cat
-                                ? 'bg-blue-600 text-white shadow-md scale-105'
-                                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
-                                }`}
+                        className = {`px-6 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all transform active:scale-95 flex-shrink-0 shadow-sm ${selectedCategory === cat
+                            ? 'bg-indigo-600 text-white shadow-indigo-200 shadow-lg scale-105'
+                            : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-2 border-transparent hover:border-indigo-100 hover:bg-indigo-50 dark:hover:bg-gray-700'
+                            }`}
                         >
-                            {cat}
-                        </button>
+                    {cat}
+                </button>
                     ))}
-                </div>
-
-                {/* Product Search & Grid */}
-                <div className="mb-4 relative">
-                    <Search className="absolute left-3 top-2.5 sm:top-3 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-                    <input
-                        className="w-full pl-9 sm:pl-10 p-2 sm:p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-sm text-sm sm:text-base"
-                        placeholder="Search products..."
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                    />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 overflow-auto">
-                    {filteredProducts.map(product => (
-                        <div key={product.id} onClick={() => addToCart(product)} className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded shadow cursor-pointer hover:shadow-md transition active:scale-95">
-                            {product.imageUrl ? (
-                                <img
-                                    src={product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`}
-                                    alt={product.name}
-                                    className="w-full h-32 object-cover rounded-lg mb-3 border border-gray-200 dark:border-gray-700"
-                                    onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = NO_IMAGE_PLACEHOLDER;
-                                        console.error('Error loading image:', product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`);
-                                    }}
-                                />
-                            ) : (
-                                <div className="w-full h-32 bg-gray-100 dark:bg-gray-700 rounded-lg mb-3 flex items-center justify-center border border-gray-200 dark:border-gray-700">
-                                    <span className="text-gray-400 dark:text-gray-300 text-sm">No Image</span>
-                                </div>
-                            )}
-                            <h3 className="font-bold text-gray-800 dark:text-gray-100 text-sm sm:text-base">{product.name}</h3>
-                            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">SKU: {product.sku}</p>
-                            <div className="flex justify-between items-center mt-2">
-                                <span className="text-blue-600 font-bold text-sm sm:text-base">৳{product.price}</span>
-                                <span className={`text-xs px-2 py-1 rounded ${product.stockQuantity > 0 ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200'}`}>
-                                    Stock: {product.stockQuantity}
-                                </span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
             </div>
 
-            {/* Right Side: Cart & Payment */}
-            <div className="w-full lg:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex flex-col h-auto lg:h-full order-1 lg:order-2">
-                <div onClick={() => setIsCartExpanded(!isCartExpanded)} className="p-3 sm:p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-700 rounded-t-lg flex justify-between items-center cursor-pointer lg:cursor-default">
-                    <div className="flex items-center gap-2">
-                        <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <h2 className="text-lg sm:text-xl font-bold">Current Sale</h2>
-                        <span className="lg:hidden text-sm font-medium bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full dark:bg-blue-900/30 dark:text-blue-200">
-                            {cart.length} items - ৳{calculateTotal().toFixed(0)}
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                if (window.confirm('Are you sure you want to clear the current sale?')) {
-                                    setCart([]);
-                                    setSelectedCustomer(null);
-                                    setDiscount(0);
-                                    setPaidAmount(0);
-                                    setNote('');
-                                }
-                            }}
-                            className="bg-gray-500 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm hover:bg-gray-600 z-10"
-                        >
-                            New Sales
-                        </button>
-                        {isCartExpanded ? <ChevronUp className="w-5 h-5 lg:hidden" /> : <ChevronDown className="w-5 h-5 lg:hidden" />}
-                    </div>
-                </div>
-
-                <div className={`${isCartExpanded ? 'flex' : 'hidden lg:flex'} flex-col flex-1 min-h-0 max-h-[60vh] lg:max-h-none`}>
-
-                    <div className="flex-1 min-h-0 overflow-auto p-3 sm:p-4 space-y-4 lg:max-h-none">
-                        {cart.map((item, index) => (
-                            <div key={index} className="border-b pb-4">
-                                <div className="flex justify-between mb-2">
-                                    <span className="font-medium text-sm sm:text-base">{item.name}</span>
-                                    <div className="flex items-center space-x-1">
-                                        <span className="text-xs text-gray-500">৳</span>
-                                        <input
-                                            type="number"
-                                            className="w-20 border rounded px-1 text-right text-sm dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-                                            value={item.price}
-                                            onChange={(e) => updatePrice(index, e.target.value)}
-                                            onClick={(e) => e.target.select()}
-                                            inputMode="decimal"
-                                        />
-                                    </div>
+            {/* Product Search & Grid */}
+            <div className="mb-4 relative group">
+                <Search className="absolute left-3 top-2.5 sm:top-3 text-gray-400 w-4 h-4 sm:w-5 sm:h-5 pointer-events-none" />
+                <input
+                    className="w-full pl-9 sm:pl-10 p-2 sm:p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-sm text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    autoComplete="off"
+                />
+                {searchTerm && (
+                    <div className="absolute z-50 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-b-lg shadow-2xl max-h-80 overflow-y-auto top-full mt-1 divide-y dark:divide-gray-700 ring-1 ring-black ring-opacity-5">
+                        {products.filter(p => {
+                            const term = searchTerm.toLowerCase();
+                            return (p.name && p.name.toLowerCase().includes(term)) || (p.sku && p.sku.toLowerCase().includes(term));
+                        }).slice(0, 10).map(product => (
+                            <div
+                                key={product.id}
+                                onClick={() => { addToCart(product); setSearchTerm(''); }}
+                                className="p-3 hover:bg-indigo-50 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3 transition-colors"
+                            >
+                                <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-md overflow-hidden">
+                                    {product.imageUrl ? (
+                                        <img src={product.imageUrl.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`} className="w-full h-full object-cover" alt="" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">IMG</div>
+                                    )}
                                 </div>
-
-                                {item.is_prescription_required && (
-                                    <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800 p-3 sm:p-4 rounded mb-2 border border-gray-200 dark:border-gray-700 shadow-sm">
-                                        {/* Right Eye */}
-                                        <div className="mb-4">
-                                            <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
-                                            {/* Distance */}
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
-                                                </div>
-                                                {['sph', 'cyl', 'axis'].map(field => (
-                                                    <div key={field} className="flex-1">
-                                                        <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                            placeholder="-"
-                                                            value={item.prescription_data.right.distance[field]}
-                                                            onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
-                                                            inputMode="decimal"
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            {/* Near */}
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
-                                                </div>
-                                                {['sph', 'cyl', 'axis'].map(field => (
-                                                    <div key={field} className="flex-1">
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                            placeholder="-"
-                                                            value={item.prescription_data.right.near[field]}
-                                                            onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
-                                                            inputMode="decimal"
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* Left Eye */}
-                                        <div className="mb-4">
-                                            <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Left Eye</h4>
-                                            {/* Distance */}
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
-                                                </div>
-                                                {['sph', 'cyl', 'axis'].map(field => (
-                                                    <div key={field} className="flex-1">
-                                                        <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                            placeholder="-"
-                                                            value={item.prescription_data.left.distance[field]}
-                                                            onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
-                                                            inputMode="decimal"
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            {/* Near */}
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
-                                                </div>
-                                                {['sph', 'cyl', 'axis'].map(field => (
-                                                    <div key={field} className="flex-1">
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                                                            placeholder="-"
-                                                            value={item.prescription_data.left.near[field]}
-                                                            onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
-                                                            inputMode="decimal"
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* Extra Fields */}
-                                        <div className="space-y-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                                            <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-600 text-xs font-medium block">Lens Type</span>
-                                                </div>
-                                                <input
-                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                                    placeholder="e.g. Bifocal, Progressive"
-                                                    value={item.prescription_data.lensType}
-                                                    onChange={(e) => updatePrescription(index, 'extra', null, 'lensType', e.target.value)}
-                                                />
-                                            </div>
-                                            {/* Quick Lens Selection */}
-                                            <div className="flex flex-wrap gap-2 pl-16 sm:pl-20">
-                                                {availableLensTypes.map((type, i) => (
-                                                    <button
-                                                        key={type}
-                                                        onClick={() => updatePrescription(index, 'extra', null, 'lensType', type)}
-                                                        className={`px-2 py-1 rounded text-[10px] sm:text-xs border ${getLensColor(i)} hover:opacity-80 transition-opacity`}
-                                                    >
-                                                        {type}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                            <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
-                                                <div className="w-16 sm:w-20 text-right">
-                                                    <span className="text-gray-600 text-xs font-medium block">Remarks</span>
-                                                </div>
-                                                <input
-                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                                    placeholder="Optional notes"
-                                                    value={item.prescription_data.remarks}
-                                                    onChange={(e) => updatePrescription(index, 'extra', null, 'remarks', e.target.value)}
-                                                />
-                                            </div>
-                                        </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="font-bold text-gray-800 dark:text-white text-sm truncate">{product.name}</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400">SKU: {product.sku}</div>
+                                </div>
+                                <div className="text-right">
+                                    <div className="font-bold text-indigo-600 dark:text-indigo-400 text-sm">৳{product.price}</div>
+                                    <div className={`text-[10px] px-1.5 py-0.5 rounded-full inline-block ${product.stockQuantity > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                        {product.stockQuantity > 0 ? `${product.stockQuantity} in stock` : 'Out'}
                                     </div>
-                                )}
-
-                                <div className="flex justify-between items-center text-sm">
-                                    <div className="flex items-center space-x-2">
-                                        <button className="px-3 py-1 border rounded touch-manipulation active:bg-gray-100" onClick={() => {
-                                            const newCart = [...cart];
-                                            newCart[index].quantity > 1 ? newCart[index].quantity-- : newCart.splice(index, 1);
-                                            setCart(newCart);
-                                        }}>-</button>
-                                        <span className="font-medium">{item.quantity}</span>
-                                        <button className="px-3 py-1 border rounded touch-manipulation active:bg-gray-100" onClick={() => {
-                                            const newCart = [...cart];
-                                            newCart[index].quantity++;
-                                            setCart(newCart);
-                                        }}>+</button>
-                                    </div>
-                                    <button
-                                        className="text-red-500 p-2 touch-manipulation"
-                                        onClick={() => setCart(cart.filter((_, i) => i !== index))}
-                                        aria-label="Remove item"
-                                        data-testid={`remove-item-${index}`}
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
                                 </div>
                             </div>
                         ))}
+                        {products.filter(p => {
+                            const term = searchTerm.toLowerCase();
+                            return (p.name && p.name.toLowerCase().includes(term)) || (p.sku && p.sku.toLowerCase().includes(term));
+                        }).length === 0 && (
+                                <div className="p-4 text-center text-gray-500 text-sm">No products found</div>
+                            )}
                     </div>
-
-                    <div className="p-3 border-t bg-gray-50 dark:bg-gray-700 rounded-b-lg space-y-2">
-                        <div className="flex justify-between gap-2">
-                            <div className="flex justify-between items-center w-1/2">
-                                <span className="text-sm">Subtotal</span>
-                                <span className="font-medium text-sm">৳{calculateTotal().toFixed(2)}</span>
-                            </div>
-                            <div className="flex justify-between items-center w-1/2">
-                                <span className="text-sm">Discount</span>
-                                <input
-                                    type="number"
-                                    className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right text-sm"
-                                    value={discount}
-                                    onChange={e => setDiscount(e.target.value)}
-                                    inputMode="decimal"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                            <span className="font-bold text-sm">Net Total</span>
-                            <span className="font-bold text-lg">৳{(calculateTotal() - discount).toFixed(2)}</span>
-                        </div>
-
-                        <div className="flex justify-between gap-2">
-                            <div className="flex justify-between items-center w-1/2">
-                                <span className="text-sm">Paid</span>
-                                <input
-                                    type="number"
-                                    className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right font-bold text-green-600 text-sm"
-                                    value={paidAmount}
-                                    onChange={e => setPaidAmount(e.target.value)}
-                                    inputMode="decimal"
-                                />
-                            </div>
-                            <div className="flex justify-between items-center w-1/2">
-                                <span className="text-sm">Due</span>
-                                <span className="text-red-600 font-bold text-sm">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-2">
-                            <select
-                                className="w-1/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-sm"
-                                value={paymentMethod}
-                                onChange={e => setPaymentMethod(e.target.value)}
-                            >
-                                <option value="Cash">Cash</option>
-                                <option value="Card">Card</option>
-                                <option value="MFS">MFS</option>
-                            </select>
-                            <textarea
-                                className="w-2/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-xs"
-                                placeholder="Note..."
-                                rows="1"
-                                value={note}
-                                onChange={e => setNote(e.target.value)}
+                )}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 overflow-auto">
+                {filteredProducts.map(product => (
+                    <div key={product.id} onClick={() => addToCart(product)} className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded shadow cursor-pointer hover:shadow-md transition active:scale-95">
+                        {product.imageUrl ? (
+                            <img
+                                src={product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`}
+                                alt={product.name}
+                                className="w-full h-32 object-cover rounded-lg mb-3 border border-gray-200 dark:border-gray-700"
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = NO_IMAGE_PLACEHOLDER;
+                                    console.error('Error loading image:', product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`);
+                                }}
                             />
+                        ) : (
+                            <div className="w-full h-32 bg-gray-100 dark:bg-gray-700 rounded-lg mb-3 flex items-center justify-center border border-gray-200 dark:border-gray-700">
+                                <span className="text-gray-400 dark:text-gray-300 text-sm">No Image</span>
+                            </div>
+                        )}
+                        <h3 className="font-bold text-gray-800 dark:text-gray-100 text-sm sm:text-base">{product.name}</h3>
+                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">SKU: {product.sku}</p>
+                        <div className="flex justify-between items-center mt-2">
+                            <span className="text-blue-600 font-bold text-sm sm:text-base">৳{product.price}</span>
+                            <span className={`text-xs px-2 py-1 rounded ${product.stockQuantity > 0 ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200' : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200'}`}>
+                                Stock: {product.stockQuantity}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+            {/* Right Side: Cart & Payment */ }
+    <div className="w-full lg:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex flex-col h-auto lg:h-full order-1 lg:order-2">
+        <div onClick={() => setIsCartExpanded(!isCartExpanded)} className="p-3 sm:p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-700 rounded-t-lg flex justify-between items-center cursor-pointer lg:cursor-default">
+            <div className="flex items-center gap-2">
+                <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+                <h2 className="text-lg sm:text-xl font-bold">Current Sale</h2>
+                <span className="lg:hidden text-sm font-medium bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full dark:bg-blue-900/30 dark:text-blue-200">
+                    {cart.length} items - ৳{calculateTotal().toFixed(0)}
+                </span>
+            </div>
+            <div className="flex items-center gap-2">
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (window.confirm('Are you sure you want to clear the current sale?')) {
+                            setCart([]);
+                            setSelectedCustomer(null);
+                            setDiscount(0);
+                            setPaidAmount(0);
+                            setNote('');
+                        }
+                    }}
+                    className="bg-gray-500 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm hover:bg-gray-600 z-10"
+                >
+                    New Sales
+                </button>
+                {isCartExpanded ? <ChevronUp className="w-5 h-5 lg:hidden" /> : <ChevronDown className="w-5 h-5 lg:hidden" />}
+            </div>
+        </div>
+
+        <div className={`${isCartExpanded ? 'flex' : 'hidden lg:flex'} flex-col flex-1 min-h-0 max-h-[60vh] lg:max-h-none`}>
+
+            <div className="flex-1 min-h-0 overflow-auto p-3 sm:p-4 space-y-4 lg:max-h-none">
+                {cart.map((item, index) => (
+                    <div key={index} className="border-b pb-4">
+                        <div className="flex justify-between mb-2">
+                            <span className="font-medium text-sm sm:text-base">{item.name}</span>
+                            <div className="flex items-center space-x-1">
+                                <span className="text-xs text-gray-500">৳</span>
+                                <input
+                                    type="number"
+                                    className="w-20 border rounded px-1 text-right text-sm dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                    value={item.price}
+                                    onChange={(e) => updatePrice(index, e.target.value)}
+                                    onClick={(e) => e.target.select()}
+                                    inputMode="decimal"
+                                />
+                            </div>
                         </div>
 
-                        <div className="grid grid-cols-4 gap-2">
-                            <button onClick={handleHold} className="col-span-1 bg-yellow-500 text-white py-2 rounded font-bold hover:bg-yellow-600 flex justify-center items-center text-xs" title="Hold Transaction">
-                                <PauseCircle className="w-4 h-4" />
-                            </button>
-                            <button onClick={() => setShowHeldModal(true)} className="col-span-1 bg-purple-600 text-white py-2 rounded font-bold hover:bg-purple-700 flex justify-center items-center text-xs" title="Recall Transaction">
-                                <PlayCircle className="w-4 h-4" />
-                            </button>
-                            <button onClick={handleCheckout} className="col-span-2 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 flex justify-center items-center text-sm">
-                                Complete
+                        {item.is_prescription_required && (
+                            <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800 p-3 sm:p-4 rounded mb-2 border border-gray-200 dark:border-gray-700 shadow-sm">
+                                {/* Right Eye */}
+                                <div className="mb-4">
+                                    <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
+                                    {/* Distance */}
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-16 sm:w-20 text-right">
+                                            <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
+                                        </div>
+                                        {['sph', 'cyl', 'axis'].map(field => (
+                                            <div key={field} className="flex-1">
+                                                <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
+                                                <input
+                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                    placeholder="-"
+                                                    value={item.prescription_data.right.distance[field]}
+                                                    onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
+                                                    inputMode="decimal"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {/* Near */}
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-16 sm:w-20 text-right">
+                                            <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
+                                        </div>
+                                        {['sph', 'cyl', 'axis'].map(field => (
+                                            <div key={field} className="flex-1">
+                                                <input
+                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                    placeholder="-"
+                                                    value={item.prescription_data.right.near[field]}
+                                                    onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
+                                                    inputMode="decimal"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Left Eye */}
+                                <div className="mb-4">
+                                    <h4 className="text-sm sm:text-base font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Left Eye</h4>
+                                    {/* Distance */}
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-16 sm:w-20 text-right">
+                                            <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Dist</span>
+                                        </div>
+                                        {['sph', 'cyl', 'axis'].map(field => (
+                                            <div key={field} className="flex-1">
+                                                <span className="text-gray-400 dark:text-gray-500 text-xs block text-center uppercase mb-1">{field}</span>
+                                                <input
+                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                    placeholder="-"
+                                                    value={item.prescription_data.left.distance[field]}
+                                                    onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
+                                                    inputMode="decimal"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {/* Near */}
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-16 sm:w-20 text-right">
+                                            <span className="text-gray-500 dark:text-gray-400 font-medium block text-xs uppercase tracking-wider">Near</span>
+                                        </div>
+                                        {['sph', 'cyl', 'axis'].map(field => (
+                                            <div key={field} className="flex-1">
+                                                <input
+                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-center text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                                    placeholder="-"
+                                                    value={item.prescription_data.left.near[field]}
+                                                    onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
+                                                    inputMode="decimal"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Extra Fields */}
+                                <div className="space-y-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                    <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
+                                        <div className="w-16 sm:w-20 text-right">
+                                            <span className="text-gray-600 text-xs font-medium block">Lens Type</span>
+                                        </div>
+                                        <input
+                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                            placeholder="e.g. Bifocal, Progressive"
+                                            value={item.prescription_data.lensType}
+                                            onChange={(e) => updatePrescription(index, 'extra', null, 'lensType', e.target.value)}
+                                        />
+                                    </div>
+                                    {/* Quick Lens Selection */}
+                                    <div className="flex flex-wrap gap-2 pl-16 sm:pl-20">
+                                        {availableLensTypes.map((type, i) => (
+                                            <button
+                                                key={type}
+                                                onClick={() => updatePrescription(index, 'extra', null, 'lensType', type)}
+                                                className={`px-2 py-1 rounded text-[10px] sm:text-xs border ${getLensColor(i)} hover:opacity-80 transition-opacity`}
+                                            >
+                                                {type}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
+                                        <div className="w-16 sm:w-20 text-right">
+                                            <span className="text-gray-600 text-xs font-medium block">Remarks</span>
+                                        </div>
+                                        <input
+                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-xs sm:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                            placeholder="Optional notes"
+                                            value={item.prescription_data.remarks}
+                                            onChange={(e) => updatePrescription(index, 'extra', null, 'remarks', e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex justify-between items-center text-sm">
+                            <div className="flex items-center space-x-2">
+                                <button className="px-3 py-1 border rounded touch-manipulation active:bg-gray-100" onClick={() => {
+                                    const newCart = [...cart];
+                                    newCart[index].quantity > 1 ? newCart[index].quantity-- : newCart.splice(index, 1);
+                                    setCart(newCart);
+                                }}>-</button>
+                                <span className="font-medium">{item.quantity}</span>
+                                <button className="px-3 py-1 border rounded touch-manipulation active:bg-gray-100" onClick={() => {
+                                    const newCart = [...cart];
+                                    newCart[index].quantity++;
+                                    setCart(newCart);
+                                }}>+</button>
+                            </div>
+                            <button
+                                className="text-red-500 p-2 touch-manipulation"
+                                onClick={() => setCart(cart.filter((_, i) => i !== index))}
+                                aria-label="Remove item"
+                                data-testid={`remove-item-${index}`}
+                            >
+                                <Trash2 className="w-4 h-4" />
                             </button>
                         </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="p-3 border-t bg-gray-50 dark:bg-gray-700 rounded-b-lg space-y-2">
+                <div className="flex justify-between gap-2">
+                    <div className="flex justify-between items-center w-1/2">
+                        <span className="text-sm">Subtotal</span>
+                        <span className="font-medium text-sm">৳{calculateTotal().toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between items-center w-1/2">
+                        <span className="text-sm">Discount</span>
+                        <input
+                            type="number"
+                            className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right text-sm"
+                            value={discount}
+                            onChange={e => setDiscount(e.target.value)}
+                            inputMode="decimal"
+                        />
                     </div>
                 </div>
-            </div >
 
-            {/* Held Transactions Modal */}
-            {
-                showHeldModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-                        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded shadow-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-base sm:text-lg font-bold">Held Transactions</h3>
-                                <button onClick={() => setShowHeldModal(false)} className="text-red-500 font-bold text-xl">X</button>
-                            </div>
-                            {heldTransactions.length === 0 ? <p className="text-sm sm:text-base">No held transactions.</p> : (
-                                <div className="space-y-2">
-                                    {heldTransactions.map(t => (
-                                        <div key={t.id} className="border dark:border-gray-700 p-3 rounded flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-50 dark:hover:bg-gray-700 gap-2">
-                                            <div className="flex-1">
-                                                <p className="font-bold text-sm sm:text-base">{t.date}</p>
-                                                <p className="text-xs sm:text-sm">Customer: {t.customer?.name || 'Walk-in'}</p>
-                                                <p className="text-xs sm:text-sm">Items: {t.cart.length} | Total: ৳{t.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</p>
-                                            </div>
-                                            <div className="flex space-x-2 w-full sm:w-auto">
-                                                <button onClick={() => handleRecall(t)} className="flex-1 sm:flex-none bg-green-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Recall</button>
-                                                <button onClick={() => deleteHeld(t.id)} className="flex-1 sm:flex-none bg-red-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Delete</button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                <div className="flex justify-between items-center">
+                    <span className="font-bold text-sm">Net Total</span>
+                    <span className="font-bold text-lg">৳{(calculateTotal() - discount).toFixed(2)}</span>
+                </div>
+
+                <div className="flex justify-between gap-2">
+                    <div className="flex justify-between items-center w-1/2">
+                        <span className="text-sm">Paid</span>
+                        <input
+                            type="number"
+                            className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right font-bold text-green-600 text-sm"
+                            value={paidAmount}
+                            onChange={e => setPaidAmount(e.target.value)}
+                            inputMode="decimal"
+                        />
                     </div>
-                )
-            }
+                    <div className="flex justify-between items-center w-1/2">
+                        <span className="text-sm">Due</span>
+                        <span className="text-red-600 font-bold text-sm">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
+                    </div>
+                </div>
+
+                <div className="flex gap-2">
+                    <select
+                        className="w-1/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-sm"
+                        value={paymentMethod}
+                        onChange={e => setPaymentMethod(e.target.value)}
+                    >
+                        <option value="Cash">Cash</option>
+                        <option value="Card">Card</option>
+                        <option value="MFS">MFS</option>
+                    </select>
+                    <textarea
+                        className="w-2/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-xs"
+                        placeholder="Note..."
+                        rows="1"
+                        value={note}
+                        onChange={e => setNote(e.target.value)}
+                    />
+                </div>
+
+                <div className="grid grid-cols-4 gap-2">
+                    <button onClick={handleHold} className="col-span-1 bg-yellow-500 text-white py-2 rounded font-bold hover:bg-yellow-600 flex justify-center items-center text-xs" title="Hold Transaction">
+                        <PauseCircle className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => setShowHeldModal(true)} className="col-span-1 bg-purple-600 text-white py-2 rounded font-bold hover:bg-purple-700 flex justify-center items-center text-xs" title="Recall Transaction">
+                        <PlayCircle className="w-4 h-4" />
+                    </button>
+                    <button onClick={handleCheckout} className="col-span-2 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 flex justify-center items-center text-sm">
+                        Complete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div >
+
+    {/* Held Transactions Modal */ }
+    {
+        showHeldModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded shadow-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-base sm:text-lg font-bold">Held Transactions</h3>
+                        <button onClick={() => setShowHeldModal(false)} className="text-red-500 font-bold text-xl">X</button>
+                    </div>
+                    {heldTransactions.length === 0 ? <p className="text-sm sm:text-base">No held transactions.</p> : (
+                        <div className="space-y-2">
+                            {heldTransactions.map(t => (
+                                <div key={t.id} className="border dark:border-gray-700 p-3 rounded flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-50 dark:hover:bg-gray-700 gap-2">
+                                    <div className="flex-1">
+                                        <p className="font-bold text-sm sm:text-base">{t.date}</p>
+                                        <p className="text-xs sm:text-sm">Customer: {t.customer?.name || 'Walk-in'}</p>
+                                        <p className="text-xs sm:text-sm">Items: {t.cart.length} | Total: ৳{t.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}</p>
+                                    </div>
+                                    <div className="flex space-x-2 w-full sm:w-auto">
+                                        <button onClick={() => handleRecall(t)} className="flex-1 sm:flex-none bg-green-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Recall</button>
+                                        <button onClick={() => deleteHeld(t.id)} className="flex-1 sm:flex-none bg-red-600 text-white px-3 py-2 rounded text-xs sm:text-sm touch-manipulation">Delete</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+        )
+    }
         </div >
     );
 }
