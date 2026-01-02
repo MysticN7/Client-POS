@@ -68,11 +68,11 @@ const Footer = () => {
                             Software Developed by
                         </span>
 
-                        {/* Brand Name with Ultra Luxury Gold/Silver Gradient */}
+                        {/* Brand Name with Ultra Luxury Gold/Silver + Blue Touch (Sapphire & Gold) */}
                         <span
-                            className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]"
+                            className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#BF953F] via-[#3B82F6] to-[#B38728]"
                             style={{
-                                textShadow: '0 0 15px rgba(191, 149, 63, 0.3), 0 0 5px rgba(252, 246, 186, 0.5)' // Golden Glow with Shine
+                                textShadow: '0 0 15px rgba(191, 149, 63, 0.3), 0 0 10px rgba(59, 130, 246, 0.4)' // Gold + Blue Glow
                             }}
                         >
                             Liquid ARC Studio
