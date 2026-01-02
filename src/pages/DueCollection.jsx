@@ -23,6 +23,7 @@ export default function DueCollection() {
     const [editingPayment, setEditingPayment] = useState(null);
     const [editAmount, setEditAmount] = useState('');
     const [editNote, setEditNote] = useState('');
+    const [editInvoiceNumber, setEditInvoiceNumber] = useState('');
 
     // Debounce search
     useEffect(() => {
@@ -171,6 +172,7 @@ export default function DueCollection() {
         setEditingPayment(payment);
         setEditAmount(payment.amount);
         setEditNote(payment.note || '');
+        setEditInvoiceNumber(payment.invoice?.invoiceNumber || '');
         setShowEditModal(true);
     };
 
@@ -181,7 +183,8 @@ export default function DueCollection() {
         try {
             await api.put(`/sales/payments/${editingPayment._id || editingPayment.id}`, {
                 amount: parseFloat(editAmount),
-                note: editNote
+                note: editNote,
+                invoice_number: editInvoiceNumber
             });
             alert('Payment updated successfully');
             setShowEditModal(false);
@@ -640,6 +643,21 @@ export default function DueCollection() {
                         </div>
 
                         <form onSubmit={handleEditSubmit} className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Invoice Number</label>
+                                <input
+                                    type="text"
+                                    className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    value={editInvoiceNumber}
+                                    onChange={(e) => setEditInvoiceNumber(e.target.value)}
+                                    placeholder="Enter Invoice #"
+                                    required
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    <span className="text-orange-500 font-bold">Warning:</span> Changing this will move the payment to the new invoice.
+                                </p>
+                            </div>
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
                                 <div className="relative">
