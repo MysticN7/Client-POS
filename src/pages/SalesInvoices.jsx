@@ -71,6 +71,11 @@ export default function SalesInvoices() {
     };
 
     const handleDeleteInvoice = async (invoiceId) => {
+        if (!invoiceId) {
+            console.error('Error: Attempted to delete invoice with undefined ID');
+            alert('Error: Cannot delete invoice (Invalid ID). Please refresh the page.');
+            return;
+        }
         if (!window.confirm('Are you sure you want to delete this invoice? This action cannot be undone.')) return;
 
         try {
