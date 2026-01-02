@@ -9,6 +9,9 @@ export default function Users() {
     const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'SALESPERSON', permissions: [] });
     const [showPassword, setShowPassword] = useState(false);
 
+    // Check if current user is ADMINISTRATIVE (can see passwords)
+    const isAdministrative = users.some(u => u.lastSetPassword !== undefined);
+
     const [permissionsCatalog, setPermissionsCatalog] = useState({ list: [], groups: {} });
 
     useEffect(() => {
@@ -103,7 +106,7 @@ export default function Users() {
                     <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
                             <th className="p-4 text-left">Name</th>
-                            <th className="p-4 text-left">Password</th>
+                            {isAdministrative && <th className="p-4 text-left">Password</th>}
                             <th className="p-4 text-left">Role</th>
                             <th className="p-4 text-left">Permissions</th>
                             <th className="p-4 text-left">Actions</th>
@@ -113,15 +116,17 @@ export default function Users() {
                         {users.map(user => (
                             <tr key={user.id} className="border-t dark:border-gray-700">
                                 <td className="p-4 font-medium">{user.name}</td>
-                                <td className="p-4">
-                                    {user.lastSetPassword ? (
-                                        <code className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs font-mono">
-                                            {user.lastSetPassword}
-                                        </code>
-                                    ) : (
-                                        <span className="text-gray-400 text-xs italic">Not set by admin</span>
-                                    )}
-                                </td>
+                                {isAdministrative && (
+                                    <td className="p-4">
+                                        {user.lastSetPassword ? (
+                                            <code className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs font-mono">
+                                                {user.lastSetPassword}
+                                            </code>
+                                        ) : (
+                                            <span className="text-gray-400 text-xs italic">Not set</span>
+                                        )}
+                                    </td>
+                                )}
                                 <td className="p-4">
                                     <span className={`px-2 py-1 rounded text-xs ${user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-800/50 dark:text-gray-200'}`}>
                                         {user.role}
@@ -194,6 +199,7 @@ export default function Users() {
                                         <option value="SALESPERSON">Salesperson</option>
                                         <option value="MANAGER">Manager</option>
                                         <option value="ADMIN">Admin</option>
+                                        {isAdministrative && <option value="ADMINISTRATIVE">Administrative</option>}
                                     </select>
                                 </div>
                             </div>

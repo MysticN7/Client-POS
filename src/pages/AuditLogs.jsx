@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Search, Filter, RefreshCw, Clock, User, Activity } from 'lucide-react';
+import { Search, Filter, RefreshCw, Clock, User, Activity, Trash2 } from 'lucide-react';
 
 const AuditLogs = () => {
     const [logs, setLogs] = useState([]);
@@ -14,6 +14,9 @@ const AuditLogs = () => {
         endDate: ''
     });
     const [users, setUsers] = useState([]);
+
+    // Check if current user is ADMINISTRATIVE (can delete logs)
+    const isAdministrative = users.some(u => u.lastSetPassword !== undefined);
 
     useEffect(() => {
         fetchUsers();
@@ -62,18 +65,50 @@ const AuditLogs = () => {
         setPage(1);
     };
 
+    const deleteLog = async (id) => {
+        if (!window.confirm('Delete this audit log?')) return;
+        try {
+            await api.delete(`/audit-logs/${id}`);
+            fetchLogs();
+        } catch (error) {
+            alert('Error deleting log: ' + (error.response?.data?.message || error.message));
+        }
+    };
+
+    const deleteAllLogs = async () => {
+        if (!window.confirm('DELETE ALL AUDIT LOGS? This cannot be undone!')) return;
+        if (!window.confirm('Are you ABSOLUTELY SURE?')) return;
+        try {
+            await api.delete('/audit-logs');
+            fetchLogs();
+        } catch (error) {
+            alert('Error deleting logs: ' + (error.response?.data?.message || error.message));
+        }
+    };
+
     return (
         <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen dark:text-gray-100">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                     <Activity className="text-blue-600" /> Audit Logs
                 </h1>
-                <button
-                    onClick={fetchLogs}
-                    className="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                >
-                    <RefreshCw size={20} className="text-gray-600 dark:text-gray-300" />
-                </button>
+                <div className="flex items-center gap-2">
+                    {isAdministrative && (
+                        <button
+                            onClick={deleteAllLogs}
+                            className="p-2 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition text-red-600 dark:text-red-400"
+                            title="Delete All Logs (ADMINISTRATIVE only)"
+                        >
+                            <Trash2 size={20} />
+                        </button>
+                    )}
+                    <button
+                        onClick={fetchLogs}
+                        className="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                    >
+                        <RefreshCw size={20} className="text-gray-600 dark:text-gray-300" />
+                    </button>
+                </div>
             </div>
 
             {/* Filters */}
@@ -146,6 +181,7 @@ const AuditLogs = () => {
                                 <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">User</th>
                                 <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">Details</th>
                                 <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">IP Address</th>
+                                {isAdministrative && <th className="px-6 py-4 font-semibold text-gray-600 dark:text-gray-300">Actions</th>}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -161,9 +197,9 @@ const AuditLogs = () => {
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`px-2 py-1 rounded text-xs font-bold ${log.action.includes('DELETE') || log.action.includes('CANCEL') ? 'bg-red-100 text-red-700' :
-                                                    log.action.includes('UPDATE') ? 'bg-orange-100 text-orange-700' :
-                                                        log.action.includes('CREATE') ? 'bg-green-100 text-green-700' :
-                                                            'bg-blue-100 text-blue-700'
+                                                log.action.includes('UPDATE') ? 'bg-orange-100 text-orange-700' :
+                                                    log.action.includes('CREATE') ? 'bg-green-100 text-green-700' :
+                                                        'bg-blue-100 text-blue-700'
                                                 }`}>
                                                 {log.action}
                                             </span>
@@ -177,6 +213,17 @@ const AuditLogs = () => {
                                         <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 font-mono">
                                             {log.ipAddress || 'N/A'}
                                         </td>
+                                        {isAdministrative && (
+                                            <td className="px-6 py-4">
+                                                <button
+                                                    onClick={() => deleteLog(log._id)}
+                                                    className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                                                    title="Delete this log"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </td>
+                                        )}
                                     </tr>
                                 ))
                             )}
