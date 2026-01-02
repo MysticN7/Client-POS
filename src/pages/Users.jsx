@@ -197,7 +197,14 @@ export default function Users() {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium mb-1 dark:text-gray-300">Role</label>
-                                    <select className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}>
+                                    <select className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" value={formData.role} onChange={e => {
+                                        const newRole = e.target.value;
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            role: newRole,
+                                            permissions: newRole === 'ADMIN' ? permissionsCatalog.list : prev.permissions
+                                        }));
+                                    }}>
                                         <option value="SALESPERSON">Salesperson</option>
                                         <option value="MANAGER">Manager</option>
                                         <option value="ADMIN">Admin</option>
@@ -206,7 +213,15 @@ export default function Users() {
                                 </div>
                             </div>
 
-                            {formData.role !== 'ADMIN' && (
+
+
+                            {formData.role === 'ADMINISTRATIVE' && (
+                                <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 rounded text-sm mb-4">
+                                    <strong>Super User:</strong> This role has full access to all system features including password viewing and audit log deletion. Permissions cannot be restricted.
+                                </div>
+                            )}
+
+                            {formData.role !== 'ADMINISTRATIVE' && (
                                 <div>
                                     <label className="block text-sm font-medium mb-2 dark:text-gray-300">Permissions</label>
                                     <div className="space-y-4">
@@ -246,8 +261,9 @@ export default function Users() {
                             </div>
                         </form>
                     </div>
-                </div>
-            )}
-        </div>
+                </div >
+            )
+            }
+        </div >
     );
 }

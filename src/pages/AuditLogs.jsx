@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { Search, Filter, RefreshCw, Clock, User, Activity, Trash2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const AuditLogs = () => {
     const [logs, setLogs] = useState([]);
@@ -16,7 +17,8 @@ const AuditLogs = () => {
     const [users, setUsers] = useState([]);
 
     // Check if current user is ADMINISTRATIVE (can delete logs)
-    const isAdministrative = users.some(u => u.lastSetPassword !== undefined);
+    const { user: currentUser } = useAuth();
+    const isAdministrative = currentUser?.role === 'ADMINISTRATIVE';
 
     useEffect(() => {
         fetchUsers();
