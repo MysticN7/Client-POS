@@ -529,19 +529,19 @@ export default function DueCollection() {
                                                     {hasPermission('EDIT_DUE') && (
                                                         <button
                                                             onClick={() => openEditModal(record)}
-                                                            className="text-blue-600 hover:text-blue-800 p-1 bg-blue-50 dark:bg-blue-900/20 rounded"
+                                                            className="text-white hover:bg-orange-600 px-3 py-1 bg-orange-500 rounded shadow-sm transition-colors"
                                                             title="Edit Payment"
                                                         >
-                                                            <Edit size={16} />
+                                                            <Edit size={14} />
                                                         </button>
                                                     )}
                                                     {hasPermission('DELETE_DUE') && (
                                                         <button
                                                             onClick={() => handleDeletePayment(record._id || record.id)}
-                                                            className="text-red-600 hover:text-red-800 p-1 bg-red-50 dark:bg-red-900/20 rounded"
+                                                            className="text-white hover:bg-red-600 px-3 py-1 bg-red-500 rounded shadow-sm transition-colors"
                                                             title="Delete Payment"
                                                         >
-                                                            <Trash2 size={16} />
+                                                            <Trash2 size={14} />
                                                         </button>
                                                     )}
                                                 </td>
