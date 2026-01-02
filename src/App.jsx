@@ -16,7 +16,6 @@ import Customers from './pages/Customers';
 import AuditLogs from './pages/AuditLogs';
 import DueCollection from './pages/DueCollection';
 import Layout from './components/Layout';
-import Navbar from './components/Navbar';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import Users from './pages/Users';
