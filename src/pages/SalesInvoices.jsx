@@ -223,7 +223,7 @@ export default function SalesInvoices() {
                                     <td className="border border-gray-200 px-4 py-2 text-center">
                                         {(hasPermission('DELETE_SALES') || hasPermission('ADMIN')) && (
                                             <button
-                                                onClick={(e) => { e.stopPropagation(); handleDeleteInvoice(invoice._id); }}
+                                                onClick={(e) => { e.stopPropagation(); handleDeleteInvoice(invoice.id); }}
                                                 className="p-1 text-red-600 hover:bg-red-50 rounded"
                                                 title="Delete Invoice"
                                             >
