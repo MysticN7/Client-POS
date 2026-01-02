@@ -234,6 +234,21 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                             return val;
                         };
 
+                        // Dynamic font size based on value length
+                        const getDynamicStyle = (val) => {
+                            const str = val?.toString() || '';
+                            if (str.length <= 1) return { fontSize: '12px' };  // Short: -, P
+                            if (str.length <= 3) return { fontSize: '11px' };  // Medium: +2.5
+                            if (str.length <= 5) return { fontSize: '9px' };   // Long: -2.50, Plano
+                            return { fontSize: '8px' };                         // Very long
+                        };
+
+                        // Render value with dynamic sizing
+                        const renderVal = (eye, type, field) => {
+                            const val = getVal(eye, type, field);
+                            return <span style={getDynamicStyle(val)}>{val}</span>;
+                        };
+
                         return (
                             <div>
                                 <table className="w-full text-center" style={{ fontSize: '10px', border: '1px dashed #000', borderCollapse: 'collapse', tableLayout: 'fixed', width: '100%', lineHeight: '1.5' }}>
@@ -259,24 +274,24 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                     <tbody>
                                         {(rx.right?.distance?.sph || rx.right?.distance?.cyl || rx.right?.distance?.axis || rx.left?.distance?.sph || rx.left?.distance?.cyl || rx.left?.distance?.axis) && (
                                             <tr>
-                                                <td className="py-3 px-1 font-black text-left" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_header') }}>Dist</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'sph')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'cyl')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'axis')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'sph')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'cyl')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'axis')}</td>
+                                                <td className="py-3 px-1 font-black text-left" style={{ border: '1px dashed #000', ...styleFor('rx_header') }}>Dist</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('right', 'distance', 'sph')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('right', 'distance', 'cyl')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('right', 'distance', 'axis')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('left', 'distance', 'sph')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('left', 'distance', 'cyl')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('left', 'distance', 'axis')}</td>
                                             </tr>
                                         )}
                                         {(rx.right?.near?.sph || rx.right?.near?.cyl || rx.right?.near?.axis || rx.left?.near?.sph || rx.left?.near?.cyl || rx.left?.near?.axis) && (
                                             <tr>
-                                                <td className="py-3 px-1 font-black text-left" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_header') }}>Near</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('right', 'near', 'sph')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('right', 'near', 'cyl')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('right', 'near', 'axis')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('left', 'near', 'sph')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('left', 'near', 'cyl')}</td>
-                                                <td className="py-3 px-1 font-bold" style={{ border: '1px dashed #000', overflow: 'hidden', ...styleFor('rx_value') }}>{getVal('left', 'near', 'axis')}</td>
+                                                <td className="py-3 px-1 font-black text-left" style={{ border: '1px dashed #000', ...styleFor('rx_header') }}>Near</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('right', 'near', 'sph')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('right', 'near', 'cyl')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('right', 'near', 'axis')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('left', 'near', 'sph')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('left', 'near', 'cyl')}</td>
+                                                <td className="py-3 px-1 font-bold text-center" style={{ border: '1px dashed #000' }}>{renderVal('left', 'near', 'axis')}</td>
                                             </tr>
                                         )}
                                         {/* Lens Row - Merged into table for alignment */}
