@@ -84,13 +84,13 @@ export default function Expenses() {
                     </thead>
                     <tbody>
                         {expenses.map(expense => (
-                            <tr key={expense.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <tr key={expense._id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <td className="p-4">{formatDate(expense.date)}</td>
                                 <td className="p-4">{expense.category}</td>
                                 <td className="p-4">{expense.description}</td>
                                 <td className="p-4 font-bold text-red-600">৳{expense.amount}</td>
                                 <td className="p-4">
-                                    <button onClick={() => handleDelete(expense.id)} className="text-red-600 hover:text-red-800"><Trash2 className="w-4 h-4" /></button>
+                                    <button onClick={() => handleDelete(expense._id)} className="text-red-600 hover:text-red-800"><Trash2 className="w-4 h-4" /></button>
                                 </td>
                             </tr>
                         ))}
