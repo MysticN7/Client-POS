@@ -284,21 +284,72 @@ export default function DueCollection() {
                                     </button>
                                 </form>
                             ) : (
-                                <div className="space-y-4">
-                                    <div className="text-center py-6 text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
-                                        <div className="flex justify-center mb-2">
-                                            <FileText size={32} className="text-gray-300 dark:text-gray-600" />
+                                <div className="space-y-6">
+                                    <div className="border-b border-gray-100 dark:border-gray-700 pb-4">
+                                        <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-1">Create Legacy/Paper Invoice Entry</h3>
+                                        <p className="text-xs text-gray-500">
+                                            Manually add an old offline invoice to the system to collect its due.
+                                        </p>
+                                    </div>
+
+                                    <form onSubmit={handleLegacySubmit} className="space-y-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">Paper Invoice ID (NOT SYSTEM ID)</label>
+                                            <input
+                                                name="invoice_number"
+                                                type="text"
+                                                placeholder="e.g. 1005"
+                                                className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                                required
+                                            />
                                         </div>
-                                        <p className="text-sm font-medium text-gray-500">Manual Invoice Entry</p>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">Customer Name (Optional)</label>
+                                            <input
+                                                name="customer_name"
+                                                type="text"
+                                                placeholder="Walk-in Customer"
+                                                className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">Total Due Amount</label>
+                                            <div className="relative">
+                                                <span className="absolute left-3 top-2 text-gray-500 font-bold">৳</span>
+                                                <input
+                                                    name="amount"
+                                                    type="number"
+                                                    min="1"
+                                                    step="0.01"
+                                                    placeholder="0.00"
+                                                    className="w-full pl-8 pr-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white font-bold"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            disabled={processing}
+                                            className="w-full bg-slate-800 text-white py-3 rounded-lg font-bold text-sm hover:bg-slate-700 transition-colors"
+                                        >
+                                            {processing ? 'Creating...' : '+ Create & Load for Payment'}
+                                        </button>
+                                    </form>
+
+                                    <div className="relative flex items-center py-2">
+                                        <div className="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+                                        <span className="flex-shrink-0 mx-4 text-gray-400 text-xs">OR SEARCH EXISTING</span>
+                                        <div className="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Find by Invoice Number</label>
+                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">Find System Invoice</label>
                                         <div className="flex gap-2">
                                             <input
                                                 type="text"
-                                                placeholder="e.g. 42"
-                                                className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                                placeholder="Search ID..."
+                                                className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                                 onKeyDown={(e) => {
                                                     if (e.key === 'Enter') {
                                                         setSearchTerm(e.currentTarget.value);
@@ -306,7 +357,7 @@ export default function DueCollection() {
                                                 }}
                                             />
                                             <button
-                                                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-700"
+                                                className="bg-blue-600 text-white px-3 py-2 rounded-lg font-bold text-sm hover:bg-blue-700"
                                                 onClick={(e) => setSearchTerm(e.currentTarget.previousElementSibling.value)}
                                             >
                                                 Load
