@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
     const hasPermission = (permission) => {
         if (!user) return false;
-        if (user.role === 'ADMIN') return true;
+        if (user.role === 'ADMIN' || user.role === 'ADMINISTRATIVE') return true;
         const perms = Array.isArray(user.permissions) ? user.permissions : JSON.parse(user.permissions || '[]');
         return perms.includes(permission);
     };

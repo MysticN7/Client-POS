@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { Trash2, Edit, Check, Eye, EyeOff, Key } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export default function Users() {
     const [users, setUsers] = useState([]);
@@ -8,9 +9,10 @@ export default function Users() {
     const [editingUser, setEditingUser] = useState(null);
     const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'SALESPERSON', permissions: [] });
     const [showPassword, setShowPassword] = useState(false);
+    const { user: currentUser } = useAuth();
 
     // Check if current user is ADMINISTRATIVE (can see passwords)
-    const isAdministrative = users.some(u => u.lastSetPassword !== undefined);
+    const isAdministrative = currentUser?.role === 'ADMINISTRATIVE';
 
     const [permissionsCatalog, setPermissionsCatalog] = useState({ list: [], groups: {} });
 
