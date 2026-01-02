@@ -64,25 +64,6 @@ export default function Dashboard() {
             gradient: 'from-emerald-500 via-green-600 to-teal-600',
             iconBg: 'bg-green-100 dark:bg-green-900/40',
             iconColor: 'text-green-600 dark:text-green-400'
-        },
-        {
-            title: 'Pending Payments',
-            value: stats?.pendingPayments || 0,
-            subtitle: `${stats?.pendingPaymentsCount || 0} invoices`,
-            icon: AlertCircle,
-            gradient: 'from-red-500 via-rose-600 to-pink-600',
-            iconBg: 'bg-red-100 dark:bg-red-900/40',
-            iconColor: 'text-red-600 dark:text-red-400'
-        },
-        {
-            title: 'Pending Job Cards',
-            value: stats?.pendingJobCards || 0,
-            subtitle: 'Active orders',
-            icon: Briefcase,
-            gradient: 'from-purple-500 via-purple-600 to-violet-600',
-            iconBg: 'bg-purple-100 dark:bg-purple-900/40',
-            iconColor: 'text-purple-600 dark:text-purple-400',
-            isCount: true
         }
     ];
 
