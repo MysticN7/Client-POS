@@ -236,7 +236,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
                         return (
                             <div>
-                                <table className="w-full text-center" style={{ fontSize: '10px', border: '1px dashed #000', borderCollapse: 'collapse', tableLayout: 'fixed', width: '100%', lineHeight: '1.5' }}>
+                                <table className="w-full text-center" style={{ fontSize: '10px', border: '1px dashed #000', borderCollapse: 'separate', borderSpacing: '0', tableLayout: 'fixed', width: '100%' }}>
                                     {/* HEADERS */}
                                     <thead>
                                         <tr>
