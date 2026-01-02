@@ -331,116 +331,115 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    </div>
+                                                )}
+                                            </div>
                                         )}
                                     </div>
-                                )}
-                            </div>
                                 ))}
+                            </div>
+
+                            {/* Payment Section */}
+                            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg border dark:border-gray-700 shadow-sm">
+                                <h3 className="font-bold text-lg mb-4 dark:text-gray-100">Payment & Notes</h3>
+
+                                <div className="space-y-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Discount</label>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={discount}
+                                                onChange={(e) => setDiscount(e.target.value)}
+                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add Payment</label>
+                                            <input
+                                                type="number"
+                                                step="0.01"
+                                                min="0"
+                                                value={paymentAmount}
+                                                onChange={(e) => setPaymentAmount(e.target.value)}
+                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
+                                                placeholder="0.00"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-50 dark:bg-gray-800 dark:text-gray-100 p-3 rounded text-sm space-y-1">
+                                        <div className="flex justify-between"><span>Subtotal:</span> <span className="font-bold">৳{totalAmount.toFixed(2)}</span></div>
+                                        <div className="flex justify-between text-red-600"><span>Discount:</span> <span className="font-bold">-৳{parseFloat(discount || 0).toFixed(2)}</span></div>
+                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1"><span>Net Total:</span> <span className="font-bold">৳{finalAmount.toFixed(2)}</span></div>
+                                        <div className="flex justify-between text-green-600"><span>Paid (Prev + New):</span> <span className="font-bold">৳{(parseFloat(invoice.paid_amount || 0) + (parseFloat(paymentAmount) || 0)).toFixed(2)}</span></div>
+                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1 text-lg"><span>Due:</span> <span className="font-bold">৳{dueAmount.toFixed(2)}</span></div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
+                                        <select
+                                            value={paymentMethod}
+                                            onChange={(e) => setPaymentMethod(e.target.value)}
+                                            className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="Cash">Cash</option>
+                                            <option value="Card">Card</option>
+                                            <option value="MFS">Mobile Banking</option>
+                                            <option value="Cheque">Cheque</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes</label>
+                                        <textarea
+                                            value={notes}
+                                            onChange={(e) => setNotes(e.target.value)}
+                                            className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg h-24 focus:ring-2 focus:ring-blue-500"
+                                            placeholder="Invoice notes..."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Footer Actions */}
+                            <div className="flex justify-end gap-3 pt-4 border-t dark:border-gray-700 sticky bottom-0 bg-gray-50 dark:bg-gray-800 pb-4">
+                                <button
+                                    type="button"
+                                    onClick={onClose}
+                                    className="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 font-medium dark:text-gray-100"
+                                    disabled={loading}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-medium shadow-sm"
+                                    disabled={loading}
+                                >
+                                    <Save size={18} />
+                                    {loading ? 'Saving...' : 'Save Changes'}
+                                </button>
+                            </div>
+                        </form>
                     </div>
 
-                    {/* Payment Section */}
-                    <div className="bg-white dark:bg-gray-900 p-6 rounded-lg border dark:border-gray-700 shadow-sm">
-                        <h3 className="font-bold text-lg mb-4 dark:text-gray-100">Payment & Notes</h3>
-
-                        <div className="space-y-4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Discount</label>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={discount}
-                                        onChange={(e) => setDiscount(e.target.value)}
-                                        className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add Payment</label>
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        min="0"
-                                        value={paymentAmount}
-                                        onChange={(e) => setPaymentAmount(e.target.value)}
-                                        className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-50 dark:bg-gray-800 dark:text-gray-100 p-3 rounded text-sm space-y-1">
-                                <div className="flex justify-between"><span>Subtotal:</span> <span className="font-bold">৳{totalAmount.toFixed(2)}</span></div>
-                                <div className="flex justify-between text-red-600"><span>Discount:</span> <span className="font-bold">-৳{parseFloat(discount || 0).toFixed(2)}</span></div>
-                                <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1"><span>Net Total:</span> <span className="font-bold">৳{finalAmount.toFixed(2)}</span></div>
-                                <div className="flex justify-between text-green-600"><span>Paid (Prev + New):</span> <span className="font-bold">৳{(parseFloat(invoice.paid_amount || 0) + (parseFloat(paymentAmount) || 0)).toFixed(2)}</span></div>
-                                <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1 text-lg"><span>Due:</span> <span className="font-bold">৳{dueAmount.toFixed(2)}</span></div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
-                                <select
-                                    value={paymentMethod}
-                                    onChange={(e) => setPaymentMethod(e.target.value)}
-                                    className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                >
-                                    <option value="Cash">Cash</option>
-                                    <option value="Card">Card</option>
-                                    <option value="MFS">Mobile Banking</option>
-                                    <option value="Cheque">Cheque</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes</label>
-                                <textarea
-                                    value={notes}
-                                    onChange={(e) => setNotes(e.target.value)}
-                                    className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg h-24 focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Invoice notes..."
+                    {/* Right Column - Live Invoice Preview */}
+                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 dark:bg-gray-900 flex justify-center items-start print:w-full print:bg-white">
+                        <div className="sticky top-2 sm:top-6 w-full">
+                            <h3 className="text-center font-bold text-gray-700 dark:text-gray-300 mb-2 sm:mb-4 text-sm sm:text-base print:hidden">Live Preview</h3>
+                            <div className="shadow-2xl print:shadow-none print-only">
+                                <InvoicePrint
+                                    ref={printRef}
+                                    invoice={invoiceForPrint}
+                                    items={items}
+                                    customer={invoice.Customer}
+                                    user={invoice.User}
                                 />
                             </div>
                         </div>
                     </div>
-
-                    {/* Footer Actions */}
-                    <div className="flex justify-end gap-3 pt-4 border-t dark:border-gray-700 sticky bottom-0 bg-gray-50 dark:bg-gray-800 pb-4">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 font-medium dark:text-gray-100"
-                            disabled={loading}
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-medium shadow-sm"
-                            disabled={loading}
-                        >
-                            <Save size={18} />
-                            {loading ? 'Saving...' : 'Save Changes'}
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            {/* Right Column - Live Invoice Preview */}
-            <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 dark:bg-gray-900 flex justify-center items-start print:w-full print:bg-white">
-                <div className="sticky top-2 sm:top-6 w-full">
-                    <h3 className="text-center font-bold text-gray-700 dark:text-gray-300 mb-2 sm:mb-4 text-sm sm:text-base print:hidden">Live Preview</h3>
-                    <div className="shadow-2xl print:shadow-none print-only">
-                        <InvoicePrint
-                            ref={printRef}
-                            invoice={invoiceForPrint}
-                            items={items}
-                            customer={invoice.Customer}
-                            user={invoice.User}
-                        />
-                    </div>
                 </div>
-            </div>
-        </div>
             </div >
         </div >
     );
