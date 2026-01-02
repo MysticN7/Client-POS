@@ -189,41 +189,71 @@ export default function Dashboard() {
                     <div className="w-1 h-6 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full"></div>
                     Quick Actions
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {allQuickActions.map((item) => {
                         const isAllowed = !item.permission || hasPermission(item.permission);
+
+                        // Map flat colors to rich gradients
+                        const getGradient = (flatColor) => {
+                            if (!flatColor) return 'from-gray-700 to-gray-900';
+                            if (flatColor.includes('orange')) return 'from-orange-400 to-red-500 shadow-orange-500/30';
+                            if (flatColor.includes('purple')) return 'from-purple-500 to-indigo-600 shadow-purple-500/30';
+                            if (flatColor.includes('red')) return 'from-red-500 to-rose-600 shadow-red-500/30';
+                            if (flatColor.includes('blue')) return 'from-blue-400 to-blue-600 shadow-blue-500/30';
+                            if (flatColor.includes('green-600')) return 'from-green-600 to-emerald-700 shadow-green-500/30'; // Due Collection
+                            if (flatColor.includes('teal')) return 'from-teal-400 to-emerald-600 shadow-teal-500/30';
+                            if (flatColor.includes('green-500')) return 'from-green-400 to-emerald-600 shadow-green-500/30';
+                            if (flatColor.includes('emerald')) return 'from-emerald-400 to-teal-600 shadow-emerald-500/30';
+                            if (flatColor.includes('indigo')) return 'from-indigo-400 to-violet-600 shadow-indigo-500/30';
+                            if (flatColor.includes('cyan')) return 'from-cyan-400 to-blue-500 shadow-cyan-500/30';
+                            if (flatColor.includes('pink')) return 'from-pink-400 to-rose-500 shadow-pink-500/30';
+                            if (flatColor.includes('gray') || flatColor.includes('slate')) return 'from-slate-600 to-slate-800 shadow-slate-500/30';
+                            // Fallback for custom gradients passed directly
+                            return flatColor.replace('bg-gradient-to-br ', '');
+                        };
+
+                        const gradientClass = item.gradient || getGradient(item.color);
 
                         return (
                             <button
                                 key={item.id}
                                 onClick={() => isAllowed ? (item.path ? navigate(item.path) : item.action?.()) : null}
                                 disabled={!isAllowed}
-                                className={`${item.color || 'bg-gradient-to-br from-gray-500 to-gray-600'} relative overflow-hidden text-white p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col items-center justify-center gap-2 sm:gap-3 min-h-[100px] sm:min-h-[130px] group ${isAllowed ? 'hover:scale-105 active:scale-95' : 'cursor-not-allowed opacity-60'}`}
+                                className={`
+                                    group relative overflow-hidden rounded-2xl p-6 
+                                    bg-gradient-to-br ${gradientClass}
+                                    shadow-lg hover:shadow-2xl transition-all duration-300 transform 
+                                    flex flex-col items-center justify-center gap-4 min-h-[140px] border border-white/10
+                                    ${isAllowed ? 'hover:-translate-y-1 hover:scale-[1.02]' : 'cursor-not-allowed opacity-60 grayscale'}
+                                `}
                             >
-                                {/* Animated Background Gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/10 group-hover:from-white/5 group-hover:to-white/20 transition-all duration-300"></div>
+                                {/* Animated Shine Effect */}
+                                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
 
-                                {/* Icon */}
-                                <div className="relative z-10">
-                                    <item.icon size={28} className={`sm:w-8 sm:h-8 ${!isAllowed ? 'opacity-50' : 'group-hover:scale-110 transition-transform duration-300'}`} />
+                                {/* Icon Circle */}
+                                <div className={`
+                                    relative z-10 p-3 rounded-xl bg-white/10 backdrop-blur-sm 
+                                    shadow-inner border border-white/20
+                                    group-hover:scale-110 transition-transform duration-300
+                                `}>
+                                    <item.icon size={28} className="text-white drop-shadow-md" />
                                 </div>
 
                                 {/* Title */}
-                                <span className={`relative z-10 text-sm sm:text-base font-semibold text-center leading-tight ${!isAllowed ? 'opacity-50' : ''}`}>
+                                <span className="relative z-10 text-sm font-bold text-white tracking-wide text-center drop-shadow-sm">
                                     {item.title}
                                 </span>
 
                                 {/* Lock Overlay */}
                                 {!isAllowed && (
-                                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex items-center justify-center">
-                                        <div className="bg-white/30 p-2 sm:p-3 rounded-full backdrop-blur-sm">
-                                            <Lock size={20} className="text-white sm:w-6 sm:h-6" />
-                                        </div>
+                                    <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-[1px] flex items-center justify-center z-20">
+                                        <Lock size={24} className="text-white/70" />
                                     </div>
                                 )}
 
-                                {/* Decorative Corner */}
-                                <div className="absolute -top-4 -right-4 w-16 h-16 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
+                                {/* Decorative Background Pattern */}
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
+                                <div className="absolute bottom-0 left-0 w-16 h-16 bg-black/10 rounded-full blur-xl translate-y-8 -translate-x-8"></div>
                             </button>
                         );
                     })}
