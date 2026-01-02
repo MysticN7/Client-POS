@@ -239,12 +239,12 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                 <table className="w-full text-center" style={{ fontSize: '12px', border: '1px dashed #000', borderCollapse: 'collapse', width: '100%' }}>
                                     {/* Column widths: narrow first col, wider value cols */}
                                     <colgroup>
-                                        <col style={{ width: '8%' }} />
-                                        <col style={{ width: '15%' }} />
-                                        <col style={{ width: '15%' }} />
+                                        <col style={{ width: '12%' }} />
+                                        <col style={{ width: '14%' }} />
+                                        <col style={{ width: '14%' }} />
                                         <col style={{ width: '16%' }} />
-                                        <col style={{ width: '15%' }} />
-                                        <col style={{ width: '15%' }} />
+                                        <col style={{ width: '14%' }} />
+                                        <col style={{ width: '14%' }} />
                                         <col style={{ width: '16%' }} />
                                     </colgroup>
                                     {/* HEADERS */}
@@ -269,7 +269,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                     <tbody>
                                         {(rx.right?.distance?.sph || rx.right?.distance?.cyl || rx.right?.distance?.axis || rx.left?.distance?.sph || rx.left?.distance?.cyl || rx.left?.distance?.axis) && (
                                             <tr>
-                                                <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '9px' }}>D</td>
+                                                <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '9px' }}>Dist</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'distance', 'sph')}</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'distance', 'cyl')}</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'distance', 'axis')}</td>
@@ -280,7 +280,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                         )}
                                         {(rx.right?.near?.sph || rx.right?.near?.cyl || rx.right?.near?.axis || rx.left?.near?.sph || rx.left?.near?.cyl || rx.left?.near?.axis) && (
                                             <tr>
-                                                <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '9px' }}>N</td>
+                                                <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '9px' }}>Near</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'near', 'sph')}</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'near', 'cyl')}</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'near', 'axis')}</td>
