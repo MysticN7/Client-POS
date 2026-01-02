@@ -26,7 +26,7 @@ const Footer = () => {
                         height={windowDimension.height}
                         recycle={true}
                         numberOfPieces={300}
-                        gravity={0.12} // Slightly slower fall for "floating" effect like the gif
+                        gravity={0.25} // Faster fall per user request
                         colors={[
                             '#EC4899', // Pink
                             '#8B5CF6', // Purple
