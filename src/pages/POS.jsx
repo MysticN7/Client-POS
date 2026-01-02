@@ -478,13 +478,13 @@ export default function POS() {
                     <div className="flex-1 min-h-0 overflow-auto p-3 sm:p-4 space-y-4 lg:max-h-none">
                         {cart.map((item, index) => (
                             <div key={index} className="border-b pb-4">
-                                <div className="flex justify-between mb-2">
-                                    <span className="font-medium text-sm sm:text-base">{item.name}</span>
-                                    <div className="flex items-center space-x-1">
-                                        <span className="text-xs text-gray-500">৳</span>
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="font-medium text-sm sm:text-base flex-1">{item.name}</span>
+                                    <div className="flex items-center bg-blue-50 dark:bg-blue-900/30 rounded-lg px-2 py-1">
+                                        <span className="text-sm font-bold text-blue-600 dark:text-blue-300 mr-1">৳</span>
                                         <input
                                             type="number"
-                                            className="w-20 border rounded px-1 text-right text-sm dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                            className="w-24 sm:w-28 border-0 bg-transparent text-right text-base sm:text-lg font-bold text-blue-700 dark:text-blue-200 focus:outline-none focus:ring-0"
                                             value={item.price}
                                             onChange={(e) => updatePrice(index, e.target.value)}
                                             onClick={(e) => e.target.select()}
