@@ -264,8 +264,8 @@ export default function DueCollection() {
                                         <div
                                             key={inv.id}
                                             className={`relative p-5 rounded-xl border transition-all cursor-pointer group ${selectedInvoice?.id === inv.id
-                                                    ? 'bg-green-50/80 dark:bg-green-900/20 border-green-500 ring-1 ring-green-500 shadow-md transform scale-[1.01]'
-                                                    : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700/50 hover:shadow-md'
+                                                ? 'bg-green-50/80 dark:bg-green-900/20 border-green-500 ring-1 ring-green-500 shadow-md transform scale-[1.01]'
+                                                : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700/50 hover:shadow-md'
                                                 }`}
                                             onClick={() => handleSelectInvoice(inv)}
                                         >
@@ -381,8 +381,8 @@ export default function DueCollection() {
                                                         key={method}
                                                         type="button"
                                                         className={`py-3 px-2 rounded-xl border text-sm font-semibold transition-all relative overflow-hidden ${paymentMethod === method
-                                                                ? 'bg-green-600 text-white border-green-600 shadow-md transform scale-[1.02]'
-                                                                : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-900/20'
+                                                            ? 'bg-green-600 text-white border-green-600 shadow-md transform scale-[1.02]'
+                                                            : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-900/20'
                                                             }`}
                                                         onClick={() => setPaymentMethod(method)}
                                                     >
@@ -624,6 +624,64 @@ export default function DueCollection() {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Payment Modal */}
+            {showEditModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md transform transition-all scale-100 opacity-100">
+                        <div className="p-6 border-b dark:border-gray-700">
+                            <h2 className="text-xl font-bold dark:text-gray-100 flex items-center gap-2">
+                                <Edit size={20} className="text-orange-500" />
+                                Edit Payment
+                            </h2>
+                        </div>
+
+                        <form onSubmit={handleEditSubmit} className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
+                                <div className="relative">
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold">৳</span>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        className="w-full pl-8 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                        value={editAmount}
+                                        onChange={(e) => setEditAmount(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Note</label>
+                                <textarea
+                                    className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    rows="3"
+                                    value={editNote}
+                                    onChange={(e) => setEditNote(e.target.value)}
+                                    placeholder="Add a note..."
+                                />
+                            </div>
+
+                            <div className="flex justify-end gap-3 pt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowEditModal(false)}
+                                    className="px-5 py-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-medium transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-bold hover:bg-orange-600 shadow-lg shadow-orange-200 dark:shadow-none transition-all transform active:scale-95"
+                                >
+                                    Update Payment
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
