@@ -97,7 +97,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
     const amountInWords = numberToWords(Math.floor(netTotal)) || 'Zero';
 
     const accent = settings.accent_color || '#1f2937';
-    const paperWidth = Number(settings.paper_width_mm) || 80;
+    const paperWidth = Number(settings.paper_width_mm) || 72;
     const paperMargin = Number(settings.paper_margin_mm) || 2;
     const gridThickness = Number(settings.grid_thickness_px || 2);
     const PhoneIcon = (props) => (
@@ -261,9 +261,9 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                         )}
                                         {/* Lens Row - Merged into table for alignment */}
                                         <tr>
-                                            <td colSpan="7" className="py-1 px-2 font-bold text-center" style={{ border: '1px dashed black', borderTop: 'none' }}>
-                                                <div style={{ ...styleFor('rx_header'), display: 'inline-block' }}>Lens: </div>
-                                                <span style={{ ...styleFor('rx_value'), fontWeight: '800', marginLeft: '5px' }}>{rx.lensType || ''}</span>
+                                            <td colSpan="7" className="py-1 px-2 font-bold text-center" style={{ border: '1px dashed black' }}>
+                                                <span style={{ ...styleFor('rx_header'), fontWeight: 900 }}>Lens: </span>
+                                                <span style={{ ...styleFor('rx_value'), fontWeight: '800' }}>{rx.lensType || ''}</span>
                                             </td>
                                         </tr>
                                     </tbody>
