@@ -163,12 +163,13 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                 box-sizing: border-box;
                             }
                             .print-receipt {
-                                width: 100% !important;
-                                max-width: 100% !important;
-                                margin: 0 !important;
+                                width: 95% !important;
+                                max-width: 95% !important;
+                                margin: 0 auto !important;
                                 padding-left: ${paperMargin}mm !important; 
                                 padding-right: ${paperMargin}mm !important;
                                 box-sizing: border-box !important;
+                                overflow: hidden;
                             }
                         }
                     `}
