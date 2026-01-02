@@ -25,9 +25,15 @@ const Footer = () => {
                         width={windowDimension.width}
                         height={windowDimension.height}
                         recycle={true}
-                        numberOfPieces={200}
-                        gravity={0.15} // Gentle fall
-                        colors={['#ec4899', '#8b5cf6', '#f97316', '#22c55e']}
+                        numberOfPieces={300}
+                        gravity={0.12} // Slightly slower fall for "floating" effect like the gif
+                        colors={[
+                            '#EC4899', // Pink
+                            '#8B5CF6', // Purple
+                            '#F97316', // Orange
+                            '#8B4513', // Brown (SaddleBrown)
+                            '#3B82F6'  // Blue
+                        ]}
                     />
                 </div>
             )}
