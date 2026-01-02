@@ -210,12 +210,18 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                         const rxItem = parsedItems.find(i => i.prescription_data);
                         const rx = rxItem.prescription_data;
 
-                        // Helper to safely get data
-                        const getVal = (eye, type, field) => rx?.[eye]?.[type]?.[field] || '-';
+                        // Helper to safely get data - abbreviate Plano to P
+                        const getVal = (eye, type, field) => {
+                            const val = rx?.[eye]?.[type]?.[field];
+                            if (!val) return '-';
+                            // Abbreviate Plano to P for space
+                            if (val.toString().toLowerCase() === 'plano') return 'P';
+                            return val;
+                        };
 
                         return (
                             <div>
-                                <table className="w-full text-center" style={{ fontSize: `${settings.rx_font_size || 11}px`, border: '1.5px dashed #000', borderCollapse: 'collapse' }}>
+                                <table className="w-full text-center" style={{ fontSize: `${settings.rx_font_size || 10}px`, border: '1.5px dashed #000', borderCollapse: 'collapse', tableLayout: 'fixed', width: '100%' }}>
                                     {/* HEADERS */}
                                     <thead>
                                         <tr>
