@@ -416,8 +416,6 @@ export default function POS() {
                                 <img
                                     src={product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`}
                                     alt={product.name}
-                                    loading="lazy"
-                                    decoding="async"
                                     className="w-full h-32 object-cover rounded-lg mb-3 border border-gray-200 dark:border-gray-700"
                                     onError={(e) => {
                                         e.target.onerror = null;

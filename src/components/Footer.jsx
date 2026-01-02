@@ -10,14 +10,30 @@ const Footer = () => {
         setLoved(newState);
 
         if (newState) {
-            // "Something to enjoy" - Confetti Explosion!
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.9 }, // Boom from the bottom
-                colors: ['#ec4899', '#8b5cf6', '#f97316'], // Pink, Purple, Orange
-                disableForReducedMotion: true
-            });
+            // "Fall Mode" - Confetti Raining from Top
+            const count = 200;
+            const defaults = {
+                origin: { y: 0 }, // Start from top
+                spread: 360,
+                startVelocity: 30,
+                gravity: 0.5, // Float down gently
+                ticks: 300, // Last longer
+                colors: ['#ec4899', '#8b5cf6', '#f97316', '#22c55e']
+            };
+
+            function fire(particleRatio, opts) {
+                confetti({
+                    ...defaults,
+                    ...opts,
+                    particleCount: Math.floor(count * particleRatio)
+                });
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
         }
     };
 
