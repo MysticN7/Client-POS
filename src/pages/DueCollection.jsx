@@ -99,6 +99,12 @@ export default function DueCollection() {
             setPaymentAmount('');
             setNote('');
             fetchDueInvoices(); // Refresh list
+            if (activeTab === 'history') fetchHistory(); // Refresh history if current tab 
+            // Logic update: Ensure history is fresh even if we switch tabs later. 
+            // Actually, since useEffect handles tab switch, we only need this if we are somehow viewing history or it's needed immediately.
+            // But let's just add it to be safe or rely on tab switch.
+            // Better yet: invalidating the list so next tab switch fetches? 
+            // The useEffect runs on every 'history' activation.
         } catch (err) {
             console.error(err);
             alert('Failed to collect payment: ' + (err.response?.data?.message || err.message));
@@ -452,13 +458,13 @@ export default function DueCollection() {
                                                 {record.invoice?.invoiceNumber || 'N/A'}
                                             </td>
                                             <td className="p-4 text-sm">
-                                                <div className="font-medium text-gray-800 dark:text-gray-200">{record.invoice?.Customer?.name || record.invoice?.customerName || 'N/A'}</div>
-                                                <div className="text-xs text-gray-500">{record.invoice?.Customer?.phone || ''}</div>
+                                                <div className="font-medium text-gray-800 dark:text-gray-200">{record.invoice?.customer?.name || record.invoice?.customerName || 'N/A'}</div>
+                                                <div className="text-xs text-gray-500">{record.invoice?.customer?.phone || ''}</div>
                                             </td>
                                             <td className="p-4">
                                                 <span className={`px-2 py-1 rounded text-xs font-medium ${record.paymentMethod === 'Cash' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                                                        record.paymentMethod === 'Card' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
-                                                            'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                                                    record.paymentMethod === 'Card' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
+                                                        'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
                                                     }`}>
                                                     {record.paymentMethod}
                                                 </span>
