@@ -156,6 +156,11 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                             }
                             body {
                                 margin: 0;
+                                -webkit-print-color-adjust: exact;
+                                print-color-adjust: exact;
+                            }
+                            * {
+                                box-sizing: border-box;
                             }
                             .print-receipt {
                                 width: 100% !important;
@@ -163,6 +168,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                 margin: 0 !important;
                                 padding-left: ${paperMargin}mm !important; 
                                 padding-right: ${paperMargin}mm !important;
+                                box-sizing: border-box !important;
                             }
                         }
                     `}
@@ -173,8 +179,8 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             <div className="py-2 mb-2 text-xs" style={{
                 color: 'black',
                 backgroundColor: 'transparent',
-                borderTop: '2px dashed black',
-                borderBottom: '2px dashed black',
+                borderTop: '1px dashed black',
+                borderBottom: '1px dashed black',
                 fontWeight: 900,
                 fontSize: '14px',
                 textAlign: 'center',
@@ -205,22 +211,22 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
                         return (
                             <div>
-                                <table className="w-full text-center" style={{ fontSize: `${settings.rx_font_size || 15}px`, border: '2px dashed black', borderCollapse: 'collapse' }}>
+                                <table className="w-full text-center" style={{ fontSize: `${settings.rx_font_size || 15}px`, border: '1px dashed black', borderCollapse: 'collapse' }}>
                                     {/* HEADERS */}
                                     <thead>
                                         <tr>
-                                            <th className="py-1 px-1" style={{ border: '2px dashed black' }}></th>
-                                            <th className="py-1 px-1 font-black" colSpan="3" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>Right</th>
-                                            <th className="py-1 px-1 font-black" colSpan="3" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>Left</th>
+                                            <th className="py-1 px-1" style={{ border: '1px dashed black' }}></th>
+                                            <th className="py-1 px-1 font-black" colSpan="3" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>Right</th>
+                                            <th className="py-1 px-1 font-black" colSpan="3" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>Left</th>
                                         </tr>
                                         <tr>
-                                            <th className="py-1 px-1" style={{ border: '2px dashed black' }}></th>
-                                            <th className="py-1 px-1 font-black" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>SPH</th>
-                                            <th className="py-1 px-1 font-black" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>CYL</th>
-                                            <th className="py-1 px-1 font-black" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>AXIS</th>
-                                            <th className="py-1 px-1 font-black" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>SPH</th>
-                                            <th className="py-1 px-1 font-black" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>CYL</th>
-                                            <th className="py-1 px-1 font-black" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>AXIS</th>
+                                            <th className="py-1 px-1" style={{ border: '1px dashed black' }}></th>
+                                            <th className="py-1 px-1 font-black" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>SPH</th>
+                                            <th className="py-1 px-1 font-black" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>CYL</th>
+                                            <th className="py-1 px-1 font-black" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>AXIS</th>
+                                            <th className="py-1 px-1 font-black" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>SPH</th>
+                                            <th className="py-1 px-1 font-black" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>CYL</th>
+                                            <th className="py-1 px-1 font-black" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>AXIS</th>
                                         </tr>
                                     </thead>
 
@@ -228,33 +234,31 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                     <tbody>
                                         {(rx.right?.distance?.sph || rx.right?.distance?.cyl || rx.right?.distance?.axis || rx.left?.distance?.sph || rx.left?.distance?.cyl || rx.left?.distance?.axis) && (
                                             <tr>
-                                                <td className="py-1 px-2 font-black text-left" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>Dist</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'sph')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'cyl')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'axis')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'sph')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'cyl')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'axis')}</td>
+                                                <td className="py-1 px-2 font-black text-left" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>Dist</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'sph')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'cyl')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'distance', 'axis')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'sph')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'cyl')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'distance', 'axis')}</td>
                                             </tr>
                                         )}
                                         {(rx.right?.near?.sph || rx.right?.near?.cyl || rx.right?.near?.axis || rx.left?.near?.sph || rx.left?.near?.cyl || rx.left?.near?.axis) && (
                                             <tr>
-                                                <td className="py-1 px-2 font-black text-left" style={{ border: '2px dashed black', ...styleFor('rx_header') }}>Near</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'near', 'sph')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'near', 'cyl')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'near', 'axis')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'near', 'sph')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'near', 'cyl')}</td>
-                                                <td className="py-1 px-1 font-bold" style={{ border: '2px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'near', 'axis')}</td>
+                                                <td className="py-1 px-2 font-black text-left" style={{ border: '1px dashed black', ...styleFor('rx_header') }}>Near</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'near', 'sph')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'near', 'cyl')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('right', 'near', 'axis')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'near', 'sph')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'near', 'cyl')}</td>
+                                                <td className="py-1 px-1 font-bold" style={{ border: '1px dashed black', ...styleFor('rx_value') }}>{getVal('left', 'near', 'axis')}</td>
                                             </tr>
                                         )}
-                                    </tbody>
-                                </table>
-                                <table className="w-full mb-2" style={{ fontSize: `${settings.rx_font_size || 15}px`, border: '2px dashed black', borderTop: 'none', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
-                                    <tbody>
+                                        {/* Lens Row - Merged into table for alignment */}
                                         <tr>
-                                            <td className="py-1 px-2 font-bold text-left" style={{ ...styleFor('rx_header'), border: 'none', width: '100%' }}>
-                                                Lens: <span style={{ ...styleFor('rx_value'), fontWeight: '700' }}>{rx.lensType || ''}</span>
+                                            <td colSpan="7" className="py-1 px-2 font-bold text-center" style={{ border: '1px dashed black', borderTop: 'none' }}>
+                                                <div style={{ ...styleFor('rx_header'), display: 'inline-block' }}>Lens: </div>
+                                                <span style={{ ...styleFor('rx_value'), fontWeight: '800', marginLeft: '5px' }}>{rx.lensType || ''}</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -283,7 +287,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                     {parsedItems.map((item, index) => (
                         <tr key={index}>
                             <td className="py-1 px-2 text-center" style={{ border: '1px dashed black' }}>{index + 1}</td>
-                            <td className="py-1 px-2" style={{ border: '1px dashed black', fontWeight: '600' }}>{item.item_name || item.name}</td>
+                            <td className="py-1 px-2" style={{ border: '1px dashed black', fontWeight: '900' }}>{item.item_name || item.name}</td>
                             <td className="py-1 px-2 text-center" style={{ border: '1px dashed black' }}>{item.quantity}</td>
                             <td className="py-1 px-2 text-center" style={{ border: '1px dashed black' }}>{item.unit_price || item.price}</td>
                             <td className="py-1 px-2 text-center" style={{ border: '1px dashed black' }}>{((item.unit_price || item.price) * item.quantity).toFixed(2)}</td>
@@ -297,19 +301,19 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                 <div style={{ width: '45%' }}>
                     <div className="flex justify-between py-1">
                         <span style={styleFor('totals_labels')}>Total</span>
-                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.total_amount).toFixed(1)}</span>
+                        <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.total_amount).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1">
                         <span style={styleFor('totals_labels')}>Discount</span>
-                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.discount || 0).toFixed(1)}</span>
+                        <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.discount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dashed' }}>
                         <span style={styleFor('totals_labels')}>Paid Payment</span>
-                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}</span>{Number(invoice.paid_amount || 0).toFixed(1)}</span>
+                        <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.paid_amount || 0).toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dashed' }}>
                         <span style={styleFor('totals_labels')}>Due</span>
-                        <span style={styleFor('totals_values')}><span style={{ fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}</span>{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
+                        <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
                     </div>
                 </div>
             </div>
