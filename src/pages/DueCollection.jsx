@@ -227,55 +227,84 @@ export default function DueCollection() {
             {activeTab === 'collect' ? (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Left Panel: Search & List */}
-                    <div className="lg:col-span-2 space-y-4">
-                        <div className="relative">
-                            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+                    <div className="lg:col-span-2 space-y-6">
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <Search className="text-gray-400 group-focus-within:text-green-500 transition-colors" size={20} />
+                            </div>
                             <input
                                 type="text"
-                                placeholder="Search Invoice #, Name or Phone..."
-                                className="w-full pl-10 pr-4 py-3 rounded-lg border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-green-500 outline-none shadow-sm"
+                                placeholder="Search by Invoice #, Customer Name, or Phone..."
+                                className="w-full pl-12 pr-4 py-4 rounded-xl border-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-green-500 outline-none transition-all placeholder-gray-400 group-hover:shadow-md"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 autoFocus
                             />
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md min-h-[400px] max-h-[600px] overflow-y-auto">
+                        <div className="min-h-[400px]">
                             {loading ? (
-                                <div className="p-8 text-center text-gray-500">Searching...</div>
+                                <div className="flex flex-col items-center justify-center py-12 text-gray-500 space-y-3">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+                                    <p>Searching invoices...</p>
+                                </div>
                             ) : invoices.length === 0 ? (
-                                <div className="p-8 text-center text-gray-500">
-                                    {searchTerm ? 'No invoices with due amounts found.' : 'Search or select to view invoices.'}
+                                <div className="flex flex-col items-center justify-center py-16 text-center space-y-4 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+                                    <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-full">
+                                        <FileText size={32} className="text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-500 font-medium">No due invoices found</p>
+                                        <p className="text-sm text-gray-400 mt-1">{searchTerm ? 'Try a different search term' : 'Search to start collecting'}</p>
+                                    </div>
                                 </div>
                             ) : (
-                                <div className="divide-y dark:divide-gray-700">
+                                <div className="grid grid-cols-1 gap-3">
                                     {invoices.map(inv => (
                                         <div
                                             key={inv.id}
-                                            className={`p-4 cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/10 transition-colors ${selectedInvoice?.id === inv.id ? 'bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500' : ''}`}
+                                            className={`relative p-5 rounded-xl border transition-all cursor-pointer group ${selectedInvoice?.id === inv.id
+                                                    ? 'bg-green-50/80 dark:bg-green-900/20 border-green-500 ring-1 ring-green-500 shadow-md transform scale-[1.01]'
+                                                    : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-700/50 hover:shadow-md'
+                                                }`}
                                             onClick={() => handleSelectInvoice(inv)}
                                         >
                                             <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                                                        <FileText size={16} className="text-gray-400" />
-                                                        {inv.invoice_number}
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="px-2 py-0.5 rounded text-xs font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                                                            #{inv.invoice_number}
+                                                        </span>
+                                                        <span className="text-xs text-gray-400 flex items-center gap-1">
+                                                            <Calendar size={10} />
+                                                            {formatDate(inv.createdAt)}
+                                                        </span>
                                                     </div>
-                                                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 flex items-center gap-2">
-                                                        <User size={14} />
-                                                        {inv.Customer?.name} ({inv.Customer?.phone})
+
+                                                    <div className="font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                                                        <User size={16} className={`dark:text-gray-400 ${selectedInvoice?.id === inv.id ? 'text-green-600' : 'text-gray-400'}`} />
+                                                        {inv.Customer?.name}
                                                     </div>
-                                                    <div className="text-xs text-gray-400 mt-1 flex items-center gap-2">
-                                                        <Calendar size={12} />
-                                                        {formatDate(inv.createdAt)}
+                                                    <div className="text-sm text-gray-500 dark:text-gray-400 pl-6">
+                                                        {inv.Customer?.phone}
                                                     </div>
                                                 </div>
+
                                                 <div className="text-right">
-                                                    <div className="text-sm text-gray-500">Due Amount</div>
-                                                    <div className="font-extrabold text-red-600 text-lg">৳{inv.due_amount.toFixed(2)}</div>
-                                                    <div className="text-xs text-gray-400">Total: ৳{inv.final_amount.toFixed(2)}</div>
+                                                    <div className="text-xs uppercase tracking-wider text-gray-400 font-medium mb-0.5">Due Amount</div>
+                                                    <div className="font-bold text-xl text-red-500 dark:text-red-400">
+                                                        ৳{inv.due_amount.toFixed(2)}
+                                                    </div>
+                                                    <div className="text-xs text-gray-400 mt-1 bg-gray-50 dark:bg-gray-700/50 px-2 py-1 rounded inline-block">
+                                                        Total: ৳{inv.final_amount.toFixed(2)}
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            {/* Selection Indicator */}
+                                            {selectedInvoice?.id === inv.id && (
+                                                <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-green-500 rounded-l"></div>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -283,70 +312,78 @@ export default function DueCollection() {
                         </div>
                     </div>
 
-                    {/* Right Panel: Payment Form */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 sticky top-6">
-                            <div className="p-4 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-t-lg">
-                                <h2 className="font-bold text-lg dark:text-gray-100">Payment Entry</h2>
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 sticky top-6 overflow-hidden">
+                            <div className="p-5 border-b dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-800/50">
+                                <h2 className="font-bold text-lg dark:text-gray-100 flex items-center gap-2">
+                                    <div className="p-1.5 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-lg">
+                                        <DollarSign size={18} />
+                                    </div>
+                                    Payment Entry
+                                </h2>
                             </div>
 
                             <div className="p-6">
                                 {selectedInvoice ? (
                                     <form onSubmit={handlePaymentSubmit} className="space-y-6">
-                                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-900/50 relative">
+                                        <div className="bg-blue-50/50 dark:bg-blue-900/10 p-5 rounded-xl border border-blue-100 dark:border-blue-900/30 relative group">
                                             <button
                                                 type="button"
                                                 onClick={() => setSelectedInvoice(null)}
-                                                className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                                                className="absolute top-3 right-3 text-gray-400 hover:text-red-500 p-1 hover:bg-white rounded-full transition-all"
                                                 title="Clear Selection"
                                             >
                                                 ✕
                                             </button>
-                                            <div className="flex justify-between mb-2">
-                                                <span className="text-gray-600 dark:text-gray-300">Invoice:</span>
-                                                <span className="font-bold dark:text-gray-100">{selectedInvoice.invoice_number}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-gray-600 dark:text-gray-300">Total Due:</span>
+                                            <div className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 font-semibold mb-3">Selected Invoice</div>
+
+                                            <div className="flex justify-between items-end mb-1">
+                                                <span className="text-2xl font-bold text-gray-800 dark:text-gray-100">#{selectedInvoice.invoice_number}</span>
                                                 <span className="text-xl font-bold text-red-600">৳{selectedInvoice.due_amount.toFixed(2)}</span>
+                                            </div>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                Due Amount
                                             </div>
                                         </div>
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Collection Amount</label>
                                             <div className="relative">
-                                                <span className="absolute left-3 top-3 text-gray-500 font-bold">৳</span>
+                                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xl">৳</span>
                                                 <input
                                                     type="number"
                                                     step="0.01"
                                                     min="1"
                                                     max={selectedInvoice.due_amount}
-                                                    className="w-full pl-8 pr-4 py-3 text-lg font-bold border rounded-lg focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                                    className="w-full pl-10 pr-4 py-4 text-2xl font-bold border rounded-xl focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-shadow shadow-sm"
                                                     placeholder="0.00"
                                                     value={paymentAmount}
                                                     onChange={(e) => setPaymentAmount(e.target.value)}
                                                     required
                                                 />
                                             </div>
-                                            <div className="flex justify-end mt-1">
+                                            <div className="flex justify-end mt-2">
                                                 <button
                                                     type="button"
-                                                    className="text-xs text-blue-600 hover:underline"
+                                                    className="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline flex items-center gap-1"
                                                     onClick={() => setPaymentAmount(selectedInvoice.due_amount.toString())}
                                                 >
-                                                    Collect Full Amount
+                                                    collect full amount
                                                 </button>
                                             </div>
                                         </div>
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
-                                            <div className="grid grid-cols-3 gap-2">
+                                            <div className="grid grid-cols-3 gap-3">
                                                 {['Cash', 'Card', 'Mobile'].map(method => (
                                                     <button
                                                         key={method}
                                                         type="button"
-                                                        className={`py-2 px-3 rounded border text-sm font-medium transition-all ${paymentMethod === method ? 'bg-green-600 text-white border-green-600' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50'}`}
+                                                        className={`py-3 px-2 rounded-xl border text-sm font-semibold transition-all relative overflow-hidden ${paymentMethod === method
+                                                                ? 'bg-green-600 text-white border-green-600 shadow-md transform scale-[1.02]'
+                                                                : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-900/20'
+                                                            }`}
                                                         onClick={() => setPaymentMethod(method)}
                                                     >
                                                         {method}
@@ -369,10 +406,10 @@ export default function DueCollection() {
                                         <button
                                             type="submit"
                                             disabled={processing}
-                                            className="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors shadow-lg shadow-green-200 dark:shadow-none disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                            className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-green-200 dark:shadow-none disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3 transform active:scale-[0.98]"
                                         >
                                             {processing ? (
-                                                <>Converting...</>
+                                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                                             ) : (
                                                 <>
                                                     <CreditCard size={20} />
