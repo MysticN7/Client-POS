@@ -470,87 +470,123 @@ export default function DueCollection() {
                     </div>
                 </div>
             ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="bg-gray-50 dark:bg-gray-700/50 border-b dark:border-gray-700 text-xs uppercase text-gray-500 font-semibold tracking-wider">
-                                    <th className="p-4">Date</th>
-                                    <th className="p-4">Invoice #</th>
-                                    <th className="p-4">Customer</th>
-                                    <th className="p-4">Method</th>
-                                    <th className="p-4">Note</th>
-                                    <th className="p-4">Note</th>
-                                    <th className="p-4 text-right">Amount</th>
-                                    {(hasPermission('EDIT_DUE') || hasPermission('DELETE_DUE')) && <th className="p-4 text-center">Actions</th>}
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y dark:divide-gray-700">
-                                {loading && history.length === 0 ? (
-                                    <tr>
-                                        <td colSpan="6" className="p-8 text-center text-gray-500">Loading history...</td>
+                <div className="space-y-6">
+                    {/* Summary Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Collected</p>
+                                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                                    ৳{history.reduce((sum, item) => sum + item.amount, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                </h3>
+                            </div>
+                            <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full text-green-600 dark:text-green-400">
+                                <DollarSign size={24} />
+                            </div>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Transactions</p>
+                                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                                    {history.length}
+                                </h3>
+                            </div>
+                            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-600 dark:text-blue-400">
+                                <CreditCard size={24} />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Table */}
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="bg-gray-50/50 dark:bg-gray-900/50 border-b dark:border-gray-700 text-xs uppercase text-gray-500 font-semibold tracking-wider">
+                                        <th className="p-4 pl-6">Date</th>
+                                        <th className="p-4">Invoice #</th>
+                                        <th className="p-4">Customer</th>
+                                        <th className="p-4">Method</th>
+                                        <th className="p-4">Note</th>
+                                        <th className="p-4 text-right">Amount</th>
+                                        <th className="p-4 text-center">Actions</th>
                                     </tr>
-                                ) : history.length === 0 ? (
-                                    <tr>
-                                        <td colSpan="6" className="p-8 text-center text-gray-500">No payment history found.</td>
-                                    </tr>
-                                ) : (
-                                    history.map((record) => (
-                                        <tr key={record._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
-                                            <td className="p-4 text-sm text-gray-600 dark:text-gray-300">
-                                                {formatDate(record.createdAt)}
-                                                <div className="text-xs text-gray-400">
-                                                    {new Date(record.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                </div>
-                                            </td>
-                                            <td className="p-4 font-medium text-gray-800 dark:text-gray-200">
-                                                {record.invoice?.invoiceNumber || 'N/A'}
-                                            </td>
-                                            <td className="p-4 text-sm">
-                                                <div className="font-medium text-gray-800 dark:text-gray-200">{record.invoice?.customer?.name || record.invoice?.customerName || 'N/A'}</div>
-                                                <div className="text-xs text-gray-500">{record.invoice?.customer?.phone || ''}</div>
-                                            </td>
-                                            <td className="p-4">
-                                                <span className={`px-2 py-1 rounded text-xs font-medium ${record.paymentMethod === 'Cash' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                                                    record.paymentMethod === 'Card' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
-                                                        'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
-                                                    }`}>
-                                                    {record.paymentMethod}
-                                                </span>
-                                            </td>
-                                            <td className="p-4 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate" title={record.note}>
-                                                {record.note || '-'}
-                                            </td>
-                                            <td className="p-4 text-right font-bold text-gray-800 dark:text-gray-100">
-                                                ৳{record.amount.toFixed(2)}
-                                            </td>
-                                            {(hasPermission('EDIT_DUE') || hasPermission('DELETE_DUE')) && (
-                                                <td className="p-4 flex justify-center gap-2">
-                                                    {hasPermission('EDIT_DUE') && (
-                                                        <button
-                                                            onClick={() => openEditModal(record)}
-                                                            className="text-white hover:bg-orange-600 px-3 py-1 bg-orange-500 rounded shadow-sm transition-colors"
-                                                            title="Edit Payment"
-                                                        >
-                                                            <Edit size={14} />
-                                                        </button>
-                                                    )}
-                                                    {hasPermission('DELETE_DUE') && (
-                                                        <button
-                                                            onClick={() => handleDeletePayment(record._id || record.id)}
-                                                            className="text-white hover:bg-red-600 px-3 py-1 bg-red-500 rounded shadow-sm transition-colors"
-                                                            title="Delete Payment"
-                                                        >
-                                                            <Trash2 size={14} />
-                                                        </button>
+                                </thead>
+                                <tbody className="divide-y dark:divide-gray-700">
+                                    {loading && history.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="7" className="p-12 text-center text-gray-500">Loading history...</td>
+                                        </tr>
+                                    ) : history.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="7" className="p-12 text-center text-gray-500">No payment history found.</td>
+                                        </tr>
+                                    ) : (
+                                        history.map((record) => (
+                                            <tr key={record._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors group">
+                                                <td className="p-4 pl-6">
+                                                    <div className="font-medium text-gray-700 dark:text-gray-200">{formatDate(record.createdAt)}</div>
+                                                    <div className="text-xs text-gray-400 mt-0.5">
+                                                        {new Date(record.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </div>
+                                                </td>
+                                                <td className="p-4 font-medium text-gray-800 dark:text-gray-200">
+                                                    {record.invoice?.invoiceNumber || 'N/A'}
+                                                </td>
+                                                <td className="p-4 text-sm">
+                                                    <div className="font-medium text-gray-800 dark:text-gray-200">{record.invoice?.customer?.name || record.invoice?.customerName || 'N/A'}</div>
+                                                    <div className="text-xs text-gray-500">{record.invoice?.customer?.phone || ''}</div>
+                                                </td>
+                                                <td className="p-4">
+                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${record.paymentMethod === 'Cash'
+                                                        ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
+                                                        : record.paymentMethod === 'Card'
+                                                            ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
+                                                            : 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800'
+                                                        }`}>
+                                                        {record.paymentMethod}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4">
+                                                    <span className="text-sm text-gray-500 dark:text-gray-400 max-w-[150px] truncate block" title={record.note}>
+                                                        {record.note || '-'}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4 text-right">
+                                                    <span className="font-bold text-gray-800 dark:text-gray-100">
+                                                        ৳{record.amount.toFixed(2)}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4">
+                                                    {(hasPermission('EDIT_DUE') || hasPermission('DELETE_DUE')) && (
+                                                        <div className="flex justify-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                                                            {hasPermission('EDIT_DUE') && (
+                                                                <button
+                                                                    onClick={() => openEditModal(record)}
+                                                                    className="text-white hover:bg-orange-600 px-3 py-1.5 bg-orange-500 rounded-lg shadow-sm transition-all hover:scale-105"
+                                                                    title="Edit Payment"
+                                                                >
+                                                                    <Edit size={14} />
+                                                                </button>
+                                                            )}
+                                                            {hasPermission('DELETE_DUE') && (
+                                                                <button
+                                                                    onClick={() => handleDeletePayment(record._id || record.id)}
+                                                                    className="text-white hover:bg-red-600 px-3 py-1.5 bg-red-500 rounded-lg shadow-sm transition-all hover:scale-105"
+                                                                    title="Delete Payment"
+                                                                >
+                                                                    <Trash2 size={14} />
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     )}
                                                 </td>
-                                            )}
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             )}
