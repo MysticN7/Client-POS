@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Trash2, Edit, Check } from 'lucide-react';
+import { Trash2, Edit, Check, Eye, EyeOff, Key } from 'lucide-react';
 
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
     const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'SALESPERSON', permissions: [] });
+    const [showPassword, setShowPassword] = useState(false);
 
     const [permissionsCatalog, setPermissionsCatalog] = useState({ list: [], groups: {} });
 
@@ -102,7 +103,7 @@ export default function Users() {
                     <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
                             <th className="p-4 text-left">Name</th>
-                            <th className="p-4 text-left">Email</th>
+                            <th className="p-4 text-left">Password</th>
                             <th className="p-4 text-left">Role</th>
                             <th className="p-4 text-left">Permissions</th>
                             <th className="p-4 text-left">Actions</th>
@@ -111,8 +112,16 @@ export default function Users() {
                     <tbody>
                         {users.map(user => (
                             <tr key={user.id} className="border-t dark:border-gray-700">
-                                <td className="p-4">{user.name}</td>
-                                <td className="p-4">{user.email}</td>
+                                <td className="p-4 font-medium">{user.name}</td>
+                                <td className="p-4">
+                                    {user.lastSetPassword ? (
+                                        <code className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs font-mono">
+                                            {user.lastSetPassword}
+                                        </code>
+                                    ) : (
+                                        <span className="text-gray-400 text-xs italic">Not set by admin</span>
+                                    )}
+                                </td>
                                 <td className="p-4">
                                     <span className={`px-2 py-1 rounded text-xs ${user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-800/50 dark:text-gray-200'}`}>
                                         {user.role}
@@ -154,8 +163,30 @@ export default function Users() {
                                     <input className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1 dark:text-gray-300">Password {editingUser && '(Leave blank to keep)'}</label>
-                                    <input className="w-full border p-2 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} />
+                                    <label className="block text-sm font-medium mb-1 dark:text-gray-300 flex items-center gap-2">
+                                        <Key size={14} />
+                                        {editingUser ? 'Reset Password' : 'Password'}
+                                        {editingUser && <span className="text-xs text-gray-500 dark:text-gray-400">(Leave blank to keep current)</span>}
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            className="w-full border p-2 pr-10 rounded dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+                                            type={showPassword ? 'text' : 'password'}
+                                            value={formData.password}
+                                            onChange={e => setFormData({ ...formData, password: e.target.value })}
+                                            placeholder={editingUser ? '••••••••' : 'Enter password'}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                        >
+                                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                        </button>
+                                    </div>
+                                    {formData.password && (
+                                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">✓ New password will be set on save</p>
+                                    )}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium mb-1 dark:text-gray-300">Role</label>
