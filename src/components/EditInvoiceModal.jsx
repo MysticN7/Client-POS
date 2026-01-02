@@ -182,36 +182,36 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                 {items.map((item, index) => (
                                     <div key={item.id || index} className="bg-white dark:bg-gray-900 p-4 rounded-lg border dark:border-gray-700 shadow-sm space-y-4">
                                         {/* Item Details */}
-                                        <div className="grid grid-cols-12 gap-2">
-                                            <div className="col-span-6">
+                                        <div className="grid grid-cols-12 gap-3">
+                                            <div className="col-span-12 sm:col-span-5">
                                                 <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Item Name</label>
                                                 <input
-                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 rounded text-sm font-bold"
+                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2.5 rounded text-sm font-bold shadow-sm"
                                                     value={item.item_name}
                                                     onChange={(e) => handleItemChange(index, 'item_name', e.target.value)}
                                                 />
                                             </div>
-                                            <div className="col-span-2">
+                                            <div className="col-span-4 sm:col-span-2">
                                                 <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Qty</label>
                                                 <input
                                                     type="number"
-                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 rounded text-sm text-center"
+                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2.5 rounded text-sm text-center shadow-sm"
                                                     value={item.quantity}
                                                     onChange={(e) => handleItemChange(index, 'quantity', parseFloat(e.target.value))}
                                                 />
                                             </div>
-                                            <div className="col-span-2">
+                                            <div className="col-span-4 sm:col-span-2">
                                                 <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Rate</label>
                                                 <input
                                                     type="number"
-                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 rounded text-sm text-center"
+                                                    className="w-full border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2.5 rounded text-sm text-center shadow-sm"
                                                     value={item.unit_price}
                                                     onChange={(e) => handleItemChange(index, 'unit_price', parseFloat(e.target.value))}
                                                 />
                                             </div>
-                                            <div className="col-span-2">
+                                            <div className="col-span-4 sm:col-span-3">
                                                 <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Total</label>
-                                                <div className="w-full border dark:border-gray-700 p-2 rounded text-sm text-center bg-gray-100 dark:bg-gray-700 dark:text-gray-100">
+                                                <div className="w-full border dark:border-gray-700 p-2.5 rounded text-sm text-center bg-gray-100 dark:bg-gray-700 dark:text-gray-100 font-bold">
                                                     ৳{(item.quantity * item.unit_price).toFixed(2)}
                                                 </div>
                                             </div>
@@ -236,7 +236,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <SmartRxInput
                                                                 key={field}
-                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.right?.distance?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'right', 'distance', field, e.target.value)}
@@ -249,7 +249,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <SmartRxInput
                                                                 key={field}
-                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.right?.near?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'right', 'near', field, e.target.value)}
@@ -272,7 +272,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <SmartRxInput
                                                                 key={field}
-                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.left?.distance?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'left', 'distance', field, e.target.value)}
@@ -285,7 +285,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                         {['sph', 'cyl', 'axis'].map(field => (
                                                             <SmartRxInput
                                                                 key={field}
-                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.left?.near?.[field] || ''}
                                                                 onChange={(e) => handleRxChange(index, 'left', 'near', field, e.target.value)}
@@ -324,7 +324,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                 <h3 className="font-bold text-lg mb-4 dark:text-gray-100">Payment & Notes</h3>
 
                                 <div className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Discount</label>
                                             <input
@@ -332,7 +332,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                 min="0"
                                                 value={discount}
                                                 onChange={(e) => setDiscount(e.target.value)}
-                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
                                             />
                                         </div>
                                         <div>
@@ -343,7 +343,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                 min="0"
                                                 value={paymentAmount}
                                                 onChange={(e) => setPaymentAmount(e.target.value)}
-                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
                                                 placeholder="0.00"
                                             />
                                         </div>
