@@ -1,10 +1,12 @@
 
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Search, DollarSign, FileText, User, Calendar, CreditCard, Clock } from 'lucide-react';
+import { Search, DollarSign, FileText, User, Calendar, CreditCard, Clock, Trash2, Edit } from 'lucide-react';
 import { formatDate } from '../utils/dateUtils';
+import { useAuth } from '../context/AuthContext';
 
 export default function DueCollection() {
+    const { hasPermission } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
     const [invoices, setInvoices] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -15,6 +17,12 @@ export default function DueCollection() {
     const [processing, setProcessing] = useState(false);
     const [activeTab, setActiveTab] = useState('collect'); // 'collect' | 'history'
     const [history, setHistory] = useState([]);
+
+    // Edit Modal State
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editingPayment, setEditingPayment] = useState(null);
+    const [editAmount, setEditAmount] = useState('');
+    const [editNote, setEditNote] = useState('');
 
     // Debounce search
     useEffect(() => {
@@ -143,6 +151,45 @@ export default function DueCollection() {
             alert('Failed to create legacy invoice: ' + (err.response?.data?.message || err.message));
         } finally {
             setProcessing(false);
+        }
+    };
+
+    const handleDeletePayment = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this payment? This will increase the due amount.')) return;
+
+        try {
+            await api.delete(`/sales/payments/${id}`);
+            alert('Payment deleted successfully');
+            fetchHistory();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to delete payment');
+        }
+    };
+
+    const openEditModal = (payment) => {
+        setEditingPayment(payment);
+        setEditAmount(payment.amount);
+        setEditNote(payment.note || '');
+        setShowEditModal(true);
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        if (!editingPayment) return;
+
+        try {
+            await api.put(`/sales/payments/${editingPayment._id || editingPayment.id}`, {
+                amount: parseFloat(editAmount),
+                note: editNote
+            });
+            alert('Payment updated successfully');
+            setShowEditModal(false);
+            setEditingPayment(null);
+            fetchHistory();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to update payment: ' + (err.response?.data?.message || err.message));
         }
     };
 
@@ -433,7 +480,9 @@ export default function DueCollection() {
                                     <th className="p-4">Customer</th>
                                     <th className="p-4">Method</th>
                                     <th className="p-4">Note</th>
+                                    <th className="p-4">Note</th>
                                     <th className="p-4 text-right">Amount</th>
+                                    {(hasPermission('EDIT_DUE') || hasPermission('DELETE_DUE')) && <th className="p-4 text-center">Actions</th>}
                                 </tr>
                             </thead>
                             <tbody className="divide-y dark:divide-gray-700">
@@ -475,6 +524,28 @@ export default function DueCollection() {
                                             <td className="p-4 text-right font-bold text-gray-800 dark:text-gray-100">
                                                 ৳{record.amount.toFixed(2)}
                                             </td>
+                                            {(hasPermission('EDIT_DUE') || hasPermission('DELETE_DUE')) && (
+                                                <td className="p-4 flex justify-center gap-2">
+                                                    {hasPermission('EDIT_DUE') && (
+                                                        <button
+                                                            onClick={() => openEditModal(record)}
+                                                            className="text-blue-600 hover:text-blue-800 p-1 bg-blue-50 dark:bg-blue-900/20 rounded"
+                                                            title="Edit Payment"
+                                                        >
+                                                            <Edit size={16} />
+                                                        </button>
+                                                    )}
+                                                    {hasPermission('DELETE_DUE') && (
+                                                        <button
+                                                            onClick={() => handleDeletePayment(record._id || record.id)}
+                                                            className="text-red-600 hover:text-red-800 p-1 bg-red-50 dark:bg-red-900/20 rounded"
+                                                            title="Delete Payment"
+                                                        >
+                                                            <Trash2 size={16} />
+                                                        </button>
+                                                    )}
+                                                </td>
+                                            )}
                                         </tr>
                                     ))
                                 )}
