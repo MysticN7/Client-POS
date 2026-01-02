@@ -22,8 +22,8 @@ const DEFAULT_TEXT_STYLES = {
     footer_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '500' },
     signature_customer_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '500' },
     signature_authorized_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '500' },
-    rx_header: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 12, align: 'center', font_weight: '800' },
-    rx_value: { font_family: 'Arial, Helvetica, sans-serif', font_size: 16, align: 'center', font_weight: '800' },
+    rx_header: { font_family: 'Arial, Helvetica, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
+    rx_value: { font_family: 'Arial, Helvetica, sans-serif', font_size: 14, align: 'center', font_weight: '900' },
 };
 
 const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverride }, ref) => {
@@ -302,30 +302,28 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             </table>
 
             {/* Totals */}
-            <div className="flex justify-end text-xs mb-2">
-                <div style={{ width: '45%' }}>
-                    <div className="flex justify-between py-1">
-                        <span style={styleFor('totals_labels')}>Total</span>
-                        <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.total_amount).toFixed(1)}</span>
-                    </div>
-                    <div className="flex justify-between py-1">
-                        <span style={styleFor('totals_labels')}>Discount</span>
-                        <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.discount || 0).toFixed(1)}</span>
-                    </div>
-                    <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dashed' }}>
-                        <span style={styleFor('totals_labels')}>Paid Payment</span>
-                        <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.paid_amount || 0).toFixed(1)}</span>
-                    </div>
-                    <div className="flex justify-between py-1 border-t border-black" style={{ borderTopStyle: 'dashed' }}>
-                        <span style={styleFor('totals_labels')}>Due</span>
-                        <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{(netTotal - (invoice.paid_amount || 0)).toFixed(1)}</span>
-                    </div>
+            <div className="text-xs mb-2" style={{ borderTop: '1px dashed black', paddingTop: '4px' }}>
+                <div className="flex justify-between py-1">
+                    <span style={{ ...styleFor('totals_labels'), fontWeight: 900 }}>Total</span>
+                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.total_amount).toFixed(0)}</span>
+                </div>
+                <div className="flex justify-between py-1">
+                    <span style={{ ...styleFor('totals_labels'), fontWeight: 900 }}>Discount</span>
+                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.discount || 0).toFixed(0)}</span>
+                </div>
+                <div className="flex justify-between py-1" style={{ borderTop: '1px dashed black' }}>
+                    <span style={{ ...styleFor('totals_labels'), fontWeight: 900 }}>Paid</span>
+                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.paid_amount || 0).toFixed(0)}</span>
+                </div>
+                <div className="flex justify-between py-1" style={{ borderTop: '1px dashed black', borderBottom: '1px dashed black' }}>
+                    <span style={{ ...styleFor('totals_labels'), fontWeight: 900, fontSize: '14px' }}>DUE</span>
+                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '16px' }}>{settings.currency_symbol || '৳'}{(netTotal - (invoice.paid_amount || 0)).toFixed(0)}</span>
                 </div>
             </div>
 
             {/* In Words */}
-            <div className="mb-2" style={styleFor('in_words')}>
-                In Words : {amountInWords.toLowerCase()} Taka Only .
+            <div className="mb-2" style={{ ...styleFor('in_words'), fontWeight: 700, fontSize: '10px' }}>
+                In Words: <span style={{ fontWeight: 900 }}>{amountInWords.toLowerCase()} Taka Only</span>
             </div>
 
             {/* Note */}
@@ -339,13 +337,13 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                 <p className="mb-1" style={styleFor('farewell_text_style')}>{settings.farewell_text || 'Come Again'}</p>
                 <p style={styleFor('footer_text_style')}>{settings.footer_text} 👓</p>
                 {settings.show_signature && (
-                    <div className="mt-4">
+                    <div className="mt-6">
                         <div className="flex justify-between text-xs">
                             <div style={{ width: '45%' }}>
-                                <div className="border-t border-black pt-1" style={styleFor('signature_customer_label')}>Customer Signature</div>
+                                <div className="pt-1" style={{ borderTop: '1px dashed black', ...styleFor('signature_customer_label') }}>Customer Signature</div>
                             </div>
                             <div style={{ width: '45%' }}>
-                                <div className="border-t border-black pt-1" style={styleFor('signature_authorized_label')}>Authorized Signature</div>
+                                <div className="pt-1" style={{ borderTop: '1px dashed black', ...styleFor('signature_authorized_label') }}>Authorized Signature</div>
                             </div>
                         </div>
                     </div>
