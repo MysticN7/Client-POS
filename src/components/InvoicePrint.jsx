@@ -22,8 +22,8 @@ const DEFAULT_TEXT_STYLES = {
     footer_text_style: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '500' },
     signature_customer_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '500' },
     signature_authorized_label: { font_family: 'system-ui, -apple-system, Segoe UI, Arial, sans-serif', font_size: 10, align: 'center', font_weight: '500' },
-    rx_header: { font_family: 'Arial, Helvetica, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
-    rx_value: { font_family: 'Arial, Helvetica, sans-serif', font_size: 14, align: 'center', font_weight: '900' },
+    rx_header: { font_family: 'Arial, Helvetica, sans-serif', font_size: 10, align: 'center', font_weight: '900' },
+    rx_value: { font_family: 'Arial, Helvetica, sans-serif', font_size: 11, align: 'center', font_weight: '900' },
 };
 
 const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverride }, ref) => {
@@ -171,10 +171,6 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                 box-sizing: border-box !important;
                                 overflow: hidden !important;
                             }
-                            table {
-                                table-layout: fixed !important;
-                                width: 100% !important;
-                            }
                         }
                     `}
                 </style>
@@ -216,7 +212,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
                         return (
                             <div>
-                                <table className="w-full text-center" style={{ fontSize: `${settings.rx_font_size || 15}px`, border: '1px dashed black', borderCollapse: 'collapse' }}>
+                                <table className="w-full text-center" style={{ fontSize: `${settings.rx_font_size || 11}px`, border: '1px dashed black', borderCollapse: 'collapse' }}>
                                     {/* HEADERS */}
                                     <thead>
                                         <tr>
