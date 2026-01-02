@@ -403,11 +403,21 @@ export default function POS() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 overflow-auto">
                     {filteredProducts.map(product => (
-                        <div key={product.id} onClick={() => addToCart(product)} className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded shadow cursor-pointer hover:shadow-md transition active:scale-95">
+                        <div
+                            key={product.id}
+                            onClick={() => addToCart(product)}
+                            className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded shadow cursor-pointer hover:shadow-md transition active:scale-95"
+                            style={{
+                                contentVisibility: 'auto',
+                                containIntrinsicSize: '0 250px' // Estimated height to prevent scroll jank
+                            }}
+                        >
                             {product.imageUrl ? (
                                 <img
                                     src={product.imageUrl?.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`}
                                     alt={product.name}
+                                    loading="lazy"
+                                    decoding="async"
                                     className="w-full h-32 object-cover rounded-lg mb-3 border border-gray-200 dark:border-gray-700"
                                     onError={(e) => {
                                         e.target.onerror = null;

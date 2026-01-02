@@ -1,31 +1,49 @@
 import React, { useState } from 'react';
 import { Send, Heart } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 const Footer = () => {
     const [loved, setLoved] = useState(false);
 
+    const handleLoveClick = () => {
+        const newState = !loved;
+        setLoved(newState);
+
+        if (newState) {
+            // "Something to enjoy" - Confetti Explosion!
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.9 }, // Boom from the bottom
+                colors: ['#ec4899', '#8b5cf6', '#f97316'], // Pink, Purple, Orange
+                disableForReducedMotion: true
+            });
+        }
+    };
+
     return (
         <div className="fixed bottom-4 left-0 right-0 flex justify-center z-[100] pointer-events-none text-center">
-            <div className="pointer-events-auto bg-white/10 dark:bg-gray-900/80 backdrop-blur-xl border border-white/20 shadow-2xl rounded-full px-5 py-2 transform transition-all duration-300 hover:scale-105 hover:bg-white/20 max-w-[95vw]">
+            {/* Optimized for Tablet/Mobile Lag: Reduced blur (xl->md), reduced shadow (2xl->xl), minimal layout shifts */}
+            <div className="pointer-events-auto bg-white/10 dark:bg-gray-900/80 backdrop-blur-md border border-white/20 shadow-xl rounded-full px-5 py-2 transform transition-transform duration-300 hover:scale-105 hover:bg-white/20 max-w-[95vw] will-change-transform">
                 <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm font-medium">
                     <span className="text-gray-600 dark:text-gray-300">
                         Software Developed by
                     </span>
 
-                    {/* Brand Name with STRONG Neon Glow */}
+                    {/* Brand Name with Neon Glow - Kept strong visually but efficient */}
                     <span
-                        className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 transition-all duration-300"
+                        className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
                         style={{
-                            textShadow: '0 0 10px rgba(192, 132, 252, 0.6), 0 0 20px rgba(236, 72, 153, 0.4)'
+                            textShadow: '0 0 10px rgba(192, 132, 252, 0.6)'
                         }}
                     >
                         Liquid ARC Studio
                     </span>
 
                     <div className="flex items-center gap-2">
-                        {/* Interactive 'Love' Button (Something to enjoy!) */}
+                        {/* Interactive 'Love' Button with Confetti */}
                         <button
-                            onClick={() => setLoved(!loved)}
+                            onClick={handleLoveClick}
                             className="group relative p-1 transition-transform active:scale-95 text-gray-400 hover:text-pink-500"
                             title={loved ? "Thanks for the love!" : "Show some love"}
                         >
