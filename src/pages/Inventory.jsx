@@ -123,12 +123,9 @@ const Inventory = () => {
     };
 
     const handleDelete = async (id) => {
-        console.log('Attempting to delete product:', id);
         if (window.confirm('Are you sure you want to delete this product?')) {
             try {
-                console.log('Sending delete request...');
                 await api.delete(`/products/${id}`);
-                console.log('Delete successful, fetching products...');
                 fetchProducts();
             } catch (error) {
                 console.error('Error deleting product:', error);

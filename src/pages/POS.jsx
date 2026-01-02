@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
 import API_URL from '../config/api';
-import { Search, ShoppingCart, Trash2, UserPlus, Printer, PauseCircle, PlayCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, ShoppingCart, Trash2, UserPlus, PauseCircle, PlayCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import InvoiceModal from '../components/InvoiceModal';
 import { useAuth } from '../context/AuthContext';
 
