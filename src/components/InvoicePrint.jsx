@@ -170,7 +170,16 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             </div>
 
             {/* Invoice Banner */}
-            <div className="py-1 mb-2 text-xs" style={{ backgroundColor: accent, color: 'white', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact', ...styleFor('invoice_banner') }}>
+            <div className="py-2 mb-2 text-xs" style={{
+                color: 'black',
+                backgroundColor: 'transparent',
+                borderTop: '2px dashed black',
+                borderBottom: '2px dashed black',
+                fontWeight: 900,
+                fontSize: '14px',
+                textAlign: 'center',
+                ...styleFor('invoice_banner')
+            }}>
                 INVOICE NO : {invoice.invoice_number}
             </div>
 
