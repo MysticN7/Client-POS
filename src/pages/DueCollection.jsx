@@ -172,7 +172,7 @@ export default function DueCollection() {
                             }`}
                     >
                         <Clock size={16} />
-                        Recent History
+                        Recent Collects
                     </button>
                 </div>
             </div>
