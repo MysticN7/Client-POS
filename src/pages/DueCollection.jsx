@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import api from '../api/axios';
 import { Search, DollarSign, FileText, User, Calendar, CreditCard, Clock, Trash2, Edit } from 'lucide-react';
 import { formatDate } from '../utils/dateUtils';
@@ -7,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 
 export default function DueCollection() {
     const { hasPermission } = useAuth();
+    const location = useLocation();
     const [searchTerm, setSearchTerm] = useState('');
     const [invoices, setInvoices] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -44,6 +46,32 @@ export default function DueCollection() {
             fetchHistory();
         }
     }, [activeTab]);
+
+    // Handle navigation from Daily Sales
+    useEffect(() => {
+        if (location.state?.invoiceId) {
+            fetchInvoiceById(location.state.invoiceId);
+            // Clean up state
+            window.history.replaceState({}, document.title);
+        }
+    }, [location.state]);
+
+    const fetchInvoiceById = async (id) => {
+        setLoading(true);
+        try {
+            const res = await api.get(`/sales/${id}`);
+            if (res.data) {
+                setInvoices([res.data]); // Show only this invoice in list
+                setSelectedInvoice(res.data);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Failed to load invoice details');
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     const fetchHistory = async () => {
         setLoading(true);
@@ -170,6 +198,7 @@ export default function DueCollection() {
 
     const openEditModal = (payment) => {
         setEditingPayment(payment);
+        
         setEditAmount(payment.amount);
         setEditNote(payment.note || '');
         setEditInvoiceNumber(payment.invoice?.invoiceNumber || '');
