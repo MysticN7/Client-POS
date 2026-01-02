@@ -87,6 +87,39 @@ export default function DueCollection() {
         }
     };
 
+    const handleLegacySubmit = async (e) => {
+        e.preventDefault();
+        const invoiceNum = e.target.invoice_number.value;
+        const customerName = e.target.customer_name.value;
+        const amount = e.target.amount.value;
+
+        if (!invoiceNum || !amount) {
+            alert('Invoice Number and Amount are required');
+            return;
+        }
+
+        setProcessing(true);
+        try {
+            const res = await api.post('/sales/legacy', {
+                invoice_number: invoiceNum,
+                customer_name: customerName,
+                total_due: parseFloat(amount),
+                note: 'Manual Entry from Due Collection'
+            });
+            alert('Legacy invoice created! You can now collect payment.');
+
+            // The controller returns { message, invoice: payload }
+            setSelectedInvoice(res.data.invoice);
+            setSearchTerm(invoiceNum); // search for it to show in list
+            fetchDueInvoices(); // refresh list
+        } catch (err) {
+            console.error(err);
+            alert('Failed to create legacy invoice: ' + (err.response?.data?.message || err.message));
+        } finally {
+            setProcessing(false);
+        }
+    };
+
     return (
         <div className="p-6 bg-white dark:bg-gray-900 min-h-screen dark:text-gray-100">
             <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100 flex items-center gap-2">
