@@ -123,7 +123,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
     };
 
     return (
-        <div ref={ref} className="print-receipt bg-white text-black" style={{ width: `${paperWidth}mm`, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm` }}>
+        <div ref={ref} className="print-receipt bg-white text-black" style={{ width: `${paperWidth}mm`, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm`, boxSizing: 'border-box' }}>
             {/* Header */}
             <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'}`} style={{ textAlign: settings.logo_position || 'center' }}>
                 {settings.show_logo && settings.logo_url && (
@@ -152,24 +152,28 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                         @media print {
                             @page {
                                 size: auto;
-                                margin: 0;
+                                margin: 0mm;
                             }
-                            body {
-                                margin: 0;
+                            html, body {
+                                margin: 0 !important;
+                                padding: 0 !important;
                                 -webkit-print-color-adjust: exact;
                                 print-color-adjust: exact;
                             }
                             * {
-                                box-sizing: border-box;
+                                box-sizing: border-box !important;
                             }
                             .print-receipt {
-                                width: 95% !important;
-                                max-width: 95% !important;
-                                margin: 0 auto !important;
-                                padding-left: ${paperMargin}mm !important; 
-                                padding-right: ${paperMargin}mm !important;
+                                width: 100% !important;
+                                max-width: 100% !important;
+                                margin: 0 !important;
+                                padding: 2mm !important;
                                 box-sizing: border-box !important;
-                                overflow: hidden;
+                                overflow: hidden !important;
+                            }
+                            table {
+                                table-layout: fixed !important;
+                                width: 100% !important;
                             }
                         }
                     `}
