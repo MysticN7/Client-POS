@@ -145,10 +145,32 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                 )}
                 {settings.website && <div className="text-xs" style={styleFor('website')}>{settings.website}</div>}
                 {settings.map_link && <div className="text-xs"><a href={settings.map_link} target="_blank" rel="noreferrer" style={{ color: accent }}>Location</a></div>}
+
+                {/* Print specific styles to handle margins and width */}
+                <style>
+                    {`
+                        @media print {
+                            @page {
+                                size: auto;
+                                margin: 0;
+                            }
+                            body {
+                                margin: 0;
+                            }
+                            .print-receipt {
+                                width: 100% !important;
+                                max-width: 100% !important;
+                                margin: 0 !important;
+                                padding-left: ${paperMargin}mm !important; 
+                                padding-right: ${paperMargin}mm !important;
+                            }
+                        }
+                    `}
+                </style>
             </div>
 
             {/* Invoice Banner */}
-            <div className="py-1 mb-2 text-xs" style={{ backgroundColor: accent, color: 'white', ...styleFor('invoice_banner') }}>
+            <div className="py-1 mb-2 text-xs" style={{ backgroundColor: accent, color: 'white', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact', ...styleFor('invoice_banner') }}>
                 INVOICE NO : {invoice.invoice_number}
             </div>
 

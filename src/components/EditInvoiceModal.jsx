@@ -3,6 +3,7 @@ import { X, DollarSign, Printer, Save, Plus, Trash2 } from 'lucide-react';
 // import { useReactToPrint } from 'react-to-print';
 import api from '../api/axios';
 import InvoicePrint from './InvoicePrint';
+import SmartRxInput from './SmartRxInput';
 
 export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
     const [items, setItems] = useState([]);
@@ -233,9 +234,8 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     <div className="flex items-center gap-2 mb-2">
                                                         <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
-                                                            <input
+                                                            <SmartRxInput
                                                                 key={field}
-                                                                type="tel"
                                                                 className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.right?.distance?.[field] || ''}
@@ -247,9 +247,8 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
-                                                            <input
+                                                            <SmartRxInput
                                                                 key={field}
-                                                                type="tel"
                                                                 className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.right?.near?.[field] || ''}
@@ -271,9 +270,8 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     <div className="flex items-center gap-2 mb-2">
                                                         <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
-                                                            <input
+                                                            <SmartRxInput
                                                                 key={field}
-                                                                type="tel"
                                                                 className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.left?.distance?.[field] || ''}
@@ -285,9 +283,8 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
                                                         {['sph', 'cyl', 'axis'].map(field => (
-                                                            <input
+                                                            <SmartRxInput
                                                                 key={field}
-                                                                type="tel"
                                                                 className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1 sm:p-2 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
                                                                 placeholder={field.toUpperCase()}
                                                                 value={item.prescription_data?.left?.near?.[field] || ''}
