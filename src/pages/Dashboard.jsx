@@ -94,71 +94,73 @@ export default function Dashboard() {
             </div>
 
             {/* Statistics Cards */}
+            {/* Statistics Cards - Layout Fixed: 2 Cards fill row */}
             {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                    {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg animate-pulse">
-                            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
-                            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
-                            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+                    {[1, 2].map((i) => (
+                        <div key={i} className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-lg animate-pulse h-48">
+                            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
+                            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+                            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
                         </div>
                     ))}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
                     {statCards.map((card, index) => (
                         <div
                             key={index}
-                            className={`group relative bg-gradient-to-br ${card.gradient} p-5 sm:p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden`}
+                            className={`group relative bg-gradient-to-br ${card.gradient} p-6 sm:p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden min-h-[180px] flex flex-col justify-between transform hover:-translate-y-1`}
                         >
-                            {/* Glossy Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent group-hover:from-white/20 transition-all duration-300"></div>
+                            {/* Glossy Overlay - Enriched */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
+                            <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
 
                             {/* Header with Icon and Toggle */}
-                            <div className="relative z-10 flex items-start justify-between mb-3 sm:mb-4">
-                                <div className={`${card.iconBg} w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                                    <card.icon className={`w-6 h-6 sm:w-7 sm:h-7 ${card.iconColor}`} />
+                            <div className="relative z-10 flex items-start justify-between mb-4">
+                                <div className={`${card.iconBg} w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-300 shadow-inner backdrop-blur-md bg-opacity-90`}>
+                                    <card.icon className={`w-7 h-7 sm:w-8 sm:h-8 ${card.iconColor}`} />
                                 </div>
 
-                                {/* Eye Toggle for Today's Sales */}
+                                {/* Eye Toggle for Today's Sales - Improved Touch Target */}
                                 {card.hasToggle && (
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setShowSales(!showSales);
                                         }}
-                                        className="p-2 rounded-lg bg-white/20 hover:bg-white/30 backdrop-blur-sm transition-all duration-200 group/eye"
+                                        className="p-3 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all duration-200 group/eye active:scale-95"
+                                        title={showSales ? "Hide Amount" : "Show Amount"}
                                     >
                                         {showSales ? (
-                                            <Eye className="w-5 h-5 text-white group-hover/eye:scale-110 transition-transform" />
+                                            <Eye className="w-5 h-5 text-white shadow-sm" />
                                         ) : (
-                                            <EyeOff className="w-5 h-5 text-white group-hover/eye:scale-110 transition-transform" />
+                                            <EyeOff className="w-5 h-5 text-white shadow-sm" />
                                         )}
                                     </button>
                                 )}
                             </div>
 
-                            {/* Content */}
+                            {/* Content - Larger & Bolder */}
                             <div className="relative z-10">
-                                <h3 className="text-xs sm:text-sm font-medium text-white/90 mb-1 sm:mb-2">
+                                <p className="text-sm sm:text-base font-medium text-white/90 mb-1 tracking-wide uppercase opacity-90">
                                     {card.title}
-                                </h3>
-                                <p className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white transition-all duration-300 ${card.hasToggle && !showSales ? 'blur-sm select-none' : ''}`}>
+                                </p>
+                                <p className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight transition-all duration-300 ${card.hasToggle && !showSales ? 'blur-md select-none opacity-80' : 'drop-shadow-md'}`}>
                                     {card.hasToggle && !showSales
                                         ? '৳ • • • •'
                                         : card.isCount
                                             ? card.value
-                                            : `৳${card.value.toFixed(2)}`
+                                            : `৳${card.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` // QoL: Better formatting
                                     }
                                 </p>
-                                <p className="text-xs text-white/80 mt-1 sm:mt-2">
-                                    {card.subtitle}
-                                </p>
+                                <div className="flex items-center gap-2 mt-3">
+                                    <div className="h-1 w-8 bg-white/40 rounded-full group-hover:w-16 transition-all duration-500"></div>
+                                    <p className="text-xs sm:text-sm text-white/90 font-medium">
+                                        {card.subtitle}
+                                    </p>
+                                </div>
                             </div>
-
-                            {/* Decorative Elements */}
-                            <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
-                            <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full blur-xl"></div>
                         </div>
                     ))}
                 </div>
