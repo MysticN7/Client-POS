@@ -1,4 +1,5 @@
 import React from 'react';
+import { Send } from 'lucide-react';
 
 const Footer = () => {
     return (
@@ -9,9 +10,12 @@ const Footer = () => {
                     <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent font-bold">
                         Liquid ARC Studio
                     </span>
-                    <span className="text-gray-500 dark:text-gray-400 text-xs ml-2">
-                        ( liquidarc.studio@gmail.com )
-                    </span>
+                    <a href="mailto:liquidarc.studio@gmail.com" className="inline-flex items-center ml-2 hover:opacity-80 transition-opacity">
+                        <Send size={14} className="mr-1 text-orange-500 animate-pulse" />
+                        <span className="text-gray-500 dark:text-gray-400 text-xs hover:text-orange-500 transition-colors pointer-events-auto">
+                            ( liquidarc.studio@gmail.com )
+                        </span>
+                    </a>
                 </p>
             </div>
         </div>
