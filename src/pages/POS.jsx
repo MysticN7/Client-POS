@@ -459,7 +459,17 @@ export default function POS() {
                         >
                             New Sales
                         </button>
-                        {isCartExpanded ? <ChevronUp className="w-5 h-5 lg:hidden" /> : <ChevronDown className="w-5 h-5 lg:hidden" />}
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setIsCartExpanded(!isCartExpanded);
+                            }}
+                            className="lg:hidden p-2 -mr-2 rounded-lg bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                            aria-label={isCartExpanded ? 'Collapse cart' : 'Expand cart'}
+                        >
+                            {isCartExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                        </button>
                     </div>
                 </div>
 

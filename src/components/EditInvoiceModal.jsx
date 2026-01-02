@@ -240,33 +240,29 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                     <div className="p-3 border rounded-lg mt-2 bg-gray-50 dark:bg-gray-800/50">
 
                                                         {/* Right Eye */}
-                                                        <div className="mb-3">
-                                                            <div className="flex items-center gap-2 mb-2">
-                                                                <span className="w-12 sm:w-16 font-bold text-right text-xs sm:text-sm">Right</span>
-                                                                <div className="flex-1 grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300">
-                                                                    <span>SPH</span><span>CYL</span><span>AXIS</span>
-                                                                </div>
+                                                        <div className="mb-4">
+                                                            <div className="text-sm font-bold text-blue-600 dark:text-blue-400 mb-2">Right Eye</div>
+                                                            <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-gray-500 dark:text-gray-300 mb-1">
+                                                                <span>SPH</span><span>CYL</span><span>AXIS</span>
                                                             </div>
-                                                            {/* Dist */}
-                                                            <div className="flex items-center gap-2 mb-2">
-                                                                <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
+                                                            <div className="text-[10px] font-bold text-gray-500 dark:text-gray-300 mb-1">DIST</div>
+                                                            <div className="grid grid-cols-3 gap-2 mb-2">
                                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                                     <SmartRxInput
                                                                         key={field}
-                                                                        className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
+                                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
                                                                         placeholder={field.toUpperCase()}
                                                                         value={item.prescription_data?.right?.distance?.[field] || ''}
                                                                         onChange={(e) => handleRxChange(index, 'right', 'distance', field, e.target.value)}
                                                                     />
                                                                 ))}
                                                             </div>
-                                                            {/* Near */}
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
+                                                            <div className="text-[10px] font-bold text-gray-500 dark:text-gray-300 mb-1">NEAR</div>
+                                                            <div className="grid grid-cols-3 gap-2">
                                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                                     <SmartRxInput
                                                                         key={field}
-                                                                        className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
+                                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
                                                                         placeholder={field.toUpperCase()}
                                                                         value={item.prescription_data?.right?.near?.[field] || ''}
                                                                         onChange={(e) => handleRxChange(index, 'right', 'near', field, e.target.value)}
@@ -276,33 +272,29 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                                         </div>
 
                                                         {/* Left Eye */}
-                                                        <div className="mb-3">
-                                                            <div className="flex items-center gap-2 mb-2">
-                                                                <span className="w-12 sm:w-16 font-bold text-right text-xs sm:text-sm">Left</span>
-                                                                <div className="flex-1 grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300">
-                                                                    <span>SPH</span><span>CYL</span><span>AXIS</span>
-                                                                </div>
+                                                        <div className="mb-4">
+                                                            <div className="text-sm font-bold text-green-600 dark:text-green-400 mb-2">Left Eye</div>
+                                                            <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-gray-500 dark:text-gray-300 mb-1">
+                                                                <span>SPH</span><span>CYL</span><span>AXIS</span>
                                                             </div>
-                                                            {/* Dist */}
-                                                            <div className="flex items-center gap-2 mb-2">
-                                                                <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
+                                                            <div className="text-[10px] font-bold text-gray-500 dark:text-gray-300 mb-1">DIST</div>
+                                                            <div className="grid grid-cols-3 gap-2 mb-2">
                                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                                     <SmartRxInput
                                                                         key={field}
-                                                                        className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
+                                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
                                                                         placeholder={field.toUpperCase()}
                                                                         value={item.prescription_data?.left?.distance?.[field] || ''}
                                                                         onChange={(e) => handleRxChange(index, 'left', 'distance', field, e.target.value)}
                                                                     />
                                                                 ))}
                                                             </div>
-                                                            {/* Near */}
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
+                                                            <div className="text-[10px] font-bold text-gray-500 dark:text-gray-300 mb-1">NEAR</div>
+                                                            <div className="grid grid-cols-3 gap-2">
                                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                                     <SmartRxInput
                                                                         key={field}
-                                                                        className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
+                                                                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-center text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
                                                                         placeholder={field.toUpperCase()}
                                                                         value={item.prescription_data?.left?.near?.[field] || ''}
                                                                         onChange={(e) => handleRxChange(index, 'left', 'near', field, e.target.value)}
