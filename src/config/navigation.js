@@ -61,85 +61,86 @@ export const navigationItems = [
         color: 'bg-blue-500',
         showInQuickActions: true
     },
-    id: 'due-collection',
-    title: 'Due Collection',
-    path: '/due-collection',
-    icon: Banknote,
-    permission: 'DUE_COLLECTION',
-    color: 'bg-green-600',
-    showInQuickActions: true
+    {
+        id: 'due-collection',
+        title: 'Due Collection',
+        path: '/due-collection',
+        icon: Banknote,
+        permission: 'DUE_COLLECTION',
+        color: 'bg-green-600',
+        showInQuickActions: true
     },
-{
-    id: 'customers',
+    {
+        id: 'customers',
         title: 'Customers',
-            path: '/customers',
-                icon: Users,
-                    permission: 'POS',
-                        color: 'bg-teal-500',
-                            showInQuickActions: true
-},
-{
-    id: 'bank-book',
+        path: '/customers',
+        icon: Users,
+        permission: 'POS',
+        color: 'bg-teal-500',
+        showInQuickActions: true
+    },
+    {
+        id: 'bank-book',
         title: 'Bank Book',
-            path: '/bank-book',
-                icon: Banknote,
-                    permission: 'REPORTS',
-                        color: 'bg-green-500',
-                            showInQuickActions: true
-},
-{
-    id: 'cash-book',
+        path: '/bank-book',
+        icon: Banknote,
+        permission: 'REPORTS',
+        color: 'bg-green-500',
+        showInQuickActions: true
+    },
+    {
+        id: 'cash-book',
         title: 'Cash Book',
-            path: '/cash-book',
-                icon: Banknote,
-                    permission: 'REPORTS',
-                        color: 'bg-emerald-500',
-                            showInQuickActions: true
-},
-{
-    id: 'profit-loss',
+        path: '/cash-book',
+        icon: Banknote,
+        permission: 'REPORTS',
+        color: 'bg-emerald-500',
+        showInQuickActions: true
+    },
+    {
+        id: 'profit-loss',
         title: 'Profit & Loss',
-            path: '/profit-loss',
-                icon: TrendingUp,
-                    permission: 'REPORTS',
-                        color: 'bg-indigo-500',
-                            showInQuickActions: true
-},
-{
-    id: 'reports',
+        path: '/profit-loss',
+        icon: TrendingUp,
+        permission: 'REPORTS',
+        color: 'bg-indigo-500',
+        showInQuickActions: true
+    },
+    {
+        id: 'reports',
         title: 'Reports',
-            path: '/reports',
-                icon: BarChart2,
-                    permission: 'REPORTS',
-                        color: 'bg-cyan-500',
-                            showInQuickActions: true
-},
+        path: '/reports',
+        icon: BarChart2,
+        permission: 'REPORTS',
+        color: 'bg-cyan-500',
+        showInQuickActions: true
+    },
 
-{
-    id: 'invoice-settings',
+    {
+        id: 'invoice-settings',
         title: 'Invoice Settings',
-            path: '/invoice-settings',
-                icon: Settings,
-                    permission: 'SETTINGS',
-                        color: 'bg-gray-500',
-                            showInQuickActions: true
-},
-{
-    id: 'users',
+        path: '/invoice-settings',
+        icon: Settings,
+        permission: 'SETTINGS',
+        color: 'bg-gray-500',
+        showInQuickActions: true
+    },
+    {
+        id: 'users',
         title: 'Users',
-            path: '/users',
-                icon: Users,
-                    permission: 'USERS',
-                        color: 'bg-pink-500',
-                            showInQuickActions: true
-},
-{
-    id: 'audit-logs',
+        path: '/users',
+        icon: Users,
+        permission: 'USERS',
+        color: 'bg-pink-500',
+        showInQuickActions: true
+    },
+    {
+        id: 'audit-logs',
         title: 'Audit Logs',
-            path: '/audit-logs',
-                icon: Activity,
-                    permission: 'USERS', // Only admins/users with user management permission
-                        color: 'bg-slate-500',
-                            showInQuickActions: false
-}
+        path: '/audit-logs',
+        icon: Activity,
+        permission: 'USERS', // Only admins/users with user management permission
+        color: 'bg-slate-500',
+        showInQuickActions: false
+    }
 ];
