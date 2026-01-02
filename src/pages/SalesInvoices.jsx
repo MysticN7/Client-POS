@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { Search, Trash2 } from 'lucide-react';
 import InvoiceDetailModal from '../components/InvoiceDetailModal';
@@ -8,6 +9,7 @@ import { formatDate } from '../utils/dateUtils';
 
 export default function SalesInvoices() {
     const { hasPermission } = useAuth();
+    const navigate = useNavigate();
     const [invoices, setInvoices] = useState([]);
     const [summary, setSummary] = useState(null);
 
@@ -224,6 +226,15 @@ export default function SalesInvoices() {
                                         >
                                             Edit
                                         </button>
+                                        {invoice.due_amount > 0 && (
+                                            <button
+                                                onClick={() => navigate('/due-collection', { state: { invoiceId: invoice.id } })}
+                                                className="ml-2 bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700"
+                                                title="Collect Due"
+                                            >
+                                                Collect
+                                            </button>
+                                        )}
                                     </td>
                                     <td className="border border-gray-200 px-4 py-2 text-center">
                                         {(hasPermission('DELETE_SALES') || hasPermission('ADMIN')) && (

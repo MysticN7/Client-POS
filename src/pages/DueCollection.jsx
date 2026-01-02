@@ -1,0 +1,260 @@
+
+import { useState, useEffect } from 'react';
+import api from '../api/axios';
+import { Search, DollarSign, FileText, User, Calendar, CreditCard } from 'lucide-react';
+import { formatDate } from '../utils/dateUtils';
+
+export default function DueCollection() {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [invoices, setInvoices] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [selectedInvoice, setSelectedInvoice] = useState(null);
+    const [paymentAmount, setPaymentAmount] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('Cash');
+    const [note, setNote] = useState('');
+    const [processing, setProcessing] = useState(false);
+
+    // Debounce search
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            if (searchTerm) {
+                // Fetch invoices that match search and have due amount
+                fetchDueInvoices();
+            } else {
+                setInvoices([]);
+            }
+        }, 500);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchTerm]);
+
+    const fetchDueInvoices = async () => {
+        setLoading(true);
+        try {
+            // We'll reuse the sales/date-range endpoint but we might need a specific 'due-only' filter
+            // For now, let's search generally and filter on client side or assume search brings relevant ones
+            // A better approach is to have a specific endpoint or param. 
+            // Let's use the existing search and filter for due > 0
+            const res = await api.get(`/sales/date-range?search=${searchTerm}`);
+            // Filter only those with due amount
+            const dueInvoices = res.data.sales.filter(inv => inv.due_amount > 0);
+            setInvoices(dueInvoices);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSelectInvoice = (invoice) => {
+        setSelectedInvoice(invoice);
+        setPaymentAmount(''); // Reset amount when selecting new
+        setNote('');
+    };
+
+    const handlePaymentSubmit = async (e) => {
+        e.preventDefault();
+        if (!selectedInvoice || !paymentAmount) return;
+
+        const amount = parseFloat(paymentAmount);
+        if (isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid amount');
+            return;
+        }
+
+        if (amount > selectedInvoice.due_amount) {
+            alert(`Amount cannot exceed due amount (৳${selectedInvoice.due_amount})`);
+            return;
+        }
+
+        setProcessing(true);
+        try {
+            await api.post(`/sales/${selectedInvoice.id}/payment`, {
+                amount,
+                payment_method: paymentMethod,
+                note
+            });
+            alert('Payment collected successfully!');
+            setSelectedInvoice(null);
+            setPaymentAmount('');
+            setNote('');
+            fetchDueInvoices(); // Refresh list
+        } catch (err) {
+            console.error(err);
+            alert('Failed to collect payment: ' + (err.response?.data?.message || err.message));
+        } finally {
+            setProcessing(false);
+        }
+    };
+
+    return (
+        <div className="p-6 bg-white dark:bg-gray-900 min-h-screen dark:text-gray-100">
+            <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                <DollarSign className="w-8 h-8 text-green-600" />
+                Due Collection
+            </h1>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Left Panel: Search & List */}
+                <div className="lg:col-span-2 space-y-4">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+                        <input
+                            type="text"
+                            placeholder="Scan Invoice ID, Search Name or Phone..."
+                            className="w-full pl-10 pr-4 py-3 rounded-lg border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-green-500 outline-none shadow-sm"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            autoFocus
+                        />
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md min-h-[400px] max-h-[600px] overflow-y-auto">
+                        {loading ? (
+                            <div className="p-8 text-center text-gray-500">Searching...</div>
+                        ) : invoices.length === 0 ? (
+                            <div className="p-8 text-center text-gray-500">
+                                {searchTerm ? 'No invoices with due amounts found.' : 'Enter search term to find invoices.'}
+                            </div>
+                        ) : (
+                            <div className="divide-y dark:divide-gray-700">
+                                {invoices.map(inv => (
+                                    <div
+                                        key={inv.id}
+                                        className={`p-4 cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/10 transition-colors ${selectedInvoice?.id === inv.id ? 'bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500' : ''}`}
+                                        onClick={() => handleSelectInvoice(inv)}
+                                    >
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <div className="font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                                                    <FileText size={16} className="text-gray-400" />
+                                                    {inv.invoice_number}
+                                                </div>
+                                                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 flex items-center gap-2">
+                                                    <User size={14} />
+                                                    {inv.Customer?.name} ({inv.Customer?.phone})
+                                                </div>
+                                                <div className="text-xs text-gray-400 mt-1 flex items-center gap-2">
+                                                    <Calendar size={12} />
+                                                    {formatDate(inv.createdAt)}
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="text-sm text-gray-500">Due Amount</div>
+                                                <div className="font-extrabold text-red-600 text-lg">৳{inv.due_amount.toFixed(2)}</div>
+                                                <div className="text-xs text-gray-400">Total: ৳{inv.final_amount.toFixed(2)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Right Panel: Payment Form */}
+                <div className="lg:col-span-1">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 sticky top-6">
+                        <div className="p-4 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-t-lg">
+                            <h2 className="font-bold text-lg dark:text-gray-100">Payment Entry</h2>
+                        </div>
+
+                        <div className="p-6">
+                            {selectedInvoice ? (
+                                <form onSubmit={handlePaymentSubmit} className="space-y-6">
+                                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-900/50">
+                                        <div className="flex justify-between mb-2">
+                                            <span className="text-gray-600 dark:text-gray-300">Invoice:</span>
+                                            <span className="font-bold dark:text-gray-100">{selectedInvoice.invoice_number}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-gray-600 dark:text-gray-300">Total Due:</span>
+                                            <span className="text-xl font-bold text-red-600">৳{selectedInvoice.due_amount.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Collection Amount</label>
+                                        <div className="relative">
+                                            <span className="absolute left-3 top-3 text-gray-500 font-bold">৳</span>
+                                            <input
+                                                type="number"
+                                                step="0.01"
+                                                min="1"
+                                                max={selectedInvoice.due_amount}
+                                                className="w-full pl-8 pr-4 py-3 text-lg font-bold border rounded-lg focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                                placeholder="0.00"
+                                                value={paymentAmount}
+                                                onChange={(e) => setPaymentAmount(e.target.value)}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="flex justify-end mt-1">
+                                            <button
+                                                type="button"
+                                                className="text-xs text-blue-600 hover:underline"
+                                                onClick={() => setPaymentAmount(selectedInvoice.due_amount.toString())}
+                                            >
+                                                Collect Full Amount
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {['Cash', 'Card', 'Mobile'].map(method => (
+                                                <button
+                                                    key={method}
+                                                    type="button"
+                                                    className={`py-2 px-3 rounded border text-sm font-medium transition-all ${paymentMethod === method ? 'bg-green-600 text-white border-green-600' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50'}`}
+                                                    onClick={() => setPaymentMethod(method)}
+                                                >
+                                                    {method}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Note (Optional)</label>
+                                        <textarea
+                                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                            rows="2"
+                                            placeholder="Reference # or details..."
+                                            value={note}
+                                            onChange={(e) => setNote(e.target.value)}
+                                        ></textarea>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={processing}
+                                        className="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors shadow-lg shadow-green-200 dark:shadow-none disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    >
+                                        {processing ? (
+                                            <>Converting...</>
+                                        ) : (
+                                            <>
+                                                <CreditCard size={20} />
+                                                Confirm Collection
+                                            </>
+                                        )}
+                                    </button>
+                                </form>
+                            ) : (
+                                <div className="text-center py-12 text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+                                    <div className="flex justify-center mb-4">
+                                        <DollarSign size={48} className="text-gray-300 dark:text-gray-600" />
+                                    </div>
+                                    <p className="text-lg font-medium text-gray-500 mb-1">No Invoice Selected</p>
+                                    <p className="text-sm">Search and select an invoice to collect payment.</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

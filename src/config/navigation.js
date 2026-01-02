@@ -62,6 +62,15 @@ export const navigationItems = [
         showInQuickActions: true
     },
     {
+        id: 'due-collection',
+        title: 'Due Collection',
+        path: '/due-collection',
+        icon: Banknote,
+        permission: 'POS',
+        color: 'bg-green-600',
+        showInQuickActions: true
+    },
+    {
         id: 'customers',
         title: 'Customers',
         path: '/customers',

@@ -14,7 +14,9 @@ import CashBook from './pages/CashBook';
 import ProfitLoss from './pages/ProfitLoss';
 import Customers from './pages/Customers';
 import AuditLogs from './pages/AuditLogs';
+import DueCollection from './pages/DueCollection';
 import Layout from './components/Layout';
+import Navbar from './components/Navbar';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import Users from './pages/Users';
@@ -47,6 +49,7 @@ function App() {
             <Route path="customers" element={<ProtectedRoute permission="POS"><Customers /></ProtectedRoute>} />
             <Route path="bank-book" element={<ProtectedRoute permission="REPORTS"><BankBook /></ProtectedRoute>} />
             <Route path="cash-book" element={<ProtectedRoute permission="REPORTS"><CashBook /></ProtectedRoute>} />
+            <Route path="due-collection" element={<ProtectedRoute permission="POS"><DueCollection /></ProtectedRoute>} />
             <Route path="profit-loss" element={<ProtectedRoute permission="REPORTS"><ProfitLoss /></ProtectedRoute>} />
             <Route path="users" element={<ProtectedRoute permission="USERS"><Users /></ProtectedRoute>} />
             <Route path="audit-logs" element={<ProtectedRoute permission="USERS"><AuditLogs /></ProtectedRoute>} />
