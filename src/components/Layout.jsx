@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { LogOut, Menu, X, Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { navigationItems } from '../config/navigation';
+import Footer from './Footer';
 
 export default function Layout() {
     const { user, logout, hasPermission } = useAuth();
@@ -97,9 +98,11 @@ export default function Layout() {
             )}
 
             {/* Main Content */}
-            <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 mt-16 lg:mt-0">
+            <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 mt-16 lg:mt-0 pb-20"> {/* pb-20 to prevent footer overlap */}
                 <Outlet />
             </div>
+
+            <Footer />
         </div>
     );
 }
