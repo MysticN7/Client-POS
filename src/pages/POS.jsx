@@ -401,7 +401,7 @@ export default function POS() {
                         </div>
                     )}
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 overflow-auto">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 overflow-auto">
                     {filteredProducts.map(product => (
                         <div key={product.id} onClick={() => addToCart(product)} className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded shadow cursor-pointer hover:shadow-md transition active:scale-95">
                             {product.imageUrl ? (
@@ -465,7 +465,7 @@ export default function POS() {
                                 e.stopPropagation();
                                 setIsCartExpanded(!isCartExpanded);
                             }}
-                            className="lg:hidden p-2 -mr-2 rounded-lg bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                            className="lg:hidden p-2.5 -mr-2 rounded-lg bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-500 text-white shadow-md transition-all active:scale-95"
                             aria-label={isCartExpanded ? 'Collapse cart' : 'Expand cart'}
                         >
                             {isCartExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
