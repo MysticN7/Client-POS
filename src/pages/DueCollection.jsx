@@ -90,7 +90,7 @@ export default function DueCollection() {
     return (
         <div className="p-6 bg-white dark:bg-gray-900 min-h-screen dark:text-gray-100">
             <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                <DollarSign className="w-8 h-8 text-green-600" />
+                <span className="text-4xl font-extrabold text-green-600">৳</span>
                 Due Collection
             </h1>
 
@@ -101,7 +101,7 @@ export default function DueCollection() {
                         <Search className="absolute left-3 top-3 text-gray-400" size={20} />
                         <input
                             type="text"
-                            placeholder="Scan Invoice ID, Search Name or Phone..."
+                            placeholder="Search Invoice #, Name or Phone..."
                             className="w-full pl-10 pr-4 py-3 rounded-lg border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-green-500 outline-none shadow-sm"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -114,7 +114,7 @@ export default function DueCollection() {
                             <div className="p-8 text-center text-gray-500">Searching...</div>
                         ) : invoices.length === 0 ? (
                             <div className="p-8 text-center text-gray-500">
-                                {searchTerm ? 'No invoices with due amounts found.' : 'Enter search term to find invoices.'}
+                                {searchTerm ? 'No invoices with due amounts found.' : 'Search or select to view invoices.'}
                             </div>
                         ) : (
                             <div className="divide-y dark:divide-gray-700">
@@ -162,7 +162,15 @@ export default function DueCollection() {
                         <div className="p-6">
                             {selectedInvoice ? (
                                 <form onSubmit={handlePaymentSubmit} className="space-y-6">
-                                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-900/50">
+                                    <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-900/50 relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => setSelectedInvoice(null)}
+                                            className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                                            title="Clear Selection"
+                                        >
+                                            ✕
+                                        </button>
                                         <div className="flex justify-between mb-2">
                                             <span className="text-gray-600 dark:text-gray-300">Invoice:</span>
                                             <span className="font-bold dark:text-gray-100">{selectedInvoice.invoice_number}</span>
@@ -243,12 +251,36 @@ export default function DueCollection() {
                                     </button>
                                 </form>
                             ) : (
-                                <div className="text-center py-12 text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
-                                    <div className="flex justify-center mb-4">
-                                        <DollarSign size={48} className="text-gray-300 dark:text-gray-600" />
+                                <div className="space-y-4">
+                                    <div className="text-center py-6 text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+                                        <div className="flex justify-center mb-2">
+                                            <FileText size={32} className="text-gray-300 dark:text-gray-600" />
+                                        </div>
+                                        <p className="text-sm font-medium text-gray-500">Manual Invoice Entry</p>
                                     </div>
-                                    <p className="text-lg font-medium text-gray-500 mb-1">No Invoice Selected</p>
-                                    <p className="text-sm">Search and select an invoice to collect payment.</p>
+
+                                    <div>
+                                        <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Find by Invoice Number</label>
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                placeholder="e.g. 42"
+                                                className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        setSearchTerm(e.currentTarget.value);
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-700"
+                                                onClick={(e) => setSearchTerm(e.currentTarget.previousElementSibling.value)}
+                                            >
+                                                Load
+                                            </button>
+                                        </div>
+                                        <p className="text-xs text-gray-500 mt-2">Enter number and click Load to fetch invoice.</p>
+                                    </div>
                                 </div>
                             )}
                         </div>
