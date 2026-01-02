@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { X, DollarSign, Printer, Save, Plus, Trash2 } from 'lucide-react';
+import { X, DollarSign, Printer, Save, Plus, Trash2, ChevronDown, ChevronUp, Glasses } from 'lucide-react';
 // import { useReactToPrint } from 'react-to-print';
 import api from '../api/axios';
 import InvoicePrint from './InvoicePrint';
@@ -12,6 +12,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
     const [notes, setNotes] = useState(invoice?.note || '');
     const [discount, setDiscount] = useState(invoice?.discount || 0);
     const [loading, setLoading] = useState(false);
+    const [expandedRx, setExpandedRx] = useState({});
+
+    const toggleRx = (index) => {
+        setExpandedRx(prev => ({ ...prev, [index]: !prev[index] }));
+    };
 
     const printRef = useRef();
     const [printSettings, setPrintSettings] = useState({ paper_width_mm: 80, paper_margin_mm: 4 });
@@ -217,211 +222,226 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                             </div>
                                         </div>
 
-                                        {/* Rx Section (Conditional) */}
                                         {item.prescription_data && (
-                                            <div className="border-t dark:border-gray-700 pt-4 mt-2">
-                                                <h4 className="font-bold text-sm text-blue-600 dark:text-blue-400 mb-3 uppercase tracking-wide">Prescription Details</h4>
+                                            <div className="border-top dark:border-gray-700 mt-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleRx(index)}
+                                                    className="w-full flex items-center justify-between p-3 bg-blue-50 dark:bg-gray-800 rounded-lg text-blue-700 dark:text-blue-300 font-bold text-sm hover:bg-blue-100 transition-colors"
+                                                >
+                                                    <span className="flex items-center gap-2">
+                                                        <Glasses size={18} />
+                                                        Prescription Details
+                                                    </span>
+                                                    {expandedRx[index] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                                </button>
 
-                                                {/* Right Eye */}
-                                                <div className="mb-3">
-                                                    <div className="flex items-center gap-2 mb-2">
-                                                        <span className="w-12 sm:w-16 font-bold text-right text-xs sm:text-sm">Right</span>
-                                                        <div className="flex-1 grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300">
-                                                            <span>SPH</span><span>CYL</span><span>AXIS</span>
+                                                {expandedRx[index] && (
+                                                    <div className="p-3 border rounded-lg mt-2 bg-gray-50 dark:bg-gray-800/50">
+
+                                                        {/* Right Eye */}
+                                                        <div className="mb-3">
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <span className="w-12 sm:w-16 font-bold text-right text-xs sm:text-sm">Right</span>
+                                                                <div className="flex-1 grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300">
+                                                                    <span>SPH</span><span>CYL</span><span>AXIS</span>
+                                                                </div>
+                                                            </div>
+                                                            {/* Dist */}
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
+                                                                {['sph', 'cyl', 'axis'].map(field => (
+                                                                    <SmartRxInput
+                                                                        key={field}
+                                                                        className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
+                                                                        placeholder={field.toUpperCase()}
+                                                                        value={item.prescription_data?.right?.distance?.[field] || ''}
+                                                                        onChange={(e) => handleRxChange(index, 'right', 'distance', field, e.target.value)}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                            {/* Near */}
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
+                                                                {['sph', 'cyl', 'axis'].map(field => (
+                                                                    <SmartRxInput
+                                                                        key={field}
+                                                                        className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
+                                                                        placeholder={field.toUpperCase()}
+                                                                        value={item.prescription_data?.right?.near?.[field] || ''}
+                                                                        onChange={(e) => handleRxChange(index, 'right', 'near', field, e.target.value)}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Left Eye */}
+                                                        <div className="mb-3">
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <span className="w-12 sm:w-16 font-bold text-right text-xs sm:text-sm">Left</span>
+                                                                <div className="flex-1 grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300">
+                                                                    <span>SPH</span><span>CYL</span><span>AXIS</span>
+                                                                </div>
+                                                            </div>
+                                                            {/* Dist */}
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
+                                                                {['sph', 'cyl', 'axis'].map(field => (
+                                                                    <SmartRxInput
+                                                                        key={field}
+                                                                        className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
+                                                                        placeholder={field.toUpperCase()}
+                                                                        value={item.prescription_data?.left?.distance?.[field] || ''}
+                                                                        onChange={(e) => handleRxChange(index, 'left', 'distance', field, e.target.value)}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                            {/* Near */}
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
+                                                                {['sph', 'cyl', 'axis'].map(field => (
+                                                                    <SmartRxInput
+                                                                        key={field}
+                                                                        className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
+                                                                        placeholder={field.toUpperCase()}
+                                                                        value={item.prescription_data?.left?.near?.[field] || ''}
+                                                                        onChange={(e) => handleRxChange(index, 'left', 'near', field, e.target.value)}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Extra Fields */}
+                                                        <div className="grid grid-cols-2 gap-4 mt-3">
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Lens Type</label>
+                                                                <input
+                                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                    value={item.prescription_data?.lensType || ''}
+                                                                    onChange={(e) => handleRxChange(index, 'extra', null, 'lensType', e.target.value)}
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Remarks</label>
+                                                                <input
+                                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
+                                                                    value={item.prescription_data?.remarks || ''}
+                                                                    onChange={(e) => handleRxChange(index, 'extra', null, 'remarks', e.target.value)}
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    {/* Dist */}
-                                                    <div className="flex items-center gap-2 mb-2">
-                                                        <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
-                                                        {['sph', 'cyl', 'axis'].map(field => (
-                                                            <SmartRxInput
-                                                                key={field}
-                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
-                                                                placeholder={field.toUpperCase()}
-                                                                value={item.prescription_data?.right?.distance?.[field] || ''}
-                                                                onChange={(e) => handleRxChange(index, 'right', 'distance', field, e.target.value)}
-                                                            />
-                                                        ))}
                                                     </div>
-                                                    {/* Near */}
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
-                                                        {['sph', 'cyl', 'axis'].map(field => (
-                                                            <SmartRxInput
-                                                                key={field}
-                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
-                                                                placeholder={field.toUpperCase()}
-                                                                value={item.prescription_data?.right?.near?.[field] || ''}
-                                                                onChange={(e) => handleRxChange(index, 'right', 'near', field, e.target.value)}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </div>
-
-                                                {/* Left Eye */}
-                                                <div className="mb-3">
-                                                    <div className="flex items-center gap-2 mb-2">
-                                                        <span className="w-12 sm:w-16 font-bold text-right text-xs sm:text-sm">Left</span>
-                                                        <div className="flex-1 grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300">
-                                                            <span>SPH</span><span>CYL</span><span>AXIS</span>
-                                                        </div>
-                                                    </div>
-                                                    {/* Dist */}
-                                                    <div className="flex items-center gap-2 mb-2">
-                                                        <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Dist</div>
-                                                        {['sph', 'cyl', 'axis'].map(field => (
-                                                            <SmartRxInput
-                                                                key={field}
-                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
-                                                                placeholder={field.toUpperCase()}
-                                                                value={item.prescription_data?.left?.distance?.[field] || ''}
-                                                                onChange={(e) => handleRxChange(index, 'left', 'distance', field, e.target.value)}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                    {/* Near */}
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-12 sm:w-16 text-right text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-300 uppercase">Near</div>
-                                                        {['sph', 'cyl', 'axis'].map(field => (
-                                                            <SmartRxInput
-                                                                key={field}
-                                                                className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 sm:p-2.5 text-center text-xs sm:text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none shadow-sm"
-                                                                placeholder={field.toUpperCase()}
-                                                                value={item.prescription_data?.left?.near?.[field] || ''}
-                                                                onChange={(e) => handleRxChange(index, 'left', 'near', field, e.target.value)}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </div>
-
-                                                {/* Extra Fields */}
-                                                <div className="grid grid-cols-2 gap-4 mt-3">
-                                                    <div>
-                                                        <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Lens Type</label>
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
-                                                            value={item.prescription_data?.lensType || ''}
-                                                            onChange={(e) => handleRxChange(index, 'extra', null, 'lensType', e.target.value)}
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-xs font-bold text-gray-500 dark:text-gray-300 mb-1">Remarks</label>
-                                                        <input
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-2 text-sm rounded focus:ring-1 focus:ring-blue-500 outline-none"
-                                                            value={item.prescription_data?.remarks || ''}
-                                                            onChange={(e) => handleRxChange(index, 'extra', null, 'remarks', e.target.value)}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
                                         )}
                                     </div>
-                                ))}
+                                )}
                             </div>
+                                ))}
+                    </div>
 
-                            {/* Payment Section */}
-                            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg border dark:border-gray-700 shadow-sm">
-                                <h3 className="font-bold text-lg mb-4 dark:text-gray-100">Payment & Notes</h3>
+                    {/* Payment Section */}
+                    <div className="bg-white dark:bg-gray-900 p-6 rounded-lg border dark:border-gray-700 shadow-sm">
+                        <h3 className="font-bold text-lg mb-4 dark:text-gray-100">Payment & Notes</h3>
 
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Discount</label>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                value={discount}
-                                                onChange={(e) => setDiscount(e.target.value)}
-                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add Payment</label>
-                                            <input
-                                                type="number"
-                                                step="0.01"
-                                                min="0"
-                                                value={paymentAmount}
-                                                onChange={(e) => setPaymentAmount(e.target.value)}
-                                                className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
-                                                placeholder="0.00"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-gray-50 dark:bg-gray-800 dark:text-gray-100 p-3 rounded text-sm space-y-1">
-                                        <div className="flex justify-between"><span>Subtotal:</span> <span className="font-bold">৳{totalAmount.toFixed(2)}</span></div>
-                                        <div className="flex justify-between text-red-600"><span>Discount:</span> <span className="font-bold">-৳{parseFloat(discount || 0).toFixed(2)}</span></div>
-                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1"><span>Net Total:</span> <span className="font-bold">৳{finalAmount.toFixed(2)}</span></div>
-                                        <div className="flex justify-between text-green-600"><span>Paid (Prev + New):</span> <span className="font-bold">৳{(parseFloat(invoice.paid_amount || 0) + (parseFloat(paymentAmount) || 0)).toFixed(2)}</span></div>
-                                        <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1 text-lg"><span>Due:</span> <span className="font-bold">৳{dueAmount.toFixed(2)}</span></div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
-                                        <select
-                                            value={paymentMethod}
-                                            onChange={(e) => setPaymentMethod(e.target.value)}
-                                            className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                        >
-                                            <option value="Cash">Cash</option>
-                                            <option value="Card">Card</option>
-                                            <option value="MFS">Mobile Banking</option>
-                                            <option value="Cheque">Cheque</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes</label>
-                                        <textarea
-                                            value={notes}
-                                            onChange={(e) => setNotes(e.target.value)}
-                                            className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg h-24 focus:ring-2 focus:ring-blue-500"
-                                            placeholder="Invoice notes..."
-                                        />
-                                    </div>
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Discount</label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        value={discount}
+                                        onChange={(e) => setDiscount(e.target.value)}
+                                        className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add Payment</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        value={paymentAmount}
+                                        onChange={(e) => setPaymentAmount(e.target.value)}
+                                        className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
+                                        placeholder="0.00"
+                                    />
                                 </div>
                             </div>
 
-                            {/* Footer Actions */}
-                            <div className="flex justify-end gap-3 pt-4 border-t dark:border-gray-700 sticky bottom-0 bg-gray-50 dark:bg-gray-800 pb-4">
-                                <button
-                                    type="button"
-                                    onClick={onClose}
-                                    className="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 font-medium dark:text-gray-100"
-                                    disabled={loading}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-medium shadow-sm"
-                                    disabled={loading}
-                                >
-                                    <Save size={18} />
-                                    {loading ? 'Saving...' : 'Save Changes'}
-                                </button>
+                            <div className="bg-gray-50 dark:bg-gray-800 dark:text-gray-100 p-3 rounded text-sm space-y-1">
+                                <div className="flex justify-between"><span>Subtotal:</span> <span className="font-bold">৳{totalAmount.toFixed(2)}</span></div>
+                                <div className="flex justify-between text-red-600"><span>Discount:</span> <span className="font-bold">-৳{parseFloat(discount || 0).toFixed(2)}</span></div>
+                                <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1"><span>Net Total:</span> <span className="font-bold">৳{finalAmount.toFixed(2)}</span></div>
+                                <div className="flex justify-between text-green-600"><span>Paid (Prev + New):</span> <span className="font-bold">৳{(parseFloat(invoice.paid_amount || 0) + (parseFloat(paymentAmount) || 0)).toFixed(2)}</span></div>
+                                <div className="flex justify-between border-t border-gray-300 dark:border-gray-700 pt-1 text-lg"><span>Due:</span> <span className="font-bold">৳{dueAmount.toFixed(2)}</span></div>
                             </div>
-                        </form>
-                    </div>
 
-                    {/* Right Column - Live Invoice Preview */}
-                    <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 dark:bg-gray-900 flex justify-center items-start print:w-full print:bg-white">
-                        <div className="sticky top-2 sm:top-6 w-full">
-                            <h3 className="text-center font-bold text-gray-700 dark:text-gray-300 mb-2 sm:mb-4 text-sm sm:text-base print:hidden">Live Preview</h3>
-                            <div className="shadow-2xl print:shadow-none print-only">
-                                <InvoicePrint
-                                    ref={printRef}
-                                    invoice={invoiceForPrint}
-                                    items={items}
-                                    customer={invoice.Customer}
-                                    user={invoice.User}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
+                                <select
+                                    value={paymentMethod}
+                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                    className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="Cash">Cash</option>
+                                    <option value="Card">Card</option>
+                                    <option value="MFS">Mobile Banking</option>
+                                    <option value="Cheque">Cheque</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes</label>
+                                <textarea
+                                    value={notes}
+                                    onChange={(e) => setNotes(e.target.value)}
+                                    className="w-full p-3 border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg h-24 focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Invoice notes..."
                                 />
                             </div>
                         </div>
                     </div>
+
+                    {/* Footer Actions */}
+                    <div className="flex justify-end gap-3 pt-4 border-t dark:border-gray-700 sticky bottom-0 bg-gray-50 dark:bg-gray-800 pb-4">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 font-medium dark:text-gray-100"
+                            disabled={loading}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 font-medium shadow-sm"
+                            disabled={loading}
+                        >
+                            <Save size={18} />
+                            {loading ? 'Saving...' : 'Save Changes'}
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            {/* Right Column - Live Invoice Preview */}
+            <div className="w-full lg:w-1/2 overflow-y-auto p-3 sm:p-6 bg-gray-100 dark:bg-gray-900 flex justify-center items-start print:w-full print:bg-white">
+                <div className="sticky top-2 sm:top-6 w-full">
+                    <h3 className="text-center font-bold text-gray-700 dark:text-gray-300 mb-2 sm:mb-4 text-sm sm:text-base print:hidden">Live Preview</h3>
+                    <div className="shadow-2xl print:shadow-none print-only">
+                        <InvoicePrint
+                            ref={printRef}
+                            invoice={invoiceForPrint}
+                            items={items}
+                            customer={invoice.Customer}
+                            user={invoice.User}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
+            </div >
+        </div >
     );
 }
