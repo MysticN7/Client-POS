@@ -234,14 +234,6 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                             return val;
                         };
 
-                        // Simple value getter
-                        const getVal = (eye, type, field) => {
-                            const val = rx?.[eye]?.[type]?.[field];
-                            if (!val) return '-';
-                            if (shouldAbbreviate && val.toString().toLowerCase() === 'plano') return 'P';
-                            return val;
-                        };
-
                         return (
                             <div>
                                 <table className="w-full text-center" style={{ fontSize: '12px', border: '1px dashed #000', borderCollapse: 'collapse', width: '100%' }}>
