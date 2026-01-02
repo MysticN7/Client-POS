@@ -234,13 +234,14 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                             return val;
                         };
 
+
                         // Dynamic font size based on value length
                         const getDynamicStyle = (val) => {
                             const str = val?.toString() || '';
-                            if (str.length <= 1) return { fontSize: '12px' };  // Short: -, P
-                            if (str.length <= 3) return { fontSize: '11px' };  // Medium: +2.5
-                            if (str.length <= 5) return { fontSize: '9px' };   // Long: -2.50, Plano
-                            return { fontSize: '8px' };                         // Very long
+                            if (str.length <= 1) return { fontSize: '13px', fontWeight: 900 };
+                            if (str.length <= 3) return { fontSize: '12px', fontWeight: 900 };
+                            if (str.length <= 5) return { fontSize: '11px', fontWeight: 900 };
+                            return { fontSize: '10px', fontWeight: 900 };
                         };
 
                         // Render value with dynamic sizing
