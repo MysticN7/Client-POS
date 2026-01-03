@@ -178,6 +178,16 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                 overflow: hidden !important;
                             }
                         }
+                        
+                        /* Mobile Print Scaling - Aggressive font boost for phones */
+                        @media print and (max-width: 600px) {
+                            .print-receipt {
+                                font-size: 170% !important;
+                            }
+                            .print-receipt * {
+                                font-size: inherit !important;
+                            }
+                        }
                     `}
                 </style>
             </div>
