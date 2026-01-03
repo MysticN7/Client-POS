@@ -35,17 +35,21 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
     }, []);
 
     // Image-based print for consistent cross-device output
+    // Uses 203 DPI (thermal printer standard) for proper sizing
     const handlePrint = async () => {
         if (!printRef.current) return;
 
         try {
-            // Fixed width: 80mm at 96dpi = 302px (standard thermal receipt width)
-            const fixedWidth = 302;
+            // Thermal printers use 203 DPI
+            // 80mm at 203 DPI = 80 * (203 / 25.4) = ~640 pixels
+            const thermalDPI = 203;
+            const paperWidthMM = printSettings.paper_width_mm || 80;
+            const fixedWidth = Math.round(paperWidthMM * (thermalDPI / 25.4));
             const element = printRef.current;
 
-            // Render to canvas at fixed width
+            // Render to canvas at thermal printer resolution
             const canvas = await html2canvas(element, {
-                scale: 2, // Higher resolution for crisp text
+                scale: 3, // High resolution for crisp thermal print
                 width: fixedWidth,
                 windowWidth: fixedWidth,
                 backgroundColor: '#ffffff',
@@ -62,7 +66,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                         <title>Invoice ${invoice.invoice_number}</title>
                         <style>
                             @media print {
-                                @page { margin: 0; }
+                                @page { margin: 0; size: ${paperWidthMM}mm auto; }
                                 body { margin: 0; }
                             }
                             body {
@@ -72,7 +76,7 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
                                 justify-content: center;
                             }
                             img {
-                                max-width: 100%;
+                                width: ${paperWidthMM}mm;
                                 height: auto;
                             }
                         </style>
