@@ -44,9 +44,14 @@ export default function Layout() {
                 >
                     {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
-                <button onClick={toggleDark} className="ml-2 p-2 rounded text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </button>
+                <div className="flex items-center gap-1">
+                    <button onClick={toggleDark} className="p-2 rounded text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    </button>
+                    <button onClick={handleLogout} className="p-2 rounded text-red-600 hover:bg-red-50 dark:hover:bg-gray-700" title="Logout">
+                        <LogOut className="w-5 h-5" />
+                    </button>
+                </div>
             </div>
 
             {/* Sidebar - Desktop: Always visible, Mobile: Drawer overlay */}
