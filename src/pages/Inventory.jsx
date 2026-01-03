@@ -274,12 +274,29 @@ const Inventory = () => {
                                         <td className="px-6 py-4 font-medium text-gray-800 dark:text-gray-100">{product.name}</td>
                                         <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{product.sku}</td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${product.category === 'FRAMES' ? 'bg-purple-100 text-purple-700' :
-                                                product.category === 'LENS' ? 'bg-blue-100 text-blue-700' :
-                                                    'bg-green-100 text-green-700'
-                                                }`}>
-                                                {product.category}
-                                            </span>
+                                            {(() => {
+                                                // Vibrant colors array - each category gets unique color based on hash
+                                                const vibrantColors = [
+                                                    'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300',
+                                                    'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+                                                    'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
+                                                    'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+                                                    'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+                                                    'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300',
+                                                    'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300',
+                                                    'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
+                                                    'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
+                                                    'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
+                                                ];
+                                                // Hash function for consistent category -> color mapping
+                                                const hash = product.category.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                                                const colorClass = vibrantColors[hash % vibrantColors.length];
+                                                return (
+                                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${colorClass}`}>
+                                                        {product.category}
+                                                    </span>
+                                                );
+                                            })()}
                                         </td>
                                         <td className="px-6 py-4 text-gray-600 dark:text-gray-300">৳{product.price}</td>
                                         <td className="px-6 py-4">
