@@ -275,6 +275,13 @@ const Inventory = () => {
                                         <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{product.sku}</td>
                                         <td className="px-6 py-4">
                                             {(() => {
+                                                if (!product.category) {
+                                                    return (
+                                                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
+                                                            None
+                                                        </span>
+                                                    );
+                                                }
                                                 // Vibrant colors array - each category gets unique color based on hash
                                                 const vibrantColors = [
                                                     'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300',
@@ -361,12 +368,11 @@ const Inventory = () => {
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
                                     <select
                                         name="category"
-                                        required
                                         className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
                                         value={formData.category}
                                         onChange={handleInputChange}
                                     >
-                                        <option value="" disabled>Select Category</option>
+                                        <option value="">No Category</option>
                                         {categories.map(cat => (
                                             <option key={cat.id} value={cat.name}>{cat.name}</option>
                                         ))}
@@ -486,9 +492,25 @@ const Inventory = () => {
 
                         <div className="max-h-60 overflow-y-auto space-y-2">
                             {categories.map(cat => (
-                                <div key={cat.id || cat._id} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-700 rounded">
-                                    <span className="font-medium dark:text-gray-100">{cat.name}</span>
-                                    <button onClick={() => handleDeleteCategory(cat.id || cat._id)} className="text-red-500 hover:text-red-700">
+                                <div key={cat.id || cat._id} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-700 rounded gap-2">
+                                    <input
+                                        className="flex-1 font-medium dark:text-gray-100 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1"
+                                        defaultValue={cat.name}
+                                        onBlur={async (e) => {
+                                            const newName = e.target.value.trim();
+                                            if (newName && newName !== cat.name) {
+                                                try {
+                                                    await api.put(`/categories/${cat.id || cat._id}`, { name: newName });
+                                                    fetchCategories();
+                                                } catch (err) {
+                                                    alert('Failed to update category');
+                                                    e.target.value = cat.name;
+                                                }
+                                            }
+                                        }}
+                                        onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
+                                    />
+                                    <button onClick={() => handleDeleteCategory(cat.id || cat._id)} className="text-red-500 hover:text-red-700 shrink-0">
                                         <Trash2 size={16} />
                                     </button>
                                 </div>
