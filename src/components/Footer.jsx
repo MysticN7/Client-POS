@@ -60,10 +60,10 @@ const Footer = () => {
                 </div>
             )}
 
-            <div className="fixed bottom-4 left-0 right-0 flex justify-center z-[100] pointer-events-none text-center">
+            <div className="fixed bottom-2 sm:bottom-4 left-0 right-0 flex justify-center z-[100] pointer-events-none text-center">
                 {/* Optimized for Tablet/Mobile Lag: Reduced blur (xl->md), reduced shadow (2xl->xl), minimal layout shifts */}
-                <div className="pointer-events-auto bg-white/10 dark:bg-gray-900/80 backdrop-blur-md border border-white/20 shadow-xl rounded-full px-5 py-2 transform transition-transform duration-300 hover:scale-105 hover:bg-white/20 max-w-[95vw] will-change-transform">
-                    <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm font-medium">
+                <div className="pointer-events-auto bg-white/10 dark:bg-gray-900/80 backdrop-blur-md border border-white/20 shadow-xl rounded-full px-3 py-1 sm:px-5 sm:py-2 transform transition-transform duration-300 hover:scale-105 hover:bg-white/20 max-w-[95vw] will-change-transform">
+                    <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 text-[9px] sm:text-xs font-medium">
                         <span className="text-gray-600 dark:text-gray-300">
                             Software Developed by
                         </span>
@@ -78,7 +78,7 @@ const Footer = () => {
                             Liquid ARC Studio
                         </span>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 sm:gap-2">
                             {/* Interactive 'Love' Button with Confetti */}
                             <button
                                 onClick={handleLoveClick}
@@ -86,18 +86,18 @@ const Footer = () => {
                                 title={loved ? "Thanks for the love!" : "Show some love"}
                             >
                                 <Heart
-                                    size={16}
+                                    size={14}
                                     className={`transition-all duration-300 ${loved ? 'fill-red-500 text-red-500 scale-110' : 'group-hover:scale-110'}`}
                                 />
                             </button>
 
-                            {/* Contact Link */}
+                            {/* Contact Link - Hidden on very small screens */}
                             <a
                                 href="mailto:liquidarc.studio@gmail.com"
-                                className="inline-flex items-center gap-1 hover:text-orange-500 transition-colors"
+                                className="hidden sm:inline-flex items-center gap-1 hover:text-orange-500 transition-colors"
                             >
-                                <Send size={14} className="text-orange-500 animate-pulse" />
-                                <span className="text-gray-500 dark:text-gray-400 text-[10px] sm:text-xs">
+                                <Send size={12} className="text-orange-500 animate-pulse" />
+                                <span className="text-gray-500 dark:text-gray-400 text-[9px] sm:text-xs">
                                     ( liquidarc.studio@gmail.com )
                                 </span>
                             </a>

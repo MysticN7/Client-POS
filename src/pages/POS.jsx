@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
 import API_URL from '../config/api';
-import { Search, ShoppingCart, Trash2, UserPlus, PauseCircle, PlayCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, ShoppingCart, Trash2, UserPlus, PauseCircle, PlayCircle, ChevronDown, ChevronUp, Zap, Printer } from 'lucide-react';
 import InvoiceModal from '../components/InvoiceModal';
 import SmartRxInput from '../components/SmartRxInput';
 import { useAuth } from '../context/AuthContext';
@@ -49,6 +49,10 @@ export default function POS() {
     const [heldTransactions, setHeldTransactions] = useState([]);
     const [showHeldModal, setShowHeldModal] = useState(false);
     const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+
+    // Quick Sales Mode State
+    const [autoPrint, setAutoPrint] = useState(() => localStorage.getItem('autoPrint') === 'true');
+    const [isProcessing, setIsProcessing] = useState(false);
 
     useEffect(() => {
         fetchProducts();
@@ -196,7 +200,22 @@ export default function POS() {
         localStorage.setItem('heldTransactions', JSON.stringify(newHeld));
     };
 
-    const handleCheckout = async () => {
+    // Quick Sales Mode Functions
+    const handlePayFull = () => {
+        const netTotal = calculateTotal() - Number(discount);
+        setPaidAmount(netTotal);
+    };
+
+    const toggleAutoPrint = () => {
+        const newValue = !autoPrint;
+        setAutoPrint(newValue);
+        localStorage.setItem('autoPrint', String(newValue));
+    };
+
+    const handleCheckout = async (shouldAutoPrint = false) => {
+        if (isProcessing) return;
+        setIsProcessing(true);
+
         let customerToUse = selectedCustomer;
 
         if (!customerToUse) {
@@ -218,11 +237,10 @@ export default function POS() {
             } catch (err) {
                 console.error("Error fetching/creating walk-in customer", err);
                 alert('Please select a customer first');
+                setIsProcessing(false);
                 return;
             }
         }
-
-        const total = calculateTotal();
 
         try {
             const res = await api.post('/sales', {
@@ -235,15 +253,30 @@ export default function POS() {
             });
 
             setLastInvoice(res.data.invoice);
-
-            setLastInvoice(res.data.invoice);
             setShowInvoiceModal(true);
+
+            // Handle auto-print (from Quick Complete or autoPrint toggle)
+            if (shouldAutoPrint || autoPrint) {
+                // Brief delay to ensure modal renders, then print
+                setTimeout(() => {
+                    window.print();
+                    // Auto-close after print
+                    setTimeout(() => {
+                        handleCloseModal();
+                    }, 300);
+                }, 200);
+            }
         } catch (err) {
             alert('Checkout failed: ' + (err.response?.data?.message || err.message));
+        } finally {
+            setIsProcessing(false);
         }
     };
 
-
+    // Quick Complete = Checkout + Auto-Print + Auto-Close
+    const handleQuickComplete = () => {
+        handleCheckout(true);
+    };
 
     const handleCloseModal = () => {
         setShowInvoiceModal(false);
@@ -705,15 +738,42 @@ export default function POS() {
                             />
                         </div>
 
-                        <div className="grid grid-cols-4 gap-2">
+                        {/* Auto-Print Toggle */}
+                        <div className="flex items-center justify-between py-1 px-2 bg-gray-100 dark:bg-gray-800 rounded">
+                            <div className="flex items-center gap-1">
+                                <Printer className="w-3 h-3 text-gray-500" />
+                                <span className="text-[10px] text-gray-600 dark:text-gray-300">Auto-Print</span>
+                            </div>
+                            <button
+                                onClick={toggleAutoPrint}
+                                className={`relative w-10 h-5 rounded-full transition-colors ${autoPrint ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                title="Toggle auto-print on checkout"
+                            >
+                                <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${autoPrint ? 'translate-x-5' : ''}`} />
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-5 gap-1.5">
                             <button onClick={handleHold} className="col-span-1 bg-yellow-500 text-white py-2 rounded font-bold hover:bg-yellow-600 flex justify-center items-center text-xs" title="Hold Transaction">
                                 <PauseCircle className="w-4 h-4" />
                             </button>
                             <button onClick={() => setShowHeldModal(true)} className="col-span-1 bg-purple-600 text-white py-2 rounded font-bold hover:bg-purple-700 flex justify-center items-center text-xs" title="Recall Transaction">
                                 <PlayCircle className="w-4 h-4" />
                             </button>
-                            <button onClick={handleCheckout} className="col-span-2 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 flex justify-center items-center text-sm">
-                                Complete
+                            <button
+                                onClick={() => handleCheckout(false)}
+                                disabled={isProcessing}
+                                className="col-span-2 bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 flex justify-center items-center text-xs disabled:opacity-50"
+                            >
+                                {isProcessing ? 'Processing...' : 'Complete'}
+                            </button>
+                            <button
+                                onClick={handleQuickComplete}
+                                disabled={isProcessing}
+                                className="col-span-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white py-2 rounded font-bold hover:from-orange-600 hover:to-amber-600 flex justify-center items-center text-xs disabled:opacity-50"
+                                title="Quick Complete: Checkout + Print + Close in one click"
+                            >
+                                <Zap className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
