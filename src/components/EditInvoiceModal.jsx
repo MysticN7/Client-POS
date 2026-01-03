@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, DollarSign, Printer, Save, Plus, Trash2, ChevronDown, ChevronUp, Glasses } from 'lucide-react';
 // import { useReactToPrint } from 'react-to-print';
+import html2canvas from 'html2canvas';
 import api from '../api/axios';
 import InvoicePrint from './InvoicePrint';
 import SmartRxInput from './SmartRxInput';
@@ -32,8 +33,68 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
         };
         fetchSettings();
     }, []);
-    const handlePrint = () => {
-        window.print();
+
+    // Image-based print for consistent cross-device output
+    const handlePrint = async () => {
+        if (!printRef.current) return;
+
+        try {
+            // Fixed width: 80mm at 96dpi = 302px (standard thermal receipt width)
+            const fixedWidth = 302;
+            const element = printRef.current;
+
+            // Render to canvas at fixed width
+            const canvas = await html2canvas(element, {
+                scale: 2, // Higher resolution for crisp text
+                width: fixedWidth,
+                windowWidth: fixedWidth,
+                backgroundColor: '#ffffff',
+                useCORS: true,
+            });
+
+            // Create a new window with just the image
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Invoice ${invoice.invoice_number}</title>
+                        <style>
+                            @media print {
+                                @page { margin: 0; }
+                                body { margin: 0; }
+                            }
+                            body {
+                                margin: 0;
+                                padding: 0;
+                                display: flex;
+                                justify-content: center;
+                            }
+                            img {
+                                max-width: 100%;
+                                height: auto;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <img src="${canvas.toDataURL('image/png')}" />
+                        <script>
+                            window.onload = function() {
+                                window.print();
+                                window.onafterprint = function() { window.close(); };
+                            };
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }
+        } catch (error) {
+            console.error('Print error:', error);
+            // Fallback to regular print
+            window.print();
+        }
     };
 
     useEffect(() => {
