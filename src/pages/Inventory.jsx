@@ -220,10 +220,13 @@ const Inventory = () => {
                             value={categoryFilter}
                             onChange={(e) => setCategoryFilter(e.target.value)}
                         >
-                            <option value="ALL">All Categories</option>
-                            {categories.map(cat => (
-                                <option key={cat.id} value={cat.name}>{cat.name}</option>
-                            ))}
+                            <option value="ALL">All Categories ({products.length})</option>
+                            {categories.map(cat => {
+                                const count = products.filter(p => p.category === cat.name).length;
+                                return (
+                                    <option key={cat.id} value={cat.name}>{cat.name} ({count})</option>
+                                );
+                            })}
                         </select>
                     </div>
                 </div>
