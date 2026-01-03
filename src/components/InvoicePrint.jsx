@@ -334,7 +334,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             </table>
 
             {/* Totals */}
-            <div className="text-xs mb-2" style={{ borderTop: '1.5px dashed #000', paddingTop: '4px' }}>
+            <div className="text-xs mb-2" style={{ paddingTop: '4px' }}>
                 <div className="flex justify-between py-1">
                     <span style={{ ...styleFor('totals_labels'), fontWeight: 900 }}>Total</span>
                     <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '11pt' }}>{settings.currency_symbol || '৳'}{Number(invoice.total_amount).toFixed(0)}</span>
