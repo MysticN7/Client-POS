@@ -128,7 +128,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
     return (
         // Use fixed 640px width (80mm at 203 DPI) for consistent ESC/POS app capture
-        <div ref={ref} className="print-receipt bg-white text-black" style={{ width: '640px', margin: '0 auto', fontFamily: '"Courier New", Courier, monospace', fontSize: `${Math.round((settings.body_font_size || 11) * 0.75)}pt`, padding: '8px', boxSizing: 'border-box' }}>
+        <div ref={ref} className="print-receipt bg-white text-black" style={{ width: '640px', margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${Math.round((settings.body_font_size || 11) * 0.75)}pt`, padding: '8px', boxSizing: 'border-box' }}>
             {/* Header */}
             <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'}`} style={{ textAlign: settings.logo_position || 'center' }}>
                 {settings.show_logo && settings.logo_url && (
@@ -273,23 +273,23 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                         {(rx.right?.distance?.sph || rx.right?.distance?.cyl || rx.right?.distance?.axis || rx.left?.distance?.sph || rx.left?.distance?.cyl || rx.left?.distance?.axis) && (
                                             <tr>
                                                 <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '7pt' }}>Dist</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('right', 'distance', 'sph')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('right', 'distance', 'cyl')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('right', 'distance', 'axis')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('left', 'distance', 'sph')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('left', 'distance', 'cyl')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('left', 'distance', 'axis')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('right', 'distance', 'sph')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('right', 'distance', 'cyl')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('right', 'distance', 'axis')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('left', 'distance', 'sph')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('left', 'distance', 'cyl')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('left', 'distance', 'axis')}</td>
                                             </tr>
                                         )}
                                         {(rx.right?.near?.sph || rx.right?.near?.cyl || rx.right?.near?.axis || rx.left?.near?.sph || rx.left?.near?.cyl || rx.left?.near?.axis) && (
                                             <tr>
                                                 <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '7pt' }}>Near</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('right', 'near', 'sph')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('right', 'near', 'cyl')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('right', 'near', 'axis')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('left', 'near', 'sph')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('left', 'near', 'cyl')}</td>
-                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 800, color: '#000', fontSize: '10pt' }}>{getVal('left', 'near', 'axis')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('right', 'near', 'sph')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('right', 'near', 'cyl')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('right', 'near', 'axis')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('left', 'near', 'sph')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('left', 'near', 'cyl')}</td>
+                                                <td className="py-2" style={{ border: '1px dashed #000', fontWeight: 900, color: '#000', fontSize: '12pt', fontFamily: '"Courier New", Courier, monospace' }}>{getVal('left', 'near', 'axis')}</td>
                                             </tr>
                                         )}
                                         {/* Lens Row - Merged into table for alignment */}
