@@ -114,16 +114,20 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
         const s = settings.text_styles?.[key] || {};
         const weightMap = { normal: 400, bold: 700, black: 900 };
         const fw = s.font_weight && weightMap[s.font_weight] ? weightMap[s.font_weight] : (s.font_weight && Number.isFinite(Number(s.font_weight)) ? Number(s.font_weight) : undefined);
+
+        // Convert px to pt for print (1px ≈ 0.75pt) - ensures consistent sizing across devices
+        const fontSize = s.font_size ? `${Math.round(s.font_size * 0.75)}pt` : undefined;
+
         return {
             fontFamily: s.font_family || undefined,
-            fontSize: s.font_size ? `${s.font_size}px` : undefined,
+            fontSize: fontSize,
             textAlign: s.align || undefined,
             fontWeight: fw,
         };
     };
 
     return (
-        <div ref={ref} className="print-receipt bg-white text-black" style={{ width: `${paperWidth}mm`, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${settings.body_font_size || 11}px`, padding: `${paperMargin}mm`, boxSizing: 'border-box' }}>
+        <div ref={ref} className="print-receipt bg-white text-black" style={{ width: `${paperWidth}mm`, margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${Math.round((settings.body_font_size || 11) * 0.75)}pt`, padding: `${paperMargin}mm`, boxSizing: 'border-box' }}>
             {/* Header */}
             <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'}`} style={{ textAlign: settings.logo_position || 'center' }}>
                 {settings.show_logo && settings.logo_url && (
@@ -159,15 +163,10 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                 padding: 0 !important;
                                 -webkit-print-color-adjust: exact;
                                 print-color-adjust: exact;
-                                -webkit-text-size-adjust: none;
-                                text-size-adjust: none;
-                                font-size-adjust: none;
-                                zoom: 1;
                             }
                             * {
                                 box-sizing: border-box !important;
                                 color: #000 !important;
-                                text-rendering: optimizeLegibility;
                             }
                             .print-receipt {
                                 width: 100% !important;
@@ -176,16 +175,6 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                 padding: 2mm !important;
                                 box-sizing: border-box !important;
                                 overflow: hidden !important;
-                            }
-                        }
-                        
-                        /* Mobile Print Scaling - Aggressive font boost for phones */
-                        @media print and (max-width: 600px) {
-                            .print-receipt {
-                                font-size: 170% !important;
-                            }
-                            .print-receipt * {
-                                font-size: inherit !important;
                             }
                         }
                     `}
@@ -249,7 +238,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
 
                         return (
                             <div>
-                                <table className="w-full text-center" style={{ fontSize: '12px', border: '1px dashed #000', borderCollapse: 'collapse', width: '100%' }}>
+                                <table className="w-full text-center" style={{ fontSize: '9pt', border: '1px dashed #000', borderCollapse: 'collapse', width: '100%' }}>
                                     {/* Column widths: narrow first col, wider value cols */}
                                     <colgroup>
                                         <col style={{ width: '12%' }} />
@@ -264,17 +253,17 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                     <thead>
                                         <tr>
                                             <th className="py-2" style={{ border: '1px dashed #000' }}></th>
-                                            <th className="py-2 font-black" colSpan="3" style={{ border: '1px dashed #000', fontSize: '11px' }}>Right</th>
-                                            <th className="py-2 font-black" colSpan="3" style={{ border: '1px dashed #000', fontSize: '11px' }}>Left</th>
+                                            <th className="py-2 font-black" colSpan="3" style={{ border: '1px dashed #000', fontSize: '8pt' }}>Right</th>
+                                            <th className="py-2 font-black" colSpan="3" style={{ border: '1px dashed #000', fontSize: '8pt' }}>Left</th>
                                         </tr>
                                         <tr>
                                             <th className="py-2" style={{ border: '1px dashed #000' }}></th>
-                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '10px' }}>SPH</th>
-                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '10px' }}>CYL</th>
-                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '10px' }}>AXIS</th>
-                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '10px' }}>SPH</th>
-                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '10px' }}>CYL</th>
-                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '10px' }}>AXIS</th>
+                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '8pt' }}>SPH</th>
+                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '8pt' }}>CYL</th>
+                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '8pt' }}>AXIS</th>
+                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '8pt' }}>SPH</th>
+                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '8pt' }}>CYL</th>
+                                            <th className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '8pt' }}>AXIS</th>
                                         </tr>
                                     </thead>
 
@@ -282,7 +271,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                     <tbody>
                                         {(rx.right?.distance?.sph || rx.right?.distance?.cyl || rx.right?.distance?.axis || rx.left?.distance?.sph || rx.left?.distance?.cyl || rx.left?.distance?.axis) && (
                                             <tr>
-                                                <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '9px' }}>Dist</td>
+                                                <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '7pt' }}>Dist</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'distance', 'sph')}</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'distance', 'cyl')}</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'distance', 'axis')}</td>
@@ -293,7 +282,7 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
                                         )}
                                         {(rx.right?.near?.sph || rx.right?.near?.cyl || rx.right?.near?.axis || rx.left?.near?.sph || rx.left?.near?.cyl || rx.left?.near?.axis) && (
                                             <tr>
-                                                <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '9px' }}>Near</td>
+                                                <td className="py-2 font-black" style={{ border: '1px dashed #000', fontSize: '7pt' }}>Near</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'near', 'sph')}</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'near', 'cyl')}</td>
                                                 <td className="py-2 font-bold" style={{ border: '1px dashed #000', fontWeight: 900 }}>{getVal('right', 'near', 'axis')}</td>
@@ -348,24 +337,24 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
             <div className="text-xs mb-2" style={{ borderTop: '1.5px dashed #000', paddingTop: '4px' }}>
                 <div className="flex justify-between py-1">
                     <span style={{ ...styleFor('totals_labels'), fontWeight: 900 }}>Total</span>
-                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.total_amount).toFixed(0)}</span>
+                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '11pt' }}>{settings.currency_symbol || '৳'}{Number(invoice.total_amount).toFixed(0)}</span>
                 </div>
                 <div className="flex justify-between py-1">
                     <span style={{ ...styleFor('totals_labels'), fontWeight: 900 }}>Discount</span>
-                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.discount || 0).toFixed(0)}</span>
+                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '11pt' }}>{settings.currency_symbol || '৳'}{Number(invoice.discount || 0).toFixed(0)}</span>
                 </div>
                 <div className="flex justify-between py-1" style={{ borderTop: '1.5px dashed #000' }}>
                     <span style={{ ...styleFor('totals_labels'), fontWeight: 900 }}>Paid</span>
-                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '14px' }}>{settings.currency_symbol || '৳'}{Number(invoice.paid_amount || 0).toFixed(0)}</span>
+                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '11pt' }}>{settings.currency_symbol || '৳'}{Number(invoice.paid_amount || 0).toFixed(0)}</span>
                 </div>
                 <div className="flex justify-between py-1" style={{ borderTop: '1.5px dashed #000', borderBottom: '1.5px dashed #000' }}>
-                    <span style={{ ...styleFor('totals_labels'), fontWeight: 900, fontSize: '14px' }}>DUE</span>
-                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '16px' }}>{settings.currency_symbol || '৳'}{(netTotal - (invoice.paid_amount || 0)).toFixed(0)}</span>
+                    <span style={{ ...styleFor('totals_labels'), fontWeight: 900, fontSize: '11pt' }}>DUE</span>
+                    <span style={{ ...styleFor('totals_values'), fontWeight: 900, fontSize: '12pt' }}>{settings.currency_symbol || '৳'}{(netTotal - (invoice.paid_amount || 0)).toFixed(0)}</span>
                 </div>
             </div>
 
             {/* In Words */}
-            <div className="mb-2" style={{ ...styleFor('in_words'), fontWeight: 700, fontSize: '10px' }}>
+            <div className="mb-2" style={{ ...styleFor('in_words'), fontWeight: 700, fontSize: '8pt' }}>
                 In Words: <span style={{ fontWeight: 900 }}>{amountInWords.toLowerCase()} Taka Only</span>
             </div>
 
