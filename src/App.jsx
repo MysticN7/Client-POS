@@ -15,6 +15,7 @@ import ProfitLoss from './pages/ProfitLoss';
 import Customers from './pages/Customers';
 import AuditLogs from './pages/AuditLogs';
 import DueCollection from './pages/DueCollection';
+import PrintInvoice from './pages/PrintInvoice';
 import Layout from './components/Layout';
 
 import ProtectedRoute from './components/ProtectedRoute';
@@ -36,6 +37,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginRoute />} />
+
+          {/* Dedicated print page - no layout wrapper for clean ESC/POS capture */}
+          <Route path="/print/:invoiceId" element={<ProtectedRoute><PrintInvoice /></ProtectedRoute>} />
+
           <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
             <Route index element={<ProtectedRoute permission="DASHBOARD"><Dashboard /></ProtectedRoute>} />
             <Route path="pos" element={<ProtectedRoute permission="POS"><POS /></ProtectedRoute>} />

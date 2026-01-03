@@ -34,71 +34,11 @@ export default function EditInvoiceModal({ invoice, onClose, onSuccess }) {
         fetchSettings();
     }, []);
 
-    // Image-based print for consistent cross-device output
-    // Uses 203 DPI (thermal printer standard) for proper sizing
-    const handlePrint = async () => {
-        if (!printRef.current) return;
-
-        try {
-            // Thermal printers use 203 DPI
-            // 80mm at 203 DPI = 80 * (203 / 25.4) = ~640 pixels
-            const thermalDPI = 203;
-            const paperWidthMM = printSettings.paper_width_mm || 80;
-            const fixedWidth = Math.round(paperWidthMM * (thermalDPI / 25.4));
-            const element = printRef.current;
-
-            // Render to canvas at thermal printer resolution
-            const canvas = await html2canvas(element, {
-                scale: 3, // High resolution for crisp thermal print
-                width: fixedWidth,
-                windowWidth: fixedWidth,
-                backgroundColor: '#ffffff',
-                useCORS: true,
-            });
-
-            // Create a new window with just the image
-            const printWindow = window.open('', '_blank');
-            if (printWindow) {
-                printWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Invoice ${invoice.invoice_number}</title>
-                        <style>
-                            @media print {
-                                @page { margin: 0; size: ${paperWidthMM}mm auto; }
-                                body { margin: 0; }
-                            }
-                            body {
-                                margin: 0;
-                                padding: 0;
-                                display: flex;
-                                justify-content: center;
-                            }
-                            img {
-                                width: ${paperWidthMM}mm;
-                                height: auto;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <img src="${canvas.toDataURL('image/png')}" />
-                        <script>
-                            window.onload = function() {
-                                window.print();
-                                window.onafterprint = function() { window.close(); };
-                            };
-                        <\/script>
-                    </body>
-                    </html>
-                `);
-                printWindow.document.close();
-            }
-        } catch (error) {
-            console.error('Print error:', error);
-            // Fallback to regular print
-            window.print();
-        }
+    // Open dedicated print page in new tab - exactly like the old PHP POS system
+    // The ESC/POS Bluetooth app will capture the clean page
+    const handlePrint = () => {
+        // Open dedicated print page in new tab
+        window.open(`/print/${invoice.id}`, '_blank');
     };
 
     useEffect(() => {
