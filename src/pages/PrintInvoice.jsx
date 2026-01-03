@@ -14,6 +14,36 @@ export default function PrintInvoice() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Force viewport to exact print width - prevents mobile scaling
+    useEffect(() => {
+        // Set viewport to fixed 640px width (80mm at 203 DPI)
+        const viewport = document.querySelector('meta[name="viewport"]');
+        const originalContent = viewport?.content;
+
+        if (viewport) {
+            viewport.content = 'width=640, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+        }
+
+        // Set body styles to prevent any scaling
+        document.body.style.width = '640px';
+        document.body.style.maxWidth = '640px';
+        document.body.style.margin = '0';
+        document.body.style.padding = '0';
+        document.body.style.overflow = 'visible';
+
+        // Cleanup on unmount
+        return () => {
+            if (viewport && originalContent) {
+                viewport.content = originalContent;
+            }
+            document.body.style.width = '';
+            document.body.style.maxWidth = '';
+            document.body.style.margin = '';
+            document.body.style.padding = '';
+            document.body.style.overflow = '';
+        };
+    }, []);
+
     useEffect(() => {
         const fetchInvoice = async () => {
             try {
@@ -45,6 +75,7 @@ export default function PrintInvoice() {
     if (loading) {
         return (
             <div style={{
+                width: '640px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -59,6 +90,7 @@ export default function PrintInvoice() {
     if (error || !invoice) {
         return (
             <div style={{
+                width: '640px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -85,6 +117,7 @@ export default function PrintInvoice() {
 
     return (
         <div style={{
+            width: '640px',
             backgroundColor: '#fff',
             minHeight: '100vh',
             padding: 0,
