@@ -127,8 +127,8 @@ const InvoicePrint = forwardRef(({ invoice, customer, items, user, settingsOverr
     };
 
     return (
-        // Use fixed 640px width (80mm at 203 DPI) for consistent ESC/POS app capture
-        <div ref={ref} className="print-receipt bg-white text-black" style={{ width: '640px', margin: '0 auto', fontFamily: 'Arial, sans-serif', fontSize: `${Math.round((settings.body_font_size || 11) * 0.75)}pt`, padding: '8px', boxSizing: 'border-box' }}>
+        // max-w-sm (384px) for screen preview, print styles override for actual printing
+        <div ref={ref} className="print-receipt bg-white text-black w-full max-w-sm mx-auto print:max-w-none print:w-[640px]" style={{ fontFamily: 'Arial, sans-serif', fontSize: `${Math.round((settings.body_font_size || 11) * 0.75)}pt`, padding: '8px', boxSizing: 'border-box' }}>
             {/* Header */}
             <div className={`${settings.compact_mode ? 'mb-2' : 'mb-3'}`} style={{ textAlign: settings.logo_position || 'center' }}>
                 {settings.show_logo && settings.logo_url && (
