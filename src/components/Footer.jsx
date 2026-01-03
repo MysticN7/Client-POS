@@ -91,15 +91,14 @@ const Footer = () => {
                                 />
                             </button>
 
-                            {/* Contact Link - Icon on mobile, full on desktop */}
+                            {/* Contact Link - Always visible */}
                             <a
                                 href="mailto:liquidarc.studio@gmail.com"
-                                className="inline-flex items-center gap-1 hover:text-orange-500 transition-colors"
-                                title="liquidarc.studio@gmail.com"
+                                className="inline-flex items-center gap-0.5 hover:text-orange-500 transition-colors"
                             >
-                                <Send size={12} className="text-orange-500 animate-pulse" />
-                                <span className="hidden sm:inline text-gray-500 dark:text-gray-400 text-[9px] sm:text-xs">
-                                    ( liquidarc.studio@gmail.com )
+                                <Send size={12} className="text-orange-500" />
+                                <span className="text-gray-500 dark:text-gray-400 text-[8px] sm:text-xs">
+                                    liquidarc.studio@gmail.com
                                 </span>
                             </a>
                         </div>
