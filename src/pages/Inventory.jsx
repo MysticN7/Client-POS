@@ -189,7 +189,7 @@ const Inventory = () => {
     });
 
     return (
-        <div className="p-3 sm:p-6 bg-gray-50 dark:bg-gray-900 min-h-screen dark:text-gray-100">
+        <div className="p-3 sm:p-6 pb-24 bg-gray-50 dark:bg-gray-900 min-h-screen dark:text-gray-100">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
                 <h1 className="text-xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">Inventory</h1>
                 <div className="flex gap-2 w-full sm:w-auto">
