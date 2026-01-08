@@ -103,7 +103,7 @@ export default function Layout() {
             )}
 
             {/* Main Content */}
-            <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 mt-16 lg:mt-0 pb-20"> {/* pb-20 to prevent footer overlap */}
+            <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 mt-16 lg:mt-0 pb-32"> {/* pb-32 to prevent footer overlap */}
                 <Outlet />
             </div>
 
