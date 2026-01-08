@@ -64,8 +64,9 @@ export default function POS() {
     const fetchCategories = async () => {
         try {
             const res = await api.get('/categories');
-            const catNames = res.data.map(c => c.name);
-            setCategories(['ALL', ...catNames]);
+            // Sort categories A-Z
+            const sorted = res.data.map(c => c.name).sort((a, b) => a.localeCompare(b));
+            setCategories(['ALL', ...sorted]);
         } catch (error) {
             console.error('Error fetching categories');
         }

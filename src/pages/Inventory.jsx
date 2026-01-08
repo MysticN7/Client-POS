@@ -34,7 +34,9 @@ const Inventory = () => {
     const fetchCategories = async () => {
         try {
             const res = await api.get('/categories');
-            setCategories(res.data);
+            // Sort categories A-Z by name
+            const sorted = res.data.sort((a, b) => a.name.localeCompare(b.name));
+            setCategories(sorted);
         } catch (error) {
             console.error('Error fetching categories:', error);
         }
