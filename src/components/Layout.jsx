@@ -106,7 +106,7 @@ export default function Layout() {
             <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 mt-16 lg:mt-0 pb-10"> {/* reduced padding, using spacer instead */}
                 <Outlet />
                 {/* Robust spacer to prevent footer overlap on mobile */}
-                <div className="h-32 w-full shrink-0"></div>
+                <div className="h-40 w-full shrink-0"></div>
             </div>
 
             <Footer />
