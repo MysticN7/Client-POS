@@ -24,6 +24,7 @@ const Inventory = () => {
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const [additionalStock, setAdditionalStock] = useState('');
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         fetchProducts();
@@ -89,6 +90,8 @@ const Inventory = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isSaving) return; // Prevent double-clicks
+        setIsSaving(true);
         try {
             const formDataToSend = new FormData();
             formDataToSend.append('name', formData.name);
@@ -119,6 +122,8 @@ const Inventory = () => {
             console.error('Error saving product:', error);
             const msg = error.response?.data?.message || 'Failed to save product';
             alert(`Error: ${msg}`);
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -324,7 +329,7 @@ const Inventory = () => {
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg max-w-md w-full p-6">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
                         <h2 className="text-2xl font-bold mb-6 text-gray-800">
                             {currentProduct ? 'Edit Product' : 'Add New Product'}
                         </h2>
@@ -448,9 +453,10 @@ const Inventory = () => {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                                    disabled={isSaving}
+                                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    Save Product
+                                    {isSaving ? 'Saving...' : 'Save Product'}
                                 </button>
                             </div>
                         </form>
