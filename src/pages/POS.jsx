@@ -360,7 +360,7 @@ export default function POS() {
                             </div>
                             <form onSubmit={createCustomer} className="space-y-3">
                                 <input placeholder="Customer Name *" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-3 rounded w-full focus:ring-2 focus:ring-blue-500 outline-none" value={newCustomer.name} onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })} required />
-                                <input placeholder="Phone / Mobile *" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-3 rounded w-full focus:ring-2 focus:ring-blue-500 outline-none" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} required />
+                                <input placeholder="Phone / Mobile (Optional)" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-3 rounded w-full focus:ring-2 focus:ring-blue-500 outline-none" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} />
                                 <input placeholder="Address (Optional)" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-3 rounded w-full focus:ring-2 focus:ring-blue-500 outline-none" value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} />
                                 <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded w-full font-bold shadow-lg transition-all transform active:scale-95">Create & Select Customer</button>
                             </form>
