@@ -727,73 +727,62 @@ export default function POS() {
                     </div>
 
                     <div className="p-3 border-t bg-gray-50 dark:bg-gray-700 rounded-b-lg space-y-2">
-                        <div className="space-y-3">
-                            {/* Subtotal & Discount Grid */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700 flex flex-col justify-center">
-                                    <span className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Subtotal</span>
-                                    <span className="font-bold text-lg text-gray-800 dark:text-gray-100">৳{calculateTotal().toFixed(2)}</span>
-                                </div>
-                                <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
-                                    <span className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-1 block">Discount</span>
-                                    <input
-                                        type="number"
-                                        className="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-md p-2 text-right font-bold text-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                                        value={discount}
-                                        onChange={e => setDiscount(e.target.value)}
-                                        inputMode="decimal"
-                                        placeholder="0"
-                                    />
-                                </div>
+                        <div className="flex justify-between gap-2">
+                            <div className="flex justify-between items-center w-1/2">
+                                <span className="text-sm">Subtotal</span>
+                                <span className="font-medium text-sm">৳{calculateTotal().toFixed(2)}</span>
                             </div>
+                            <div className="flex justify-between items-center w-1/2">
+                                <span className="text-sm">Discount</span>
+                                <input
+                                    type="number"
+                                    className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right text-sm"
+                                    value={discount}
+                                    onChange={e => setDiscount(e.target.value)}
+                                    inputMode="decimal"
+                                />
+                            </div>
+                        </div>
 
-                            {/* Net Total Hero Block */}
-                            <div className="bg-indigo-600 dark:bg-indigo-700 p-4 rounded-xl shadow-lg text-white flex justify-between items-center">
-                                <span className="font-bold text-lg opacity-90">Net Total</span>
-                                <span className="font-extrabold text-3xl">৳{(calculateTotal() - discount).toFixed(2)}</span>
-                            </div>
+                        <div className="flex justify-between items-center">
+                            <span className="font-bold text-sm">Net Total</span>
+                            <span className="font-bold text-lg">৳{(calculateTotal() - discount).toFixed(2)}</span>
+                        </div>
 
-                            {/* Paid & Due Grid */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
-                                    <span className="text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-wider mb-1 block">Paid Amount</span>
-                                    <input
-                                        type="number"
-                                        className="w-full bg-white dark:bg-gray-900 border-2 border-green-500 dark:border-green-600 rounded-md p-2 text-right font-extrabold text-xl text-green-700 dark:text-green-400 focus:outline-none focus:ring-4 focus:ring-green-500/20 transition-all"
-                                        value={paidAmount}
-                                        onChange={e => setPaidAmount(e.target.value)}
-                                        inputMode="decimal"
-                                        placeholder="0"
-                                    />
-                                </div>
-                                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800 flex flex-col justify-center items-end">
-                                    <span className="text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-wider">Due Amount</span>
-                                    <span className="font-extrabold text-2xl text-red-600 dark:text-red-400">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
-                                </div>
+                        <div className="flex justify-between gap-2">
+                            <div className="flex justify-between items-center w-1/2">
+                                <span className="text-sm">Paid</span>
+                                <input
+                                    type="number"
+                                    className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right font-bold text-green-600 text-sm"
+                                    value={paidAmount}
+                                    onChange={e => setPaidAmount(e.target.value)}
+                                    inputMode="decimal"
+                                />
                             </div>
+                            <div className="flex justify-between items-center w-1/2">
+                                <span className="text-sm">Due</span>
+                                <span className="text-red-600 font-bold text-sm">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
+                            </div>
+                        </div>
 
-                            {/* Method & Note */}
-                            <div className="flex gap-3">
-                                <div className="w-1/3">
-                                    <select
-                                        className="w-full h-10 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-lg px-2 text-sm font-medium focus:ring-2 focus:ring-indigo-500 outline-none"
-                                        value={paymentMethod}
-                                        onChange={e => setPaymentMethod(e.target.value)}
-                                    >
-                                        <option value="Cash">Cash</option>
-                                        <option value="Card">Card</option>
-                                        <option value="MFS">MFS</option>
-                                    </select>
-                                </div>
-                                <div className="w-2/3">
-                                    <input
-                                        className="w-full h-10 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-lg px-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
-                                        placeholder="Add transaction note..."
-                                        value={note}
-                                        onChange={e => setNote(e.target.value)}
-                                    />
-                                </div>
-                            </div>
+                        <div className="flex gap-2">
+                            <select
+                                className="w-1/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-sm"
+                                value={paymentMethod}
+                                onChange={e => setPaymentMethod(e.target.value)}
+                            >
+                                <option value="Cash">Cash</option>
+                                <option value="Card">Card</option>
+                                <option value="MFS">MFS</option>
+                            </select>
+                            <textarea
+                                className="w-2/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-xs"
+                                placeholder="Note..."
+                                rows="1"
+                                value={note}
+                                onChange={e => setNote(e.target.value)}
+                            />
                         </div>
 
                         {/* Auto-Print Toggle */}
