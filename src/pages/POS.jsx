@@ -370,8 +370,7 @@ export default function POS() {
                             {/* Call to Action Block */}
                             {!customerSearch && (
                                 <div className="mb-4 bg-indigo-50 dark:bg-indigo-900/10 border-2 border-dashed border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
-                                    <h3 className="text-indigo-800 dark:text-indigo-300 font-bold mb-1">Add Customer Details</h3>
-                                    <p className="text-xs text-indigo-600 dark:text-indigo-400 mb-3">Recommended for loyalty points & history</p>
+                                    <h3 className="text-indigo-800 dark:text-indigo-300 font-bold mb-3">Add Customer Details</h3>
                                     <div className="flex justify-center gap-3">
                                         <button
                                             onClick={() => setShowNewCustomerForm(true)}
