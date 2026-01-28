@@ -88,21 +88,103 @@ const AuditLogs = () => {
         }
     };
 
+    // State for delete my logs modal
+    const [showDeleteMyLogsModal, setShowDeleteMyLogsModal] = useState(false);
+    const [deleteMyLogsDateRange, setDeleteMyLogsDateRange] = useState({ startDate: '', endDate: '' });
+
+    const deleteMyLogs = async () => {
+        const { startDate, endDate } = deleteMyLogsDateRange;
+        const dateInfo = startDate || endDate ? ` from ${startDate || 'beginning'} to ${endDate || 'now'}` : '';
+        if (!window.confirm(`Delete all YOUR audit logs${dateInfo}? This cannot be undone!`)) return;
+
+        try {
+            const queryParams = new URLSearchParams();
+            if (startDate) queryParams.append('startDate', startDate);
+            if (endDate) queryParams.append('endDate', endDate);
+
+            const res = await api.delete(`/audit-logs/my-logs?${queryParams}`);
+            alert(res.data.message);
+            setShowDeleteMyLogsModal(false);
+            setDeleteMyLogsDateRange({ startDate: '', endDate: '' });
+            fetchLogs();
+        } catch (error) {
+            alert('Error deleting logs: ' + (error.response?.data?.message || error.message));
+        }
+    };
+
     return (
         <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen dark:text-gray-100">
+            {/* Delete My Logs Modal */}
+            {showDeleteMyLogsModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Delete My Audit Logs</h2>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            This will permanently delete your audit logs. Optionally filter by date range.
+                        </p>
+                        <div className="space-y-4 mb-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date (Optional)</label>
+                                <input
+                                    type="date"
+                                    className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-gray-100"
+                                    value={deleteMyLogsDateRange.startDate}
+                                    onChange={(e) => setDeleteMyLogsDateRange({ ...deleteMyLogsDateRange, startDate: e.target.value })}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Date (Optional)</label>
+                                <input
+                                    type="date"
+                                    className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:bg-gray-700 dark:text-gray-100"
+                                    value={deleteMyLogsDateRange.endDate}
+                                    onChange={(e) => setDeleteMyLogsDateRange({ ...deleteMyLogsDateRange, endDate: e.target.value })}
+                                />
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Leave both empty to delete ALL your logs.
+                            </p>
+                        </div>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => { setShowDeleteMyLogsModal(false); setDeleteMyLogsDateRange({ startDate: '', endDate: '' }); }}
+                                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={deleteMyLogs}
+                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-bold"
+                            >
+                                Delete My Logs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                     <Activity className="text-blue-600" /> Audit Logs
                 </h1>
                 <div className="flex items-center gap-2">
                     {isAdministrative && (
-                        <button
-                            onClick={deleteAllLogs}
-                            className="p-2 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition text-red-600 dark:text-red-400"
-                            title="Delete All Logs (ADMINISTRATIVE only)"
-                        >
-                            <Trash2 size={20} />
-                        </button>
+                        <>
+                            <button
+                                onClick={() => setShowDeleteMyLogsModal(true)}
+                                className="px-3 py-2 bg-orange-100 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-800 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition text-orange-600 dark:text-orange-400 text-sm font-medium flex items-center gap-1"
+                                title="Delete My Logs (with optional date filter)"
+                            >
+                                <Trash2 size={16} /> Delete My Logs
+                            </button>
+                            <button
+                                onClick={deleteAllLogs}
+                                className="p-2 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition text-red-600 dark:text-red-400"
+                                title="Delete All Logs (ADMINISTRATIVE only)"
+                            >
+                                <Trash2 size={20} />
+                            </button>
+                        </>
                     )}
                     <button
                         onClick={fetchLogs}
