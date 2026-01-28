@@ -581,21 +581,21 @@ export default function POS() {
                                 {item.is_prescription_required && (
                                     <div className="text-xs bg-gray-50 dark:bg-gray-800 p-2 sm:p-3 rounded mb-2 border border-gray-200 dark:border-gray-700 shadow-sm overflow-x-auto">
                                         {/* Right Eye */}
-                                        <div className="mb-4">
-                                            <h4 className="text-sm font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1 flex justify-between">
+                                        <div className="mb-3">
+                                            <h4 className="text-xs font-bold mb-1 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1 flex justify-between items-end">
                                                 <span>Right Eye</span>
-                                                <span className="text-xs font-normal text-gray-500">OD</span>
+                                                <span className="text-[10px] font-normal text-gray-400">OD</span>
                                             </h4>
                                             {/* Distance */}
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <div className="w-10 text-right shrink-0">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider">Dist</span>
+                                            <div className="flex items-center gap-1 mb-1">
+                                                <div className="w-8 shrink-0 text-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-[10px] uppercase">Dist</span>
                                                 </div>
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1 min-w-0">
-                                                        <span className="text-gray-400 dark:text-gray-500 text-[10px] block text-center uppercase font-semibold mb-0.5">{field}</span>
+                                                        <span className="text-gray-400 dark:text-gray-500 text-[9px] block text-center uppercase font-semibold mb-0 leading-none">{field}</span>
                                                         <SmartRxInput
-                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-2 text-center text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none shadow-sm h-10"
+                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-1 text-center text-sm font-medium focus:ring-1 focus:ring-blue-500 outline-none shadow-sm h-9"
                                                             placeholder="-"
                                                             value={item.prescription_data.right.distance[field]}
                                                             onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
@@ -604,14 +604,14 @@ export default function POS() {
                                                 ))}
                                             </div>
                                             {/* Near */}
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-10 text-right shrink-0">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider">Add</span>
+                                            <div className="flex items-center gap-1">
+                                                <div className="w-8 shrink-0 text-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-[10px] uppercase">Add</span>
                                                 </div>
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1 min-w-0">
                                                         <SmartRxInput
-                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-2 text-center text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none shadow-sm h-10"
+                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-1 text-center text-sm font-medium focus:ring-1 focus:ring-blue-500 outline-none shadow-sm h-9"
                                                             placeholder={field === 'sph' ? 'Add' : '-'}
                                                             value={item.prescription_data.right.near[field]}
                                                             onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
@@ -622,21 +622,21 @@ export default function POS() {
                                         </div>
 
                                         {/* Left Eye */}
-                                        <div className="mb-4">
-                                            <h4 className="text-sm font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1 flex justify-between">
+                                        <div className="mb-3">
+                                            <h4 className="text-xs font-bold mb-1 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1 flex justify-between items-end">
                                                 <span>Left Eye</span>
-                                                <span className="text-xs font-normal text-gray-500">OS</span>
+                                                <span className="text-[10px] font-normal text-gray-400">OS</span>
                                             </h4>
                                             {/* Distance */}
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <div className="w-10 text-right shrink-0">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider">Dist</span>
+                                            <div className="flex items-center gap-1 mb-1">
+                                                <div className="w-8 shrink-0 text-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-[10px] uppercase">Dist</span>
                                                 </div>
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1 min-w-0">
-                                                        <span className="text-gray-400 dark:text-gray-500 text-[10px] block text-center uppercase font-semibold mb-0.5">{field}</span>
+                                                        <span className="text-gray-400 dark:text-gray-500 text-[9px] block text-center uppercase font-semibold mb-0 leading-none">{field}</span>
                                                         <SmartRxInput
-                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-2 text-center text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none shadow-sm h-10"
+                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-1 text-center text-sm font-medium focus:ring-1 focus:ring-blue-500 outline-none shadow-sm h-9"
                                                             placeholder="-"
                                                             value={item.prescription_data.left.distance[field]}
                                                             onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
@@ -645,14 +645,14 @@ export default function POS() {
                                                 ))}
                                             </div>
                                             {/* Near */}
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-10 text-right shrink-0">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider">Add</span>
+                                            <div className="flex items-center gap-1">
+                                                <div className="w-8 shrink-0 text-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-[10px] uppercase">Add</span>
                                                 </div>
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1 min-w-0">
                                                         <SmartRxInput
-                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-2 text-center text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none shadow-sm h-10"
+                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-1 text-center text-sm font-medium focus:ring-1 focus:ring-blue-500 outline-none shadow-sm h-9"
                                                             placeholder={field === 'sph' ? 'Add' : '-'}
                                                             value={item.prescription_data.left.near[field]}
                                                             onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
@@ -664,36 +664,32 @@ export default function POS() {
 
                                         {/* Extra Fields */}
                                         <div className="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-                                            <div className="flex items-center gap-1">
-                                                <div className="w-8 sm:w-12 text-right shrink-0">
-                                                    <span className="text-gray-600 text-[10px] font-medium">Lens</span>
-                                                </div>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-gray-600 dark:text-gray-400 text-[10px] font-bold uppercase tracking-wide">Lens Type</span>
                                                 <input
-                                                    className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none"
-                                                    placeholder="e.g. Bifocal"
+                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 outline-none"
+                                                    placeholder="e.g. Bifocal, Bluecut..."
                                                     value={item.prescription_data.lensType}
                                                     onChange={(e) => updatePrescription(index, 'extra', null, 'lensType', e.target.value)}
                                                 />
                                             </div>
                                             {/* Quick Lens Selection */}
-                                            <div className="flex flex-wrap gap-1 pl-8 sm:pl-12">
+                                            <div className="flex flex-wrap gap-1.5">
                                                 {availableLensTypes.map((type, i) => (
                                                     <button
                                                         key={type}
                                                         onClick={() => updatePrescription(index, 'extra', null, 'lensType', type)}
-                                                        className={`px-1.5 py-0.5 rounded text-[9px] border ${getLensColor(i)} hover:opacity-80`}
+                                                        className={`px-2 py-1 rounded text-[10px] border font-medium ${getLensColor(i)} hover:opacity-80 transition-opacity`}
                                                     >
                                                         {type}
                                                     </button>
                                                 ))}
                                             </div>
-                                            <div className="flex items-center gap-1">
-                                                <div className="w-8 sm:w-12 text-right shrink-0">
-                                                    <span className="text-gray-600 text-[10px] font-medium">Notes</span>
-                                                </div>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-gray-600 dark:text-gray-400 text-[10px] font-bold uppercase tracking-wide">Internal Notes</span>
                                                 <input
-                                                    className="flex-1 min-w-0 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-[11px] focus:ring-1 focus:ring-blue-500 outline-none"
-                                                    placeholder="Optional"
+                                                    className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 outline-none"
+                                                    placeholder="Optional remarks..."
                                                     value={item.prescription_data.remarks}
                                                     onChange={(e) => updatePrescription(index, 'extra', null, 'remarks', e.target.value)}
                                                 />
