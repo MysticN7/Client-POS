@@ -425,53 +425,58 @@ export default function POS() {
                 </div>
 
                 {/* Product Search & Grid */}
-                <div className="mb-4 relative group">
-                    <Search className="absolute left-3 top-2.5 sm:top-3 text-gray-400 w-4 h-4 sm:w-5 sm:h-5 pointer-events-none" />
-                    <input
-                        className="w-full pl-9 sm:pl-10 p-2 sm:p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-sm text-sm sm:text-base focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
-                        placeholder="Search products..."
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                        autoComplete="off"
-                    />
-                    {searchTerm && (
-                        <div className="absolute z-[100] w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-b-lg shadow-2xl max-h-80 overflow-y-auto top-full mt-1 divide-y dark:divide-gray-700 ring-1 ring-black ring-opacity-5">
-                            {products.filter(p => {
-                                const term = searchTerm.toLowerCase();
-                                return (p.name && p.name.toLowerCase().includes(term)) || (p.sku && p.sku.toLowerCase().includes(term));
-                            }).slice(0, 10).map(product => (
-                                <div
-                                    key={product.id}
-                                    onClick={() => { addToCart(product); setSearchTerm(''); }}
-                                    className="p-3 hover:bg-indigo-50 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3 transition-colors"
-                                >
-                                    <div className="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-md overflow-hidden">
-                                        {product.imageUrl ? (
-                                            <img src={product.imageUrl.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`} className="w-full h-full object-cover" alt="" />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">IMG</div>
-                                        )}
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="font-bold text-gray-800 dark:text-white text-sm truncate">{product.name}</div>
-                                        <div className="text-xs text-gray-500 dark:text-gray-400">SKU: {product.sku}</div>
-                                    </div>
-                                    <div className="text-right">
-                                        <div className="font-bold text-indigo-600 dark:text-indigo-400 text-sm">৳{product.price}</div>
-                                        <div className={`text-[10px] px-1.5 py-0.5 rounded-full inline-block ${product.stockQuantity > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                            {product.stockQuantity > 0 ? `${product.stockQuantity} in stock` : 'Out'}
+                {/* Product Search & Grid - Sticky Header */}
+                <div className="sticky top-0 z-20 bg-gray-50 dark:bg-gray-900 pb-2 -mt-2 pt-2">
+                    <div className="relative group shadow-sm rounded-lg">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Search className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                            className="w-full pl-10 p-3 sm:p-4 border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-lg text-base shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                            placeholder="Scan SKU or Search Products..."
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            autoComplete="off"
+                        />
+                        {searchTerm && (
+                            <div className="absolute z-[100] w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-b-lg shadow-2xl max-h-[60vh] overflow-y-auto top-full mt-1 divide-y dark:divide-gray-700 ring-1 ring-black ring-opacity-5">
+                                {products.filter(p => {
+                                    const term = searchTerm.toLowerCase();
+                                    return (p.name && p.name.toLowerCase().includes(term)) || (p.sku && p.sku.toLowerCase().includes(term));
+                                }).slice(0, 20).map(product => (
+                                    <div
+                                        key={product.id}
+                                        onClick={() => { addToCart(product); setSearchTerm(''); }}
+                                        className="p-4 hover:bg-indigo-50 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-4 transition-colors"
+                                    >
+                                        <div className="flex-shrink-0 w-12 h-12 bg-gray-100 rounded-md overflow-hidden">
+                                            {product.imageUrl ? (
+                                                <img src={product.imageUrl.startsWith('http') ? product.imageUrl : `${API_URL}${product.imageUrl}`} className="w-full h-full object-cover" alt="" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">IMG</div>
+                                            )}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="font-bold text-gray-800 dark:text-white text-base truncate">{product.name}</div>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">SKU: {product.sku}</div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="font-bold text-indigo-600 dark:text-indigo-400 text-base">৳{product.price}</div>
+                                            <div className={`text-xs px-2 py-0.5 rounded-full inline-block ${product.stockQuantity > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                                {product.stockQuantity > 0 ? `${product.stockQuantity} in stock` : 'Out'}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                            {products.filter(p => {
-                                const term = searchTerm.toLowerCase();
-                                return (p.name && p.name.toLowerCase().includes(term)) || (p.sku && p.sku.toLowerCase().includes(term));
-                            }).length === 0 && (
-                                    <div className="p-4 text-center text-gray-500 text-sm">No products found</div>
-                                )}
-                        </div>
-                    )}
+                                ))}
+                                {products.filter(p => {
+                                    const term = searchTerm.toLowerCase();
+                                    return (p.name && p.name.toLowerCase().includes(term)) || (p.sku && p.sku.toLowerCase().includes(term));
+                                }).length === 0 && (
+                                        <div className="p-6 text-center text-gray-500">No products found</div>
+                                    )}
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 overflow-auto">
                     {filteredProducts.map(product => (
@@ -577,18 +582,21 @@ export default function POS() {
                                 {item.is_prescription_required && (
                                     <div className="text-xs bg-gray-50 dark:bg-gray-800 p-2 sm:p-3 rounded mb-2 border border-gray-200 dark:border-gray-700 shadow-sm overflow-x-auto">
                                         {/* Right Eye */}
-                                        <div className="mb-3">
-                                            <h4 className="text-xs sm:text-sm font-bold mb-1 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Right Eye</h4>
+                                        <div className="mb-4">
+                                            <h4 className="text-sm font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1 flex justify-between">
+                                                <span>Right Eye</span>
+                                                <span className="text-xs font-normal text-gray-500">OD</span>
+                                            </h4>
                                             {/* Distance */}
-                                            <div className="flex items-center gap-1 mb-1">
-                                                <div className="w-8 sm:w-12 text-right shrink-0">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium text-[10px] uppercase">Dist</span>
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-10 text-right shrink-0">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider">Dist</span>
                                                 </div>
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1 min-w-0">
-                                                        <span className="text-gray-400 dark:text-gray-500 text-[9px] block text-center uppercase">{field}</span>
+                                                        <span className="text-gray-400 dark:text-gray-500 text-[10px] block text-center uppercase font-semibold mb-0.5">{field}</span>
                                                         <SmartRxInput
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-center text-[11px] focus:ring-1 focus:ring-blue-500 outline-none"
+                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-2 text-center text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none shadow-sm h-10"
                                                             placeholder="-"
                                                             value={item.prescription_data.right.distance[field]}
                                                             onChange={(e) => updatePrescription(index, 'right', 'distance', field, e.target.value)}
@@ -597,15 +605,15 @@ export default function POS() {
                                                 ))}
                                             </div>
                                             {/* Near */}
-                                            <div className="flex items-center gap-1">
-                                                <div className="w-8 sm:w-12 text-right shrink-0">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium text-[10px] uppercase">Near</span>
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-10 text-right shrink-0">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider">Add</span>
                                                 </div>
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1 min-w-0">
                                                         <SmartRxInput
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-center text-[11px] focus:ring-1 focus:ring-blue-500 outline-none"
-                                                            placeholder="-"
+                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-2 text-center text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none shadow-sm h-10"
+                                                            placeholder={field === 'sph' ? 'Add' : '-'}
                                                             value={item.prescription_data.right.near[field]}
                                                             onChange={(e) => updatePrescription(index, 'right', 'near', field, e.target.value)}
                                                         />
@@ -615,18 +623,21 @@ export default function POS() {
                                         </div>
 
                                         {/* Left Eye */}
-                                        <div className="mb-3">
-                                            <h4 className="text-xs sm:text-sm font-bold mb-1 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1">Left Eye</h4>
+                                        <div className="mb-4">
+                                            <h4 className="text-sm font-bold mb-2 text-gray-700 dark:text-gray-200 border-b dark:border-gray-700 pb-1 flex justify-between">
+                                                <span>Left Eye</span>
+                                                <span className="text-xs font-normal text-gray-500">OS</span>
+                                            </h4>
                                             {/* Distance */}
-                                            <div className="flex items-center gap-1 mb-1">
-                                                <div className="w-8 sm:w-12 text-right shrink-0">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium text-[10px] uppercase">Dist</span>
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-10 text-right shrink-0">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider">Dist</span>
                                                 </div>
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1 min-w-0">
-                                                        <span className="text-gray-400 dark:text-gray-500 text-[9px] block text-center uppercase">{field}</span>
+                                                        <span className="text-gray-400 dark:text-gray-500 text-[10px] block text-center uppercase font-semibold mb-0.5">{field}</span>
                                                         <SmartRxInput
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-center text-[11px] focus:ring-1 focus:ring-blue-500 outline-none"
+                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-2 text-center text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none shadow-sm h-10"
                                                             placeholder="-"
                                                             value={item.prescription_data.left.distance[field]}
                                                             onChange={(e) => updatePrescription(index, 'left', 'distance', field, e.target.value)}
@@ -635,15 +646,15 @@ export default function POS() {
                                                 ))}
                                             </div>
                                             {/* Near */}
-                                            <div className="flex items-center gap-1">
-                                                <div className="w-8 sm:w-12 text-right shrink-0">
-                                                    <span className="text-gray-500 dark:text-gray-400 font-medium text-[10px] uppercase">Near</span>
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-10 text-right shrink-0">
+                                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider">Add</span>
                                                 </div>
                                                 {['sph', 'cyl', 'axis'].map(field => (
                                                     <div key={field} className="flex-1 min-w-0">
                                                         <SmartRxInput
-                                                            className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-center text-[11px] focus:ring-1 focus:ring-blue-500 outline-none"
-                                                            placeholder="-"
+                                                            className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-md p-2 text-center text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none shadow-sm h-10"
+                                                            placeholder={field === 'sph' ? 'Add' : '-'}
                                                             value={item.prescription_data.left.near[field]}
                                                             onChange={(e) => updatePrescription(index, 'left', 'near', field, e.target.value)}
                                                         />
