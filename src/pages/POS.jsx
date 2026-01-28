@@ -727,62 +727,66 @@ export default function POS() {
                     </div>
 
                     <div className="p-3 border-t bg-gray-50 dark:bg-gray-700 rounded-b-lg space-y-2">
-                        <div className="flex justify-between gap-2">
-                            <div className="flex justify-between items-center w-1/2">
-                                <span className="text-sm">Subtotal</span>
-                                <span className="font-medium text-sm">৳{calculateTotal().toFixed(2)}</span>
+                        <div className="space-y-3">
+                            <div className="flex justify-between gap-4">
+                                <div className="flex justify-between items-center w-1/2 bg-gray-50 dark:bg-gray-800 p-2 rounded">
+                                    <span className="text-base font-bold text-gray-700 dark:text-gray-300">Subtotal</span>
+                                    <span className="font-bold text-lg">৳{calculateTotal().toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center w-1/2 bg-gray-50 dark:bg-gray-800 p-2 rounded">
+                                    <span className="text-base font-bold text-gray-700 dark:text-gray-300">Discount</span>
+                                    <input
+                                        type="number"
+                                        className="w-32 border dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-right text-lg font-bold focus:ring-2 focus:ring-blue-500 outline-none"
+                                        value={discount}
+                                        onChange={e => setDiscount(e.target.value)}
+                                        inputMode="decimal"
+                                        placeholder="0"
+                                    />
+                                </div>
                             </div>
-                            <div className="flex justify-between items-center w-1/2">
-                                <span className="text-sm">Discount</span>
-                                <input
-                                    type="number"
-                                    className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right text-sm"
-                                    value={discount}
-                                    onChange={e => setDiscount(e.target.value)}
-                                    inputMode="decimal"
+
+                            <div className="flex justify-between items-center bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded mx-[-4px]">
+                                <span className="font-bold text-lg text-indigo-900 dark:text-indigo-200">Net Total</span>
+                                <span className="font-extrabold text-3xl text-indigo-700 dark:text-indigo-300">৳{(calculateTotal() - discount).toFixed(2)}</span>
+                            </div>
+
+                            <div className="flex justify-between gap-4">
+                                <div className="flex justify-between items-center w-1/2 bg-green-50 dark:bg-green-900/10 p-2 rounded">
+                                    <span className="text-base font-bold text-green-700 dark:text-green-400">Paid</span>
+                                    <input
+                                        type="number"
+                                        className="w-32 border border-green-200 dark:border-green-800 dark:bg-gray-900 dark:text-gray-100 rounded p-2 text-right font-extrabold text-xl text-green-600 focus:ring-2 focus:ring-green-500 outline-none"
+                                        value={paidAmount}
+                                        onChange={e => setPaidAmount(e.target.value)}
+                                        inputMode="decimal"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="flex justify-between items-center w-1/2 bg-red-50 dark:bg-red-900/10 p-2 rounded">
+                                    <span className="text-base font-bold text-red-700 dark:text-red-400">Due</span>
+                                    <span className="text-red-600 dark:text-red-400 font-extrabold text-xl">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <select
+                                    className="w-1/3 h-12 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 px-2 rounded text-base font-medium focus:ring-2 focus:ring-blue-500"
+                                    value={paymentMethod}
+                                    onChange={e => setPaymentMethod(e.target.value)}
+                                >
+                                    <option value="Cash">Cash</option>
+                                    <option value="Card">Card</option>
+                                    <option value="MFS">MFS</option>
+                                </select>
+                                <textarea
+                                    className="w-2/3 h-12 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 px-3 py-2 rounded text-sm focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Add transaction note..."
+                                    rows="1"
+                                    value={note}
+                                    onChange={e => setNote(e.target.value)}
                                 />
                             </div>
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                            <span className="font-bold text-sm">Net Total</span>
-                            <span className="font-bold text-lg">৳{(calculateTotal() - discount).toFixed(2)}</span>
-                        </div>
-
-                        <div className="flex justify-between gap-2">
-                            <div className="flex justify-between items-center w-1/2">
-                                <span className="text-sm">Paid</span>
-                                <input
-                                    type="number"
-                                    className="w-20 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded p-1 text-right font-bold text-green-600 text-sm"
-                                    value={paidAmount}
-                                    onChange={e => setPaidAmount(e.target.value)}
-                                    inputMode="decimal"
-                                />
-                            </div>
-                            <div className="flex justify-between items-center w-1/2">
-                                <span className="text-sm">Due</span>
-                                <span className="text-red-600 font-bold text-sm">৳{(calculateTotal() - discount - paidAmount).toFixed(2)}</span>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-2">
-                            <select
-                                className="w-1/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-sm"
-                                value={paymentMethod}
-                                onChange={e => setPaymentMethod(e.target.value)}
-                            >
-                                <option value="Cash">Cash</option>
-                                <option value="Card">Card</option>
-                                <option value="MFS">MFS</option>
-                            </select>
-                            <textarea
-                                className="w-2/3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-1 rounded text-xs"
-                                placeholder="Note..."
-                                rows="1"
-                                value={note}
-                                onChange={e => setNote(e.target.value)}
-                            />
                         </div>
 
                         {/* Auto-Print Toggle */}
