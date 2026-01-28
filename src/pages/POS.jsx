@@ -30,7 +30,8 @@ export default function POS() {
 
     const availableLensTypes = products
         .filter(p => p.category && (String(p.category).trim().toUpperCase() === 'LENS' || String(p.category).trim().toUpperCase() === 'LENSES') && p.stockQuantity > 0)
-        .map(p => p.name);
+        .map(p => p.name)
+        .sort((a, b) => a.localeCompare(b));
 
     // Simple color assignment for lens types
     const getLensColor = (index) => {
@@ -52,6 +53,17 @@ export default function POS() {
 
     // Quick Sales Mode State
     const [autoPrint, setAutoPrint] = useState(() => localStorage.getItem('autoPrint') === 'true');
+
+    // Auto-scroll ref
+    const cartEndRef = useRef(null);
+
+    // Scroll to bottom when cart items are added
+    useEffect(() => {
+        if (cartEndRef.current) {
+            cartEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [cart.length]);
+
     const [isProcessing, setIsProcessing] = useState(false);
 
     useEffect(() => {
@@ -320,52 +332,78 @@ export default function POS() {
 
             {/* Left Side: Products */}
             <div className="flex-1 flex flex-col order-2 lg:order-1">
-                {/* Customer Selection */}
+                {/* Customer Selection - Redesigned */}
                 <div className="bg-white dark:bg-gray-800 dark:border dark:border-gray-700 p-3 sm:p-4 rounded shadow mb-4">
-                    <div className="flex justify-between items-center mb-2">
-                        <h3 className="font-bold text-sm sm:text-base">Customer</h3>
-                        <button onClick={() => setShowNewCustomerForm(!showNewCustomerForm)} className="text-blue-600 flex items-center text-xs sm:text-sm">
-                            <UserPlus className="w-4 h-4 mr-1" /> New Customer
-                        </button>
-                    </div>
-
-                    {showNewCustomerForm ? (
-                        <form onSubmit={createCustomer} className="space-y-2">
-                            <input placeholder="Name" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 sm:p-3 rounded w-full text-sm sm:text-base" value={newCustomer.name} onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })} required />
-                            <input placeholder="Phone (optional)" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-2 sm:p-3 rounded w-full text-sm sm:text-base" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} />
-                            <button type="submit" className="bg-green-600 text-white px-4 py-2 sm:py-3 rounded w-full font-medium">Save Customer</button>
-                        </form>
-                    ) : (
-                        <div>
-                            {selectedCustomer ? (
-                                <div className="flex justify-between items-center bg-blue-50 dark:bg-blue-900/20 p-2 rounded border border-blue-200 dark:border-gray-700">
-                                    <div>
-                                        <p className="font-bold text-sm sm:text-base">{selectedCustomer.name}</p>
-                                        {selectedCustomer.phone && (
-                                            <p className="text-xs text-gray-600 dark:text-gray-300">{selectedCustomer.phone}</p>
-                                        )}
-                                    </div>
-                                    <button onClick={() => setSelectedCustomer(null)} className="text-red-500 text-xs sm:text-sm px-2 py-1">Change</button>
+                    {selectedCustomer ? (
+                        <div className="flex justify-between items-center bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-gray-600">
+                            <div className="flex items-center gap-3">
+                                <div className="bg-blue-100 dark:bg-blue-800 p-2 rounded-full hidden sm:block">
+                                    <UserPlus className="w-5 h-5 text-blue-600 dark:text-blue-300" />
                                 </div>
-                            ) : (
-                                <div className="relative">
-                                    <input
-                                        className="w-full p-2 sm:p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded text-sm sm:text-base"
-                                        placeholder="Search customer by name or phone..."
-                                        value={customerSearch}
-                                        onChange={e => setCustomerSearch(e.target.value)}
-                                    />
-                                    {customers.length > 0 && customerSearch && (
-                                        <div className="absolute z-10 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 shadow mt-1 max-h-40 overflow-auto">
-                                            {customers.map(c => (
-                                                <div key={c.id} onClick={() => { setSelectedCustomer(c); setCustomers([]); setCustomerSearch(''); }} className="p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm">
-                                                    {c.name}{c.phone ? ` - ${c.phone}` : ''}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                <div>
+                                    <p className="font-bold text-gray-800 dark:text-gray-100 text-base">{selectedCustomer.name}</p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">{selectedCustomer.phone || 'No Phone'}</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setSelectedCustomer(null)}
+                                className="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-1 bg-white dark:bg-gray-800 border dark:border-gray-600 rounded hover:shadow-sm transition"
+                            >
+                                Change
+                            </button>
+                        </div>
+                    ) : showNewCustomerForm ? (
+                        <div>
+                            <div className="flex justify-between items-center mb-3">
+                                <h3 className="font-bold text-gray-800 dark:text-gray-100">New Customer</h3>
+                                <button onClick={() => setShowNewCustomerForm(false)} className="text-gray-500 text-sm">Cancel</button>
+                            </div>
+                            <form onSubmit={createCustomer} className="space-y-3">
+                                <input placeholder="Customer Name *" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-3 rounded w-full focus:ring-2 focus:ring-blue-500 outline-none" value={newCustomer.name} onChange={e => setNewCustomer({ ...newCustomer, name: e.target.value })} required />
+                                <input placeholder="Phone / Mobile *" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-3 rounded w-full focus:ring-2 focus:ring-blue-500 outline-none" value={newCustomer.phone} onChange={e => setNewCustomer({ ...newCustomer, phone: e.target.value })} required />
+                                <input placeholder="Address (Optional)" className="border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 p-3 rounded w-full focus:ring-2 focus:ring-blue-500 outline-none" value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} />
+                                <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded w-full font-bold shadow-lg transition-all transform active:scale-95">Create & Select Customer</button>
+                            </form>
+                        </div>
+                    ) : (
+                        <div className="text-center py-2">
+                            {/* Call to Action Block */}
+                            {!customerSearch && (
+                                <div className="mb-4 bg-indigo-50 dark:bg-indigo-900/10 border-2 border-dashed border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
+                                    <h3 className="text-indigo-800 dark:text-indigo-300 font-bold mb-1">Add Customer Details</h3>
+                                    <p className="text-xs text-indigo-600 dark:text-indigo-400 mb-3">Recommended for loyalty points & history</p>
+                                    <div className="flex justify-center gap-3">
+                                        <button
+                                            onClick={() => setShowNewCustomerForm(true)}
+                                            className="flex items-center gap-1 bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-indigo-700 shadow-md transition-all active:scale-95"
+                                        >
+                                            <UserPlus className="w-4 h-4" /> New Customer
+                                        </button>
+                                    </div>
                                 </div>
                             )}
+
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Search className="h-4 w-4 text-gray-400" />
+                                </div>
+                                <input
+                                    className="w-full pl-9 p-3 border dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm"
+                                    placeholder="Or search existing customer..."
+                                    value={customerSearch}
+                                    onChange={e => setCustomerSearch(e.target.value)}
+                                />
+                                {customers.length > 0 && customerSearch && (
+                                    <div className="absolute z-10 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 shadow-xl rounded-lg mt-1 max-h-52 overflow-auto text-left">
+                                        {customers.map(c => (
+                                            <div key={c.id} onClick={() => { setSelectedCustomer(c); setCustomers([]); setCustomerSearch(''); }} className="p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer text-sm border-b dark:border-gray-700 last:border-0">
+                                                <div className="font-bold text-gray-800 dark:text-gray-200">{c.name}</div>
+                                                <div className="text-xs text-gray-500">{c.phone}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>
@@ -517,6 +555,7 @@ export default function POS() {
 
                 <div className={`${isCartExpanded ? 'flex' : 'hidden lg:flex'} flex-col flex-1 min-h-0 max-h-[60vh] lg:max-h-none`}>
 
+
                     <div className="flex-1 min-h-0 overflow-auto p-3 sm:p-4 space-y-4 lg:max-h-none">
                         {cart.map((item, index) => (
                             <div key={index} className="border-b pb-4">
@@ -526,7 +565,7 @@ export default function POS() {
                                         <span className="text-sm font-bold text-blue-600 dark:text-blue-300 mr-1">৳</span>
                                         <input
                                             type="number"
-                                            className="w-24 sm:w-28 border-0 bg-transparent text-right text-base sm:text-lg font-bold text-blue-700 dark:text-blue-200 focus:outline-none focus:ring-0"
+                                            className="w-24 sm:w-28 border-0 bg-transparent text-right text-xl sm:text-2xl font-bold text-blue-700 dark:text-blue-200 focus:outline-none focus:ring-0 py-2"
                                             value={item.price}
                                             onChange={(e) => updatePrice(index, e.target.value)}
                                             onClick={(e) => e.target.select()}
@@ -678,6 +717,7 @@ export default function POS() {
                                 </div>
                             </div>
                         ))}
+                        <div ref={cartEndRef} />
                     </div>
 
                     <div className="p-3 border-t bg-gray-50 dark:bg-gray-700 rounded-b-lg space-y-2">
